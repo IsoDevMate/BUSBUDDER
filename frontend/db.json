@@ -1,0 +1,44 @@
+{
+    "cities": [
+      {"id": 1, "name": "Nairobi"},
+      {"id": 2, "name": "Mombasa"},
+      {"id": 3, "name": "Eldoret"},
+      {"id": 4, "name": "Kisumu"},
+      {"id": 5, "name": "Nakuru"}
+    ],
+    "buses": [
+      {
+        "id": 1,
+        "name": "Amaam Standard",
+        "origin": "Nairobi",
+        "destination": "Mombasa", 
+        "departureTime": "07:00 AM",
+        "arrivalTime": "02:00 PM",
+        "price": 1500,
+        "availableSeats": 32,
+        "amenities": ["WiFi", "Air Conditioning", "Power Outlets"]
+      },
+      {
+        "id": 2, 
+        "name": "Amaam Premium",
+        "origin": "Nairobi",
+        "destination": "Kisumu",
+        "departureTime": "06:30 AM", 
+        "arrivalTime": "12:30 PM",
+        "price": 1200,
+        "availableSeats": 25,
+        "amenities": ["WiFi", "Comfortable Seats"]
+      },
+      {
+        "id": 3,
+        "name": "Amaam Luxury",
+        "origin": "Nairobi", 
+        "destination": "Eldoret",
+        "departureTime": "08:00 AM",
+        "arrivalTime": "01:00 PM", 
+        "price": 1000,
+        "availableSeats": 40,
+        "amenities": ["Air Conditioning", "Onboard Entertainment"]
+      }
+    ]
+  }
