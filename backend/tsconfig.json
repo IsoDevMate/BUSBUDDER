@@ -1,0 +1,46 @@
+// {
+//   "compilerOptions": {
+//     "target": "ES6",
+//     "module": "CommonJS",
+//     "rootDir": "./",
+//     "outDir": "./dist",
+//     "strict": true,
+//     "moduleResolution": "Node",
+//     "esModuleInterop": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "skipLibCheck": true,
+//     "resolveJsonModule": true,
+//     "strictPropertyInitialization": false,
+//     "noImplicitAny": false,
+//     "baseUrl": "./",
+//     "paths": {
+//       "@config/*": ["config/*"],
+//       "@controllers/*": ["controllers/*"],
+//       "@interfaces/*": ["interfaces/*"],
+//       "@models/*": ["models/*"],
+//       "@routes/*": ["routes/*"],
+//       "@services/*": ["services/*"],
+//       "@middleware/*": ["middleware/*"],
+//       "@utils/*": ["utils/*"]
+//     }
+//   },
+//   "include": ["src"],
+//   "exclude": ["node_modules", "dist"]
+// }
+
+
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "typeRoots": ["./node_modules/@types", "./types"],
+     "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
