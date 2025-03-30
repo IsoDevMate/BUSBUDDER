@@ -324,7 +324,7 @@ function SeatSelectionPage() {
   };
 
   const handleBookNow = () => {
-    navigate('/payment', {
+    navigate('/passenger-details', {
       state: {
         schedule,
         selectedSeats,
