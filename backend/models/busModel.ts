@@ -17,7 +17,7 @@ const busSchema = new Schema<Bus>(
     operatorId: {
       type: Schema.Types.ObjectId as any,
       ref: 'User',
-      required: true
+      required: false
     },
     status: {
       type: String,

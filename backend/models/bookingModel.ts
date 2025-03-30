@@ -6,7 +6,22 @@ const bookingSchema = new Schema<Booking>(
     userId: {
       type: Schema.Types.ObjectId as any,
       ref: 'User',
-      required: true
+      required: false
+    },
+    userName: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    userEmail: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    userPhone: {
+      type: String,
+      required: true,
+      trim: true
     },
     scheduleId: {
       type: Schema.Types.ObjectId as any,

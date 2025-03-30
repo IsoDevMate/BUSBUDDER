@@ -1,12 +1,10 @@
 import router from "./routes/routes"
 import express from "express"
 const app = express();
-import dotenv from "dotenv"
 import cors from "cors"
-dotenv.config()
 import { databaseService } from './config/database';
 import { Request, Response, NextFunction } from 'express';
-
+import config from './config/config';
 const corsOptions = {
   origin: "*"
 }
@@ -60,7 +58,7 @@ async function startServer() {
       }
     }
 
-    const PORT = process.env.PORT || 7000;
+    const PORT = config.port || 3000;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     })

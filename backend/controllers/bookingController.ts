@@ -1,25 +1,93 @@
 import { Request, Response } from 'express';
+import { bookingService } from '../services/bookingService';
 import { successResponse, errorResponse } from '../utils/apiResponse';
-import * as bookingService from '../services/bookingService';
-import * as scheduleService from '../services/scheduleService';
 
-export const createBooking = async (req: Request, res: Response) => {
-  try {
-    const { scheduleId, seatNumber } = req.body;
-    const userId = req.user._id;
+export class BookingController {
+  // Create a new booking
+  async createBooking(req: Request, res: Response): Promise<void> {
+    try {
+      const { userName, userEmail, userPhone, scheduleId, seatNumber } = req.body;
 
-    // Check if schedule exists and has available seats
-    const schedule = await scheduleService.getScheduleById(scheduleId);
-    if (!schedule) {
-      return errorResponse(res, 'Schedule not found', 404);
+      // Basic validation
+      if (!userName || !userEmail || !userPhone || !scheduleId || !seatNumber) {
+        errorResponse(res, 'Missing required fields', 400);
+        return;
+      }
+
+      // Validate seat numbers are an array
+      if (!Array.isArray(seatNumber) || seatNumber.length === 0) {
+        errorResponse(res, 'Seat numbers must be a non-empty array', 400);
+        return;
+      }
+
+      const booking = await bookingService.createBooking({
+        userName,
+        userEmail,
+        userPhone,
+        scheduleId,
+        seatNumber
+      });
+
+      successResponse(res, 'Booking created successfully', booking, 201);
+    } catch (error: any) {
+      errorResponse(res, error.message || 'Failed to create booking', 400, error);
     }
+  }
 
-    if (schedule.availableSeats < seatNumber.length) {
-      return errorResponse(res, 'Not enough seats available', 400);
+  // Get booking by ID
+  async getBookingById(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const booking = await bookingService.getBookingById(id);
+
+      if (!booking) {
+        errorResponse(res, 'Booking not found', 404);
+        return;
+      }
+
+      successResponse(res, 'Booking retrieved successfully', booking);
+    } catch (error: any) {
+      errorResponse(res, error.message || 'Failed to retrieve booking', 400, error);
     }
+  }
 
-    // Check if selected seats are valid
-    const busCapacity = schedule.busId.capacity;
-    for (const seat of seatNumber) {
-      if (seat <= 0 || seat > busCapacity) {
-        return errorResponse(res, `Invalid seat number: ${
+  // Get bookings by user details
+  async getBookingsByUserDetails(req: Request, res: Response): Promise<void> {
+    try {
+      const { email, phone } = req.query;
+
+      if (!email) {
+        errorResponse(res, 'Email is required', 400);
+        return;
+      }
+
+      const bookings = await bookingService.getBookingsByUserDetails(
+        email as string,
+        phone as string | undefined
+      );
+
+      successResponse(res, 'Bookings retrieved successfully', bookings);
+    } catch (error: any) {
+      errorResponse(res, error.message || 'Failed to retrieve bookings', 400, error);
+    }
+  }
+
+  // Cancel booking
+  async cancelBooking(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const booking = await bookingService.cancelBooking(id);
+
+      if (!booking) {
+        errorResponse(res, 'Booking not found', 404);
+        return;
+      }
+
+      successResponse(res, 'Booking cancelled successfully', booking);
+    } catch (error: any) {
+      errorResponse(res, error.message || 'Failed to cancel booking', 400, error);
+    }
+  }
+}
+
+export const bookingController = new BookingController();

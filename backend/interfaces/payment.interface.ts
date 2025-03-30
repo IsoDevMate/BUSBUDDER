@@ -1,11 +1,16 @@
+import { Document } from 'mongoose';
+
 export interface Payment {
-  _id?: string;
+  id?: string;
   bookingId: string;
   amount: number;
   paymentDate: Date;
-  paymentMethod: 'mpesa'
+  paymentMethod: 'mpesa'; // Can be expanded to include other payment methods
   transactionId: string;
   status: 'pending' | 'completed' | 'failed' | 'refunded';
-  createdAt?: Date;
-  updatedAt?: Date;
+}
+
+export interface PaymentDocument extends Omit<Payment,'id'>, Document {
+  createdAt: Date;
+  updatedAt: Date;
 }
