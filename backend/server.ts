@@ -4,8 +4,7 @@ const app = express();
 import cors from "cors";
 import { databaseService } from './config/database';
 import { Request, Response, NextFunction } from 'express';
-import config from './config/config';
-import cron from 'node-cron'; 
+import cron from 'node-cron';
 
 const corsOptions = {
   origin: "*"

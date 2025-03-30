@@ -16,6 +16,10 @@ router.get('/search', scheduleController.searchSchedules);
 // Get booked seats for a schedule
 router.get('/:id/seats', scheduleController.getBookedSeats);
 
+router.get("/:id/routes", scheduleController.getSchedulesByRouteId);
+
+router.get('/:id/available-seats', scheduleController.getAvailableSeats);
+
 // Get schedule by ID
 router.get('/:id', scheduleController.getScheduleById);
 
