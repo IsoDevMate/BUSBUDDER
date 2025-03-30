@@ -1,17 +1,19 @@
-import router from "./routes/routes"
-import express from "express"
+import router from "./routes/routes";
+import express from "express";
 const app = express();
-import cors from "cors"
+import cors from "cors";
 import { databaseService } from './config/database';
 import { Request, Response, NextFunction } from 'express';
 import config from './config/config';
+import cron from 'node-cron'; 
+
 const corsOptions = {
   origin: "*"
-}
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
 
 app.use('/', router);
 
@@ -26,7 +28,7 @@ app.use((err: any, req: any, res: any, next: any) => {
     next(err);
   });
 
-  app.use((req, res) => {
+app.use((req, res) => {
   res.status(404).json({
     success: false,
     error: 'Route not found'
@@ -38,12 +40,11 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
       res.status(500).json({ error: 'Internal Server Error' });
     });
 
-
 async function startServer() {
   try {
     // Check db connection
     const connectionStatus = await databaseService.testConnection();
-    console.log("here is the connectionstatus message",connectionStatus.message);
+    console.log("here is the connectionstatus message", connectionStatus.message);
 
     if (!connectionStatus.success) {
       console.log("Waiting for database connection...");
@@ -64,6 +65,11 @@ async function startServer() {
     })
     .on('error', (error) => {
       console.log(`Error is : ${error}`);
+    });
+
+    // Schedule a cron job to keep the server alive
+    cron.schedule('*/5 * * * *', () => {
+      console.log('Cron job running every 5 minutes to keep the server alive');
     });
 
   } catch (error) {
