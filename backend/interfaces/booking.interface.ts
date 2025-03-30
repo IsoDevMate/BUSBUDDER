@@ -1,6 +1,9 @@
 export interface Booking {
   _id?: string;
-  userId: string;
+  userId?: string; 
+  userName: string;
+  userEmail: string;
+  userPhone: string;
   scheduleId: string;
   seatNumber: number[];
   paymentStatus: 'pending' | 'completed' | 'failed' | 'refunded';

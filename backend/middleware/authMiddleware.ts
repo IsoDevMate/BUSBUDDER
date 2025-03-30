@@ -30,7 +30,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
       return errorResponse(res, 'Not authorized, no token', 401);
     }
 
-    const decoded = jwt.verify(token, config.jwtSecret) as JwtPayload;
+    const decoded = jwt.verify(token, config.jwt.accessTokenSecret as string) as JwtPayload;
     const user = await User.findById(decoded.id).select('-password');
 
     if (!user) {
