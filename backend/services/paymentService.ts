@@ -152,7 +152,7 @@ async processMpesaSTKPush(
       PartyA: formattedPhone,
       PartyB: MPESA_SHORTCODE,
       PhoneNumber: formattedPhone,
-      CallBackURL: "https://kenyapay.onrender.com/callback",
+      CallBackURL: "https://busbudder.onrender.com/api/v1/payments/callback",
       AccountReference: `BUS-${reservationId.slice(-6)}`,
       TransactionDesc: 'Bus Ticket Payment'
     };
@@ -415,46 +415,68 @@ async createSTKRequest(requestData: {
 
 async handleMpesaCallback(callbackData: any): Promise<boolean> {
   try {
+    console.log('[M-Pesa Callback] Received callback data:', JSON.stringify(callbackData));
+
     // Extract the required data from the callback
     const { Body } = callbackData;
 
     if (!Body || !Body.stkCallback) {
-      console.error('Invalid callback data:', callbackData);
+      console.error('[M-Pesa Callback] Invalid callback data:', callbackData);
       return false;
     }
 
     const { ResultCode, ResultDesc, CheckoutRequestID, CallbackMetadata } = Body.stkCallback;
+    console.log('[M-Pesa Callback] Extracted callback details:', {
+      ResultCode,
+      ResultDesc,
+      CheckoutRequestID,
+      CallbackMetadata
+    });
 
     // Find the STK request
     const stkRequest = await STKRequest.findOne({ checkoutRequestID: CheckoutRequestID });
-
     if (!stkRequest) {
-      console.error('STK request not found for CheckoutRequestID:', CheckoutRequestID);
+      console.error('[M-Pesa Callback] STK request not found for CheckoutRequestID:', CheckoutRequestID);
       return false;
     }
+
+    console.log('[M-Pesa Callback] Found STK request:', stkRequest);
 
     // Update STK request status
     stkRequest.status = ResultCode === 0 ? 'completed' : 'failed';
 
     // Extract transaction details if available
     if (ResultCode === 0 && CallbackMetadata && CallbackMetadata.Item) {
+      console.log('[M-Pesa Callback] Payment successful. Extracting transaction details.');
+
       // Extract transaction details
       const mpesaReceiptNumber = CallbackMetadata.Item.find((item: any) => item.Name === 'MpesaReceiptNumber')?.Value;
       const transactionDate = CallbackMetadata.Item.find((item: any) => item.Name === 'TransactionDate')?.Value;
       const phoneNumber = CallbackMetadata.Item.find((item: any) => item.Name === 'PhoneNumber')?.Value;
 
+      console.log('[M-Pesa Callback] Extracted transaction details:', {
+        mpesaReceiptNumber,
+        transactionDate,
+        phoneNumber
+      });
+
       stkRequest.transactionId = mpesaReceiptNumber;
       stkRequest.transactionDate = transactionDate;
 
       await stkRequest.save();
+      console.log('[M-Pesa Callback] Updated STK request with transaction details.');
 
       // Process the successful payment
       if (ResultCode === 0) {
+        console.log('[M-Pesa Callback] Processing successful payment for reservation:', stkRequest.reservationId);
+
         // Complete the reservation
         await reservationService.completeReservation(stkRequest.reservationId);
+        console.log('[M-Pesa Callback] Reservation completed.');
 
         // Create booking from reservation
         const booking = await bookingService.createBookingFromReservation(stkRequest.reservationId);
+        console.log('[M-Pesa Callback] Booking created from reservation:', booking);
 
         // Create payment record
         const paymentData: IPayment = {
@@ -467,17 +489,22 @@ async handleMpesaCallback(callbackData: any): Promise<boolean> {
         };
 
         await this.createPayment(paymentData);
+        console.log('[M-Pesa Callback] Payment record created:', paymentData);
       }
 
       return true;
     } else {
+      console.warn('[M-Pesa Callback] Payment failed. Reason:', ResultDesc);
+
       // Failed payment
       stkRequest.failureReason = ResultDesc;
       await stkRequest.save();
+      console.log('[M-Pesa Callback] Updated STK request with failure reason.');
+
       return false;
     }
   } catch (error) {
-    console.error('Error handling M-Pesa callback:', error);
+    console.error('[M-Pesa Callback] Error handling M-Pesa callback:', error);
     return false;
   }
 }

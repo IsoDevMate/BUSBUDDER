@@ -107,9 +107,13 @@ async initiateSTKPush(req: Request, res: Response) {
   }
 }
 
- async mpesaCallback(req: Request, res: Response) {
+async mpesaCallback(req: Request, res: Response) {
   try {
+    console.log('[Mpesa Callback] Received callback:', req.body);
+
     const result = await paymentService.handleMpesaCallback(req.body);
+
+    console.log('[Mpesa Callback] Processed successfully:', result);
 
     // Always respond with success to M-Pesa (even if we have internal errors)
     // to prevent M-Pesa from retrying the request
@@ -118,7 +122,8 @@ async initiateSTKPush(req: Request, res: Response) {
       ResultDesc: "Accepted"
     });
   } catch (error) {
-    console.error('Error processing M-Pesa callback:', error);
+    console.error('[Mpesa Callback] Error processing callback:', error);
+
     // Still respond with success to M-Pesa
     return res.status(200).json({
       ResultCode: 0,
