@@ -9,7 +9,7 @@ const router = Router();
 router.post('/', async (req: Request, res: Response) => {
   try {
     await busController.createBus(req, res);
-  } catch (error: any) { // Add type assertion for error
+  } catch (error: any) { 
     res.status(500).json({ error: error.message || 'Unknown error occurred' });
   }
 });

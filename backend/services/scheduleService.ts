@@ -259,6 +259,43 @@ class ScheduleService {
 
     return bookedSeats;
   }
+
+  getAvailableSeats(scheduleId: string): Promise<number> {
+    return Schedule.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(scheduleId) }
+      },
+      {
+        $lookup: {
+          from: 'bookings',
+          localField: '_id',
+          foreignField: 'scheduleId',
+          as: 'bookings'
+        }
+      },
+      {
+        $project: {
+          availableSeats: 1,
+          bookedSeatsCount: { $size: '$bookings.seatNumber' }
+        }
+      }
+    ]).then(results => {
+      if (results.length > 0) {
+        const schedule = results[0];
+        return schedule.availableSeats - schedule.bookedSeatsCount;
+      } else {
+        throw new Error('Schedule not found');
+      }
+    });
+  }
+
+  async getScheduleByBusId(busId: string): Promise<ScheduleInterface[]> {
+    return await Schedule.find({ busId })
+      .populate('routeId')
+      .populate('busId')
+      .exec();
+  }
+  
 }
 
 export const scheduleService = new ScheduleService();

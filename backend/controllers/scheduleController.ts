@@ -130,6 +130,37 @@ export class ScheduleController {
       errorResponse(res, error.message || 'Failed to retrieve booked seats', 400, error);
     }
   }
+
+  async getAvailableSeats(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const availableSeats = await scheduleService.getAvailableSeats(id);
+
+      successResponse(res, 'Available seats retrieved successfully', {
+        scheduleId: id,
+        availableSeats
+      });
+    } catch (error: any) {
+      errorResponse(res, error.message || 'Failed to retrieve available seats', 400, error);
+    }
+  }
+
+  // Get schedule by route ID
+  async getSchedulesByRouteId(req: Request, res: Response): Promise<void> {
+    try {
+      const { routeId } = req.params;
+      const schedules = await scheduleService.getScheduleById(routeId);
+
+      if (!schedules) {
+        errorResponse(res, 'No schedules found for this route', 404);
+        return;
+      }
+
+      successResponse(res, 'Schedules retrieved successfully', schedules);
+    } catch (error: any) {
+      errorResponse(res, error.message || 'Failed to retrieve schedules', 400, error);
+    }
+  }
 }
 
 export const scheduleController = new ScheduleController();

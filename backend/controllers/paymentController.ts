@@ -1,14 +1,15 @@
+
 import { Request, Response } from 'express';
 import { paymentService } from '../services/paymentService';
 import { apiResponse } from '../utils/apiv2response';
 
 export class PaymentController {
-  // Initialize payment
-  static async initiatePayment(req: Request, res: Response) {
+  // Initiate payment for a reservation
+   async initiatePaymentForReservation(req: Request, res: Response) {
     try {
-      const { bookingId, amount, paymentMethod, phoneNumber } = req.body;
+      const { reservationId, amount, paymentMethod, phoneNumber } = req.body;
 
-      if (!bookingId || !amount || !paymentMethod || !phoneNumber) {
+      if (!reservationId || !amount || !paymentMethod || !phoneNumber) {
         return apiResponse(res, 400, 'Missing required payment details', null);
       }
 
@@ -16,14 +17,19 @@ export class PaymentController {
         return apiResponse(res, 400, 'Unsupported payment method', null);
       }
 
-      const result = await paymentService.processMpesaPayment(phoneNumber, amount, bookingId);
+      const result = await paymentService.processMpesaPaymentForReservation(
+        reservationId,
+        phoneNumber,
+        amount
+      );
 
       if (!result.success) {
         return apiResponse(res, 400, result.message, null);
       }
 
-      return apiResponse(res, 200, 'Payment initiated successfully', {
+      return apiResponse(res, 200, 'Payment processed successfully', {
         transactionId: result.transactionId,
+        bookingId: result.bookingId,
         message: result.message
       });
     } catch (error) {
@@ -32,8 +38,119 @@ export class PaymentController {
     }
   }
 
+
+// Update this in paymentController.ts
+async initiateSTKPush(req: Request, res: Response) {
+  try {
+    const { reservationId, phoneNumber, amount } = req.body;
+
+    // Validate request parameters
+    if (!reservationId) {
+      return apiResponse(res, 400, 'Missing required field: reservationId', null);
+    }
+
+    if (!phoneNumber) {
+      return apiResponse(res, 400, 'Missing required field: phoneNumber', null);
+    }
+
+    if (!amount) {
+      return apiResponse(res, 400, 'Missing required field: amount', null);
+    }
+
+    console.log('[STK-Push] Request received:', {
+      reservationId,
+      phoneNumber: phoneNumber.substring(0, 4) + '****' + phoneNumber.slice(-4), // Mask for privacy
+      amount
+    });
+
+    const result = await paymentService.processMpesaSTKPush(
+      reservationId,
+      phoneNumber,
+      amount
+    );
+
+    if (!result.success) {
+      console.log('[STK-Push] Failed:', result.message);
+
+      // Include detailed error information for debugging if available
+      const errorDetail = result.error ? result.error : null;
+
+      return apiResponse(res, 400, result.message, null, errorDetail);
+    }
+
+    console.log('[STK-Push] Success:', {
+      checkoutRequestID: result.checkoutRequestID,
+      message: result.message
+    });
+
+    return apiResponse(res, 200, 'STK push initiated successfully', {
+      checkoutRequestID: result.checkoutRequestID,
+      message: result.message
+    });
+  } catch (error: any) {
+    console.error('[STK-Push] Error:', error);
+
+    // Determine appropriate status code based on error
+    const statusCode = error.response?.status || 500;
+
+    return apiResponse(
+      res,
+      statusCode,
+      'Failed to initiate STK push',
+      null,
+      {
+        message: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+        response: error.response?.data
+      }
+    );
+  }
+}
+
+ async mpesaCallback(req: Request, res: Response) {
+  try {
+    const result = await paymentService.handleMpesaCallback(req.body);
+
+    // Always respond with success to M-Pesa (even if we have internal errors)
+    // to prevent M-Pesa from retrying the request
+    return res.status(200).json({
+      ResultCode: 0,
+      ResultDesc: "Accepted"
+    });
+  } catch (error) {
+    console.error('Error processing M-Pesa callback:', error);
+    // Still respond with success to M-Pesa
+    return res.status(200).json({
+      ResultCode: 0,
+      ResultDesc: "Accepted"
+    });
+  }
+}
+
+
+  // // Verify payment callback from payment gateway
+  //  async verifyPaymentCallback(req: Request, res: Response) {
+  //   try {
+  //     const result = await paymentService.verifyPaymentCallback(req.body);
+
+  //     if (result) {
+  //       return apiResponse(res, 200, 'Payment verification processed successfully', null);
+  //     } else {
+  //       return apiResponse(res, 400, 'Failed to process payment verification', null);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error verifying payment:', error);
+  //     return apiResponse(res, 500, 'Failed to verify payment', null, error);
+  //   }
+  // }
+
+
+
+
   // Get payment by ID
-  static async getPaymentById(req: Request, res: Response) {
+
+
+  async getPaymentById(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const payment = await paymentService.getPaymentById(id);
@@ -50,7 +167,7 @@ export class PaymentController {
   }
 
   // Get payments by booking ID
-  static async getPaymentsByBookingId(req: Request, res: Response) {
+   async getPaymentsByBookingId(req: Request, res: Response) {
     try {
       const { bookingId } = req.params;
       const payments = await paymentService.getPaymentsByBookingId(bookingId);
@@ -62,7 +179,7 @@ export class PaymentController {
   }
 
   // Update payment status (admin only)
-  static async updatePaymentStatus(req: Request, res: Response) {
+   async updatePaymentStatus(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const { status } = req.body;
@@ -83,17 +200,4 @@ export class PaymentController {
       return apiResponse(res, 500, 'Failed to update payment status', null, error);
     }
   }
-
-  // Verify payment (callback from payment gateway)
-  static async verifyPayment(req: Request, res: Response) {
-    try {
-      // In a real implementation, this would handle callbacks from the payment gateway
-      // For our mock implementation, we'll just return a success message
-      return apiResponse(res, 200, 'Payment verification received', null);
-    } catch (error) {
-      console.error('Error verifying payment:', error);
-      return apiResponse(res, 500, 'Failed to verify payment', null, error);
-    }
-  }
 }
-

@@ -20,6 +20,7 @@ const config = {
     shortcode: process.env.MPESA_SHORTCODE,
     lipaNaMpesaShortcode: process.env.LIPA_NA_MPESA_SHORTCODE,
     mpesa_passkey: process.env.MPESA_PASSKEY,
+    callback_URL: process.env.MPESA_CALLBACK_URL,
   },
 
 frontendUrl: process.env.FRONTEND_URL,
