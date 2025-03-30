@@ -1,4 +1,4 @@
-import { UserRole } from '../models/user.model';
+
 
 declare global {
   namespace Express {
@@ -6,7 +6,7 @@ declare global {
       id: string;
       userId?: string;
       email: string;
-      role: UserRole;
+      role: string;
       firstName?: string;
       lastName?: string;
     }
