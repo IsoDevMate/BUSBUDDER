@@ -76,18 +76,6 @@ class BusService {
     }
   }
 
-  // async getBusesByDepartureAndDestination(departure: string, destination: string): Promise<IBus[]> {
-  //   try {
-  //     return await Bus.find({ departure, destination });
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
-
-  // async getBusByRoute(routeId: string): Promise<IBus | null> {
-
-  // }
-
    // Get buses by route ID
   async getBusesByRoute(routeId: string): Promise<IBus[]> {
     try {

@@ -89,7 +89,7 @@ export class BusController {
       return apiResponse(res, 500, 'Failed to retrieve buses by locations', null, error);
     }
   }
-  
+
   // Update bus
    async updateBus(req: Request, res: Response) {
     try {

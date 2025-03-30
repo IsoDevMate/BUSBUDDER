@@ -1,21 +1,90 @@
-// import { Router } from 'express';
-// import { PaymentController } from '../controllers/paymentController';
+import { Router, Request, Response } from 'express';
+import { PaymentController } from '../controllers/paymentController';
 
-// const router = Router();
+const router = Router();
+const paymentController = new PaymentController();
 
-// // Initiate payment
-// router.post('/initiate', PaymentController.initiatePayment.bind(PaymentController));
 
-// // Get payment by ID
-// router.get('/:id', PaymentController.getPaymentById.bind(PaymentController));
+// Initiate payment for a reservation
+router.post('/reservation', async (req: Request, res: Response) => {
+    try {
+        await paymentController.initiatePaymentForReservation(req, res);
+    }
+    catch (error: any) {
+        res.status(500).json({ error: error.message || 'Unknown error occurred' });
+    }
+});
 
-// // Get payments by booking ID
-// router.get('/booking/:bookingId', PaymentController.getPaymentsByBookingId.bind(PaymentController));
+//mpesa callback endpoint
+router.post('/callback', async (req: Request, res: Response) => {
+    try {
+        await paymentController.mpesaCallback(req, res);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message || 'Unknown error occurred' });
+    }
+}
+);
 
-// // Update payment status (would typically require admin authentication)
-// router.patch('/:id/status', PaymentController.updatePaymentStatus.bind(PaymentController));
+// Get all payments (admin only)
+// router.get('/', async (req: Request, res: Response) => {
+//     try {
+//         const payments = await paymentController.getAllPayments(req, res);
+//         return payments;
+//     } catch (error) {
+//         console.error('Error retrieving payments:', error);
+//         return res.status(500).json({ error: 'Failed to retrieve payments' });
+//     }
+// })
 
-// // Payment verification callback endpoint
-// router.post('/verify', PaymentController.verifyPayment.bind(PaymentController));
+// Get payment by ID
+router.get('/:id', async (req: Request, res: Response) => {
+    try {
+        await paymentController.getPaymentById(req, res);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message || 'Unknown error occurred' });
+    }
+}
+);
 
-// export default router;
+
+router.post('/stk-push', async (req: Request, res: Response) => {
+    try {
+        await paymentController.initiateSTKPush(req, res);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message || 'Unknown error occurred' });
+    }
+}
+);
+
+// Get payments by booking ID
+router.get('/booking/:bookingId', async (req: Request, res: Response) => {
+    try {
+        await paymentController.getPaymentsByBookingId(req, res);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message || 'Unknown error occurred' });
+    }
+}
+);
+
+// Update payment status (would typically require admin authentication)
+router.patch('/:id/status', async (req: Request, res: Response) => {
+    try {
+        await paymentController.updatePaymentStatus(req, res);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message || 'Unknown error occurred' });
+    }
+}
+);
+
+// //Payment verification callback endpoint
+// router.post('/callback', async (req: Request, res: Response) => {
+//     try {
+//         await paymentController.verifyPaymentCallback(req, res);
+//     } catch (error: any) {
+//         res.status(500).json({ error: error.message || 'Unknown error occurred' });
+//     }
+// }
+// );
+
+
+export default router;
