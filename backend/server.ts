@@ -58,8 +58,8 @@ async function startServer() {
       }
     }
 
-    const PORT = config.port || 3000;
-    app.listen(PORT, () => {
+    const PORT = parseInt(process.env.PORT || "7000", 10);
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`);
     })
     .on('error', (error) => {
