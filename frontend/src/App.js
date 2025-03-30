@@ -21,7 +21,8 @@ function App() {
         } />
         <Route path="/bus-list" element={<BusListPage />} />
         <Route path='/payment' element={<PassengerDetailsPage />} />
-        <Route path="/buses/:busId/seats" element={<SeatSelectionPage />} />
+        <Route path="/buses/:scheduleId/seats" element={<SeatSelectionPage />} />
+        <Route path="/schedules/:scheduleId/seats" element={<SeatSelectionPage />} />
       </Routes>
     </BrowserRouter>
   );

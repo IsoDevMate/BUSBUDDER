@@ -1,449 +1,20 @@
-// // import React, { useState, useEffect } from 'react';
-// // import { useParams, useNavigate } from 'react-router-dom';
-// // import styled from 'styled-components';
-// // import { FaChair, FaArrowLeft, FaCheck, FaExclamationTriangle } from 'react-icons/fa';
-
-// // // Styled Components
-// // const Container = styled.div`
-// //   max-width: 800px;
-// //   margin: 0 auto;
-// //   padding: 20px;
-// //   font-family: Arial, sans-serif;
-// // `;
-
-// // const Header = styled.div`
-// //   display: flex;
-// //   align-items: center;
-// //   margin-bottom: 20px;
-// // `;
-
-// // const BackButton = styled.button`
-// //   display: flex;
-// //   align-items: center;
-// //   background: none;
-// //   border: none;
-// //   cursor: pointer;
-// //   font-size: 16px;
-// //   color: #333;
-// //   margin-right: 20px;
-// //   padding: 5px 10px;
-// //   border-radius: 4px;
-// //   transition: background-color 0.2s;
-
-// //   &:hover {
-// //     background-color: #f0f0f0;
-// //   }
-
-// //   svg {
-// //     margin-right: 5px;
-// //   }
-// // `;
-
-// // const BusTitle = styled.h2`
-// //   color: #333;
-// //   margin: 0;
-// // `;
-
-// // const PriceInfo = styled.div`
-// //   font-size: 18px;
-// //   font-weight: bold;
-// //   margin-bottom: 20px;
-// //   color: #333;
-// // `;
-
-// // const SeatLegend = styled.div`
-// //   display: flex;
-// //   gap: 20px;
-// //   margin-bottom: 20px;
-// //   font-size: 14px;
-// // `;
-
-// // const LegendItem = styled.div`
-// //   display: flex;
-// //   align-items: center;
-// //   gap: 5px;
-// // `;
-
-// // const LegendColor = styled.div`
-// //   width: 15px;
-// //   height: 15px;
-// //   border-radius: 3px;
-// //   background-color: ${({ color }) => color};
-// // `;
-
-// // const LocationInfo = styled.div`
-// //   display: flex;
-// //   justify-content: space-between;
-// //   margin-bottom: 20px;
-// //   padding: 15px;
-// //   background-color: #f5f5f5;
-// //   border-radius: 8px;
-// // `;
-
-// // const LocationItem = styled.div`
-// //   display: flex;
-// //   flex-direction: column;
-// // `;
-
-// // const LocationLabel = styled.span`
-// //   font-size: 12px;
-// //   color: #666;
-// // `;
-
-// // const LocationValue = styled.span`
-// //   font-size: 16px;
-// //   font-weight: bold;
-// // `;
-
-// // const SeatLayout = styled.div`
-// //   display: flex;
-// //   flex-direction: column;
-// //   gap: 10px;
-// //   margin-top: 20px;
-// // `;
-
-// // const SeatRow = styled.div`
-// //   display: flex;
-// //   justify-content: center;
-// //   gap: 10px;
-// // `;
-
-// // const Seat = styled.div`
-// //   width: 40px;
-// //   height: 40px;
-// //   display: flex;
-// //   flex-direction: column;
-// //   align-items: center;
-// //   justify-content: center;
-// //   background-color: ${({ status }) => 
-// //     status === 'booked' ? '#e74c3c' : 
-// //     status === 'selected' ? '#f39c12' : '#2ecc71'};
-// //   color: white;
-// //   border-radius: 5px;
-// //   cursor: ${({ status }) => status === 'booked' ? 'not-allowed' : 'pointer'};
-// //   font-weight: bold;
-// //   position: relative;
-// //   transition: transform 0.2s;
-
-// //   &:hover {
-// //     transform: ${({ status }) => status !== 'booked' ? 'scale(1.1)' : 'none'};
-// //   }
-// // `;
-
-// // const SeatIcon = styled(FaChair)`
-// //   font-size: 16px;
-// //   margin-bottom: 2px;
-// // `;
-
-// // const SeatNumber = styled.span`
-// //   font-size: 12px;
-// // `;
-
-// // const LoadingMessage = styled.div`
-// //   text-align: center;
-// //   padding: 40px;
-// //   color: #7f8c8d;
-// //   font-size: 18px;
-// // `;
-
-// // const ErrorMessage = styled.div`
-// //   text-align: center;
-// //   padding: 40px;
-// //   color: #e74c3c;
-// //   font-size: 18px;
-// // `;
-
-// // const SelectedSeatsSection = styled.div`
-// //   margin-top: 30px;
-// //   padding: 20px;
-// //   background-color: #f5f5f5;
-// //   border-radius: 8px;
-// // `;
-
-// // const SelectedSeatsList = styled.div`
-// //   display: flex;
-// //   flex-wrap: wrap;
-// //   gap: 10px;
-// //   margin-top: 10px;
-// // `;
-
-// // const SeatBadge = styled.div`
-// //   padding: 5px 10px;
-// //   background-color: #4c51bf;
-// //   color: white;
-// //   border-radius: 20px;
-// //   display: flex;
-// //   align-items: center;
-// //   gap: 5px;
-// // `;
-
-// // const BookButton = styled.button`
-// //   width: 100%;
-// //   padding: 12px;
-// //   background-color: #4c51bf;
-// //   color: white;
-// //   border: none;
-// //   border-radius: 8px;
-// //   font-size: 16px;
-// //   cursor: pointer;
-// //   margin-top: 15px;
-// //   transition: background-color 0.2s;
-
-// //   &:hover {
-// //     background-color: #3a3f99;
-// //   }
-
-// //   &:disabled {
-// //     background-color: #bdc3c7;
-// //     cursor: not-allowed;
-// //   }
-// // `;
-
-// // // API base URL
-// // const API_BASE_URL = 'http://localhost:3001';
-
-// // function SeatSelectionPage() {
-// //   const { busId } = useParams();
-// //   const navigate = useNavigate();
-// //   const [seats, setSeats] = useState([]);
-// //   const [selectedSeats, setSelectedSeats] = useState([]);
-// //   const [bus, setBus] = useState(null);
-// //   const [loading, setLoading] = useState(true);
-// //   const [error, setError] = useState(null);
-
-// //   const fetchWithValidation = async (url) => {
-// //     try {
-// //       const response = await fetch(url);
-      
-// //       // First check if response is HTML
-// //       const contentType = response.headers.get('content-type');
-// //       if (contentType && contentType.includes('text/html')) {
-// //         const text = await response.text();
-// //         throw new Error('Server returned HTML instead of JSON. Is the API running?');
-// //       }
-  
-// //       if (!response.ok) {
-// //         throw new Error(`HTTP error! status: ${response.status}`);
-// //       }
-  
-// //       return await response.json();
-// //     } catch (error) {
-// //       console.error('Fetch error:', error);
-// //       throw error;
-// //     }
-// //   };
-
-// //   useEffect(() => {
-// //     const fetchData = async () => {
-// //       try {
-// //         setLoading(true);
-// //         setError(null);
-        
-// //         // 1. Verify the bus exists
-// //         const busData = await fetchWithValidation(`${API_BASE_URL}/buses/${busId}`);
-// //         setBus(busData);
-
-// //         // 2. Fetch both booked and available seats
-// //         const [bookedSeats, notbookedSeats] = await Promise.all([
-// //           fetchWithValidation(`${API_BASE_URL}/booked?busId=${busId}`),
-// //           fetchWithValidation(`${API_BASE_URL}/notbooked?busId=${busId}`)
-// //         ]);
-
-// //         // Combine seats with status
-// //         const allSeats = [
-// //           ...bookedSeats.map(seat => ({ ...seat, status: 'booked' })),
-// //           ...notbookedSeats.map(seat => ({ ...seat, status: 'available' }))
-// //         ];
-
-// //         setSeats(allSeats);
-// //       } catch (err) {
-// //         setError(err.message);
-// //         console.error('API Error:', err);
-// //       } finally {
-// //         setLoading(false);
-// //       }
-// //     };
-
-// //     fetchData();
-// //   }, [busId]);
-
-// //   const handleSeatClick = (seat) => {
-// //     if (seat.status === 'booked') return;
-
-// //     setSelectedSeats(prev => 
-// //       prev.some(s => s.id === seat.id)
-// //         ? prev.filter(s => s.id !== seat.id)
-// //         : [...prev, { ...seat, status: 'selected' }]
-// //     );
-// //   };
-
-// //   const renderSeats = () => {
-// //     // Group seats by row for better organization
-// //     // Assuming seatNumber format is like 'A1', 'B2', etc. where the letter represents a row
-// //     const groupedSeats = {};
-    
-// //     seats.forEach(seat => {
-// //       // Extract row identifier (usually the letter part)
-// //       const row = seat.seatNumber.charAt(0);
-      
-// //       if (!groupedSeats[row]) {
-// //         groupedSeats[row] = [];
-// //       }
-      
-// //       groupedSeats[row].push(seat);
-// //     });
-
-// //     // Sort each row by seat number
-// //     Object.keys(groupedSeats).forEach(row => {
-// //       groupedSeats[row].sort((a, b) => {
-// //         const numA = parseInt(a.seatNumber.substring(1));
-// //         const numB = parseInt(b.seatNumber.substring(1));
-// //         return numA - numB;
-// //       });
-// //     });
-    
-// //     // Sort rows alphabetically
-// //     return Object.keys(groupedSeats).sort().map(row => (
-// //       <SeatRow key={`row-${row}`}>
-// //         {groupedSeats[row].map(seat => {
-// //           const isSelected = selectedSeats.some(s => s.id === seat.id);
-
-// //           return (
-// //             <Seat
-// //               key={seat.id}
-// //               status={isSelected ? 'selected' : seat.status}
-// //               onClick={() => handleSeatClick(seat)}
-// //             >
-// //               <SeatIcon />
-// //               <SeatNumber>{seat.seatNumber}</SeatNumber>
-// //             </Seat>
-// //           );
-// //         })}
-// //       </SeatRow>
-// //     ));
-// //   };
-
-// //   if (loading) {
-// //     return (
-// //       <Container>
-// //         <Header>
-// //           <BackButton onClick={() => navigate(-1)}>
-// //             <FaArrowLeft /> Back
-// //           </BackButton>
-// //         </Header>
-// //         <LoadingMessage>Loading seat layout...</LoadingMessage>
-// //       </Container>
-// //     );
-// //   }
-
-// //   if (error) {
-// //     return (
-// //       <Container>
-// //         <Header>
-// //           <BackButton onClick={() => navigate(-1)}>
-// //             <FaArrowLeft /> Back
-// //           </BackButton>
-// //         </Header>
-// //         <ErrorMessage>
-// //           <FaExclamationTriangle style={{ marginRight: 10 }} />
-// //           {error}
-// //           {error.includes('not found') && (
-// //             <div style={{ marginTop: 10, fontSize: 14 }}>
-// //               Please check the bus ID and try again
-// //             </div>
-// //           )}
-// //         </ErrorMessage>
-// //       </Container>
-// //     );
-// //   }
-
-// //   return (
-// //     <Container>
-// //       <Header>
-// //         <BackButton onClick={() => navigate(-1)}>
-// //           <FaArrowLeft /> Back
-// //         </BackButton>
-// //         <BusTitle>{bus?.name || 'Select Seats'}</BusTitle>
-// //       </Header>
-
-// //       <PriceInfo>Normal: KES {bus?.price || '0'}</PriceInfo>
-
-// //       <SeatLegend>
-// //         <LegendItem>
-// //           <LegendColor color="#2ecc71" />
-// //           <span>Available Seat</span>
-// //         </LegendItem>
-// //         <LegendItem>
-// //           <LegendColor color="#f39c12" />
-// //           <span>Selected seats</span>
-// //         </LegendItem>
-// //         <LegendItem>
-// //           <LegendColor color="#e74c3c" />
-// //           <span>Booked seats</span>
-// //         </LegendItem>
-// //       </SeatLegend>
-
-// //       <LocationInfo>
-// //         <LocationItem>
-// //           <LocationLabel>Pick Point:</LocationLabel>
-// //           <LocationValue>KPCU Office</LocationValue>
-// //         </LocationItem>
-// //         <LocationItem>
-// //           <LocationLabel>Drop Point:</LocationLabel>
-// //           <LocationValue>Kisumu Office</LocationValue>
-// //         </LocationItem>
-// //       </LocationInfo>
-
-// //       <SeatLayout>
-// //         {renderSeats()}
-// //       </SeatLayout>
-
-// //       <SelectedSeatsSection>
-// //         <h3>Selected Seats:</h3>
-// //         {selectedSeats.length > 0 ? (
-// //           <>
-// //             <SelectedSeatsList>
-// //               {selectedSeats.map(seat => (
-// //                 <SeatBadge key={seat.id}>
-// //                   <FaChair size={12} /> {seat.seatNumber}
-// //                 </SeatBadge>
-// //               ))}
-// //             </SelectedSeatsList>
-// //             <BookButton onClick={() => navigate('/payment', { 
-// //               state: { 
-// //                 selectedSeats: selectedSeats,
-// //                 busDetails: bus 
-// //               } 
-// //             })}>
-// //               Proceed to Payment
-// //             </BookButton>
-// //           </>
-// //         ) : (
-// //           <p>No seats selected</p>
-// //         )}
-// //       </SelectedSeatsSection>
-// //     </Container>
-// //   );
-// // }
-
-// // export default SeatSelectionPage;
 // import React, { useState, useEffect } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom';
+// import { useParams, useLocation, useNavigate } from 'react-router-dom';
 // import styled from 'styled-components';
-// import { FaChair, FaArrowLeft, FaCheck, FaExclamationTriangle } from 'react-icons/fa';
+// import { FaChair, FaArrowLeft, FaMoneyBillWave } from 'react-icons/fa';
 
 // // Styled Components
 // const Container = styled.div`
 //   max-width: 800px;
 //   margin: 0 auto;
 //   padding: 20px;
-//   font-family: Arial, sans-serif;
+//   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 // `;
 
 // const Header = styled.div`
 //   display: flex;
 //   align-items: center;
-//   margin-bottom: 20px;
+//   margin-bottom: 25px;
 // `;
 
 // const BackButton = styled.button`
@@ -453,356 +24,309 @@
 //   border: none;
 //   cursor: pointer;
 //   font-size: 16px;
-//   color: #333;
+//   color: #2c3e50;
 //   margin-right: 20px;
-//   padding: 5px 10px;
-//   border-radius: 4px;
-//   transition: background-color 0.2s;
+//   padding: 8px 12px;
+//   border-radius: 6px;
+//   transition: all 0.2s ease;
 
 //   &:hover {
 //     background-color: #f0f0f0;
 //   }
 
 //   svg {
-//     margin-right: 5px;
+//     margin-right: 8px;
 //   }
 // `;
 
-// const BusTitle = styled.h2`
-//   color: #333;
+// const Title = styled.h1`
+//   color: #2c3e50;
 //   margin: 0;
+//   font-size: 1.8rem;
 // `;
 
-// const PriceInfo = styled.div`
-//   font-size: 18px;
-//   font-weight: bold;
-//   margin-bottom: 20px;
-//   color: #333;
+// const TripInfo = styled.div`
+//   background-color: #f8f9fa;
+//   border-radius: 10px;
+//   padding: 20px;
+//   margin-bottom: 25px;
+//   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+// `;
+
+// const InfoRow = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   margin-bottom: 15px;
+
+//   &:last-child {
+//     margin-bottom: 0;
+//   }
+// `;
+
+// const InfoLabel = styled.span`
+//   font-weight: 600;
+//   color: #7f8c8d;
+// `;
+
+// const InfoValue = styled.span`
+//   font-weight: 500;
+//   color: #2c3e50;
 // `;
 
 // const SeatLegend = styled.div`
 //   display: flex;
 //   gap: 20px;
-//   margin-bottom: 20px;
-//   font-size: 14px;
+//   margin: 20px 0;
 // `;
 
 // const LegendItem = styled.div`
 //   display: flex;
 //   align-items: center;
-//   gap: 5px;
+//   gap: 8px;
+//   font-size: 0.9rem;
 // `;
 
 // const LegendColor = styled.div`
-//   width: 15px;
-//   height: 15px;
-//   border-radius: 3px;
+//   width: 18px;
+//   height: 18px;
+//   border-radius: 4px;
 //   background-color: ${({ color }) => color};
 // `;
 
-// const LocationInfo = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   margin-bottom: 20px;
-//   padding: 15px;
-//   background-color: #f5f5f5;
-//   border-radius: 8px;
-// `;
-
-// const LocationItem = styled.div`
-//   display: flex;
-//   flex-direction: column;
-// `;
-
-// const LocationLabel = styled.span`
-//   font-size: 12px;
-//   color: #666;
-// `;
-
-// const LocationValue = styled.span`
-//   font-size: 16px;
-//   font-weight: bold;
-// `;
-
 // const SeatLayout = styled.div`
-//   display: flex;
-//   flex-direction: column;
+//   display: grid;
+//   grid-template-columns: repeat(12, 1fr);
 //   gap: 10px;
-//   margin-top: 20px;
-// `;
-
-// const SeatRow = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   gap: 10px;
+//   margin: 25px 0;
 // `;
 
 // const Seat = styled.div`
-//   width: 40px;
-//   height: 40px;
+//   width: 45px;
+//   height: 45px;
 //   display: flex;
 //   flex-direction: column;
 //   align-items: center;
 //   justify-content: center;
-//   background-color: ${({ status }) => 
-//     status === 'booked' ? '#e74c3c' : 
+//   background-color: ${({ status }) =>
+//     status === 'booked' ? '#e74c3c' :
 //     status === 'selected' ? '#f39c12' : '#2ecc71'};
 //   color: white;
-//   border-radius: 5px;
+//   border-radius: 4px;
 //   cursor: ${({ status }) => status === 'booked' ? 'not-allowed' : 'pointer'};
-//   font-weight: bold;
+//   font-weight: 600;
+//   transition: all 0.2s ease;
 //   position: relative;
-//   transition: transform 0.2s;
 
 //   &:hover {
 //     transform: ${({ status }) => status !== 'booked' ? 'scale(1.1)' : 'none'};
+//     box-shadow: ${({ status }) => status !== 'booked' ? '0 3px 10px rgba(0,0,0,0.2)' : 'none'};
 //   }
 // `;
 
 // const SeatIcon = styled(FaChair)`
 //   font-size: 16px;
-//   margin-bottom: 2px;
+//   margin-bottom: 3px;
 // `;
 
 // const SeatNumber = styled.span`
-//   font-size: 12px;
-// `;
-
-// const LoadingMessage = styled.div`
-//   text-align: center;
-//   padding: 40px;
-//   color: #7f8c8d;
-//   font-size: 18px;
-// `;
-
-// const ErrorMessage = styled.div`
-//   text-align: center;
-//   padding: 40px;
-//   color: #e74c3c;
-//   font-size: 18px;
+//   font-size: 11px;
 // `;
 
 // const SelectedSeatsSection = styled.div`
-//   margin-top: 30px;
+//   background-color: #f8f9fa;
+//   border-radius: 10px;
 //   padding: 20px;
-//   background-color: #f5f5f5;
-//   border-radius: 8px;
+//   margin-top: 30px;
+// `;
+
+// const SelectedSeatsHeader = styled.h3`
+//   margin-top: 0;
+//   margin-bottom: 15px;
+//   color: #2c3e50;
 // `;
 
 // const SelectedSeatsList = styled.div`
 //   display: flex;
 //   flex-wrap: wrap;
 //   gap: 10px;
-//   margin-top: 10px;
+//   margin-bottom: 20px;
 // `;
 
 // const SeatBadge = styled.div`
-//   padding: 5px 10px;
+//   padding: 6px 12px;
 //   background-color: #4c51bf;
 //   color: white;
 //   border-radius: 20px;
 //   display: flex;
 //   align-items: center;
-//   gap: 5px;
+//   gap: 6px;
+//   font-size: 0.9rem;
+// `;
+
+// const TotalPrice = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   font-size: 1.1rem;
+//   font-weight: 600;
+//   padding: 15px 0;
+//   border-top: 1px solid #eee;
 // `;
 
 // const BookButton = styled.button`
 //   width: 100%;
-//   padding: 12px;
+//   padding: 15px;
 //   background-color: #4c51bf;
 //   color: white;
 //   border: none;
 //   border-radius: 8px;
-//   font-size: 16px;
+//   font-size: 1rem;
+//   font-weight: 600;
 //   cursor: pointer;
 //   margin-top: 15px;
-//   transition: background-color 0.2s;
+//   transition: all 0.2s ease;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   gap: 10px;
 
 //   &:hover {
 //     background-color: #3a3f99;
+//     transform: translateY(-2px);
 //   }
 
 //   &:disabled {
 //     background-color: #bdc3c7;
 //     cursor: not-allowed;
+//     transform: none;
 //   }
 // `;
 
-// const TotalPriceDisplay = styled.div`
-//   margin-top: 15px;
-//   padding: 10px;
-//   background-color: #eaeaea;
-//   border-radius: 6px;
-//   font-size: 16px;
-//   font-weight: bold;
-//   display: flex;
-//   justify-content: space-between;
-//   color: #333;
+// const LoadingMessage = styled.div`
+//   text-align: center;
+//   padding: 40px;
+//   color: #7f8c8d;
+//   font-size: 1.1rem;
 // `;
 
-// // API base URL
-// const API_BASE_URL = 'http://localhost:3001';
+// const ErrorMessage = styled.div`
+//   text-align: center;
+//   padding: 40px;
+//   color: #e74c3c;
+//   font-size: 1.1rem;
+// `;
 
 // function SeatSelectionPage() {
-//   const { busId } = useParams();
+//   const { scheduleId } = useParams();
+//   const { state } = useLocation();
 //   const navigate = useNavigate();
-//   const [seats, setSeats] = useState([]);
+
+//   const [bookedSeats, setBookedSeats] = useState([]);
 //   const [selectedSeats, setSelectedSeats] = useState([]);
-//   const [bus, setBus] = useState(null);
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState(null);
-
-//   const fetchWithValidation = async (url) => {
-//     try {
-//       const response = await fetch(url);
-      
-//       // First check if response is HTML
-//       const contentType = response.headers.get('content-type');
-//       if (contentType && contentType.includes('text/html')) {
-//         const text = await response.text();
-//         throw new Error('Server returned HTML instead of JSON. Is the API running?');
-//       }
-  
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//       }
-  
-//       return await response.json();
-//     } catch (error) {
-//       console.error('Fetch error:', error);
-//       throw error;
-//     }
-//   };
+//   const [schedule, setSchedule] = useState(null);
+//   const [busLayout, setBusLayout] = useState([]);
 
 //   useEffect(() => {
-//     const fetchData = async () => {
+//     const initializePage = async () => {
 //       try {
 //         setLoading(true);
-//         setError(null);
-        
-//         // 1. Verify the bus exists
-//         const busData = await fetchWithValidation(`${API_BASE_URL}/buses/${busId}`);
-//         setBus(busData);
 
-//         // 2. Fetch both booked and available seats
-//         const [bookedSeats, notbookedSeats] = await Promise.all([
-//           fetchWithValidation(`${API_BASE_URL}/booked?busId=${busId}`),
-//           fetchWithValidation(`${API_BASE_URL}/notbooked?busId=${busId}`)
-//         ]);
+//         // First try to get schedule from navigation state
+//         let scheduleData = state?.schedule;
 
-//         // Combine seats with status
-//         const allSeats = [
-//           ...bookedSeats.map(seat => ({ ...seat, status: 'booked' })),
-//           ...notbookedSeats.map(seat => ({ ...seat, status: 'available' }))
-//         ];
+//         // If not available in state, fetch from API
+//         if (!scheduleData) {
+//           const response = await fetch(`http://localhost:7000/api/schedules/${scheduleId}`);
+//           const result = await response.json();
+//           if (!result.success) throw new Error(result.message);
+//           scheduleData = result.data;
+//         }
 
-//         setSeats(allSeats);
+//         setSchedule(scheduleData);
+
+//         // Fetch booked seats
+//         const seatsResponse = await fetch(`http://localhost:7000/api/schedules/${scheduleId}/seats`);
+//         const seatsResult = await seatsResponse.json();
+//         if (!seatsResult.success) throw new Error(seatsResult.message);
+
+//         setBookedSeats(seatsResult.data?.bookedSeats || []);
+
 //       } catch (err) {
 //         setError(err.message);
-//         console.error('API Error:', err);
 //       } finally {
 //         setLoading(false);
 //       }
 //     };
 
-//     fetchData();
-//   }, [busId]);
+//     initializePage();
+//   }, [scheduleId, state]);
+
+//   useEffect(() => {
+//     if (schedule?.busId?.capacity) {
+//       generateSeatLayout();
+//     }
+//   }, [schedule, bookedSeats]);
+
+//   const generateSeatLayout = () => {
+//     const capacity = schedule.busId.capacity;
+//     const layout = [];
+
+//     for (let seatNum = 1; seatNum <= capacity; seatNum++) {
+//       const isBooked = bookedSeats.some(s => s.seatNumber === seatNum);
+
+//       layout.push({
+//         _id: `${scheduleId}-${seatNum}`,
+//         seatNumber: seatNum,
+//         status: isBooked ? 'booked' : 'available'
+//       });
+//     }
+
+//     setBusLayout(layout);
+//   };
 
 //   const handleSeatClick = (seat) => {
 //     if (seat.status === 'booked') return;
 
-//     setSelectedSeats(prev => 
-//       prev.some(s => s.id === seat.id)
-//         ? prev.filter(s => s.id !== seat.id)
+//     setSelectedSeats(prev =>
+//       prev.some(s => s._id === seat._id)
+//         ? prev.filter(s => s._id !== seat._id)
 //         : [...prev, { ...seat, status: 'selected' }]
 //     );
 //   };
 
-//   // Calculate total price based on number of selected seats and bus price
-//   const calculateTotalPrice = () => {
-//     if (!bus || !bus.price) return 0;
-//     return selectedSeats.length * bus.price;
+//   const calculateTotal = () => {
+//     return selectedSeats.length * (schedule?.fare || 0);
+//   };
+
+//   const handleBookNow = () => {
+//     navigate('/payment', {
+//       state: {
+//         schedule,          
+//         selectedSeats,    
+//         totalPrice: calculateTotal(),
+//         scheduleId: scheduleId  
+//       }
+//     });
 //   };
 
 //   const renderSeats = () => {
-//     // Group seats by row for better organization
-//     // Assuming seatNumber format is like 'A1', 'B2', etc. where the letter represents a row
-//     const groupedSeats = {};
-    
-//     seats.forEach(seat => {
-//       // Extract row identifier (usually the letter part)
-//       const row = seat.seatNumber.charAt(0);
-      
-//       if (!groupedSeats[row]) {
-//         groupedSeats[row] = [];
-//       }
-      
-//       groupedSeats[row].push(seat);
-//     });
-
-//     // Sort each row by seat number
-//     Object.keys(groupedSeats).forEach(row => {
-//       groupedSeats[row].sort((a, b) => {
-//         const numA = parseInt(a.seatNumber.substring(1));
-//         const numB = parseInt(b.seatNumber.substring(1));
-//         return numA - numB;
-//       });
-//     });
-    
-//     // Sort rows alphabetically
-//     return Object.keys(groupedSeats).sort().map(row => (
-//       <SeatRow key={`row-${row}`}>
-//         {groupedSeats[row].map(seat => {
-//           const isSelected = selectedSeats.some(s => s.id === seat.id);
-
-//           return (
-//             <Seat
-//               key={seat.id}
-//               status={isSelected ? 'selected' : seat.status}
-//               onClick={() => handleSeatClick(seat)}
-//             >
-//               <SeatIcon />
-//               <SeatNumber>{seat.seatNumber}</SeatNumber>
-//             </Seat>
-//           );
-//         })}
-//       </SeatRow>
+//     return busLayout.map(seat => (
+//       <Seat
+//         key={seat._id}
+//         status={selectedSeats.some(s => s._id === seat._id) ? 'selected' : seat.status}
+//         onClick={() => handleSeatClick(seat)}
+//       >
+//         <SeatIcon />
+//         <SeatNumber>{seat.seatNumber}</SeatNumber>
+//       </Seat>
 //     ));
 //   };
 
-//   if (loading) {
-//     return (
-//       <Container>
-//         <Header>
-//           <BackButton onClick={() => navigate(-1)}>
-//             <FaArrowLeft /> Back
-//           </BackButton>
-//         </Header>
-//         <LoadingMessage>Loading seat layout...</LoadingMessage>
-//       </Container>
-//     );
-//   }
-
-//   if (error) {
-//     return (
-//       <Container>
-//         <Header>
-//           <BackButton onClick={() => navigate(-1)}>
-//             <FaArrowLeft /> Back
-//           </BackButton>
-//         </Header>
-//         <ErrorMessage>
-//           <FaExclamationTriangle style={{ marginRight: 10 }} />
-//           {error}
-//           {error.includes('not found') && (
-//             <div style={{ marginTop: 10, fontSize: 14 }}>
-//               Please check the bus ID and try again
-//             </div>
-//           )}
-//         </ErrorMessage>
-//       </Container>
-//     );
-//   }
+//   if (loading) return <LoadingMessage>Loading seat information...</LoadingMessage>;
+//   if (error) return <ErrorMessage>Error: {error}</ErrorMessage>;
+//   if (!schedule) return <ErrorMessage>Schedule not found</ErrorMessage>;
 
 //   return (
 //     <Container>
@@ -810,95 +334,86 @@
 //         <BackButton onClick={() => navigate(-1)}>
 //           <FaArrowLeft /> Back
 //         </BackButton>
-//         <BusTitle>{bus?.name || 'Select Seats'}</BusTitle>
+//         <Title>Select Your Seats</Title>
 //       </Header>
 
-//       <PriceInfo>Normal: KES {bus?.price || '0'}</PriceInfo>
+//       <TripInfo>
+//         <InfoRow>
+//           <InfoLabel>Bus:</InfoLabel>
+//           <InfoValue>{schedule.busId?.busNumber || 'N/A'}</InfoValue>
+//         </InfoRow>
+//         <InfoRow>
+//           <InfoLabel>Route:</InfoLabel>
+//           <InfoValue>
+//             {schedule.routeId?.startLocation} → {schedule.routeId?.endLocation}
+//           </InfoValue>
+//         </InfoRow>
+//         <InfoRow>
+//           <InfoLabel>Departure:</InfoLabel>
+//           <InfoValue>
+//             {new Date(schedule.departureTime).toLocaleString()}
+//           </InfoValue>
+//         </InfoRow>
+//       </TripInfo>
 
 //       <SeatLegend>
 //         <LegendItem>
-//           <LegendColor color="#2ecc71" />
-//           <span>Available Seat</span>
+//           <LegendColor color="#2ecc71" /> Available
 //         </LegendItem>
 //         <LegendItem>
-//           <LegendColor color="#f39c12" />
-//           <span>Selected seats</span>
+//           <LegendColor color="#f39c12" /> Selected
 //         </LegendItem>
 //         <LegendItem>
-//           <LegendColor color="#e74c3c" />
-//           <span>Booked seats</span>
+//           <LegendColor color="#e74c3c" /> Booked
 //         </LegendItem>
 //       </SeatLegend>
-
-//       <LocationInfo>
-//         <LocationItem>
-//           <LocationLabel>Pick Point:</LocationLabel>
-//           <LocationValue>KPCU Office</LocationValue>
-//         </LocationItem>
-//         <LocationItem>
-//           <LocationLabel>Drop Point:</LocationLabel>
-//           <LocationValue>Kisumu Office</LocationValue>
-//         </LocationItem>
-//       </LocationInfo>
 
 //       <SeatLayout>
 //         {renderSeats()}
 //       </SeatLayout>
 
-//       <SelectedSeatsSection>
-//         <h3>Selected Seats:</h3>
-//         {selectedSeats.length > 0 ? (
-//           <>
-//             <SelectedSeatsList>
-//               {selectedSeats.map(seat => (
-//                 <SeatBadge key={seat.id}>
-//                   <FaChair size={12} /> {seat.seatNumber}
-//                 </SeatBadge>
-//               ))}
-//             </SelectedSeatsList>
-            
-//             <TotalPriceDisplay>
-//               <span>Total Price:</span>
-//               <span>KES {calculateTotalPrice().toLocaleString()}</span>
-//             </TotalPriceDisplay>
-            
-//             <BookButton onClick={() => navigate('/payment', { 
-//               state: { 
-//                 selectedSeats: selectedSeats,
-//                 busDetails: bus,
-//                 totalPrice: calculateTotalPrice()
-//               } 
-//             })}>
-//               Proceed to Payment
-//             </BookButton>
-//           </>
-//         ) : (
-//           <p>No seats selected</p>
-//         )}
-//       </SelectedSeatsSection>
+//       {selectedSeats.length > 0 && (
+//         <SelectedSeatsSection>
+//           <SelectedSeatsHeader>Your Seats</SelectedSeatsHeader>
+//           <SelectedSeatsList>
+//             {selectedSeats.map(seat => (
+//               <SeatBadge key={seat._id}>
+//                 <FaChair /> {seat.seatNumber}
+//               </SeatBadge>
+//             ))}
+//           </SelectedSeatsList>
+//           <TotalPrice>
+//             <span>Total:</span>
+//             <span>KES {calculateTotal().toLocaleString()}</span>
+//           </TotalPrice>
+//           <BookButton onClick={handleBookNow}>
+//             <FaMoneyBillWave /> Continue to Payment
+//           </BookButton>
+//         </SelectedSeatsSection>
+//       )}
 //     </Container>
 //   );
 // }
 
 // export default SeatSelectionPage;
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { FaChair, FaArrowLeft, FaCheck, FaExclamationTriangle, FaTimes } from 'react-icons/fa';
-import Modal from 'react-modal';
 
-// Styled Components
+import React, { useState, useEffect } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaChair, FaArrowLeft, FaMoneyBillWave, FaTimes } from 'react-icons/fa';
+
+// Styled Components (same as before)
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 `;
 
 const Header = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 `;
 
 const BackButton = styled.button`
@@ -908,476 +423,330 @@ const BackButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 16px;
-  color: #333;
+  color: #2c3e50;
   margin-right: 20px;
-  padding: 5px 10px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 
   &:hover {
     background-color: #f0f0f0;
   }
 
   svg {
-    margin-right: 5px;
+    margin-right: 8px;
   }
 `;
 
-const BusTitle = styled.h2`
-  color: #333;
+const Title = styled.h1`
+  color: #2c3e50;
   margin: 0;
+  font-size: 1.8rem;
 `;
 
-const PriceInfo = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
+const TripInfoCard = styled.div`
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+`;
+
+const InfoItem = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const InfoLabel = styled.span`
+  font-weight: 600;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+`;
+
+const InfoValue = styled.span`
+  font-weight: 500;
+  color: #2c3e50;
+  font-size: 1rem;
+`;
+
+const SeatSelectionContainer = styled.div`
+  background-color: white;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
 `;
 
 const SeatLegend = styled.div`
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
-  font-size: 14px;
 `;
 
 const LegendItem = styled.div`
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
+  font-size: 0.9rem;
 `;
 
 const LegendColor = styled.div`
-  width: 15px;
-  height: 15px;
-  border-radius: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
   background-color: ${({ color }) => color};
 `;
 
-const LocationInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-`;
-
-const LocationItem = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const LocationLabel = styled.span`
-  font-size: 12px;
-  color: #666;
-`;
-
-const LocationValue = styled.span`
-  font-size: 16px;
-  font-weight: bold;
-`;
-
-const SeatLayout = styled.div`
-  display: flex;
-  flex-direction: column;
+const SeatGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
   gap: 10px;
-  margin-top: 20px;
-`;
-
-const SeatRow = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+  margin: 25px 0;
 `;
 
 const Seat = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${({ status }) => 
-    status === 'booked' ? '#e74c3c' : 
+  background-color: ${({ status }) =>
+    status === 'booked' ? '#e74c3c' :
     status === 'selected' ? '#f39c12' : '#2ecc71'};
   color: white;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: ${({ status }) => status === 'booked' ? 'not-allowed' : 'pointer'};
-  font-weight: bold;
+  font-weight: 600;
+  transition: all 0.2s ease;
   position: relative;
-  transition: transform 0.2s;
 
   &:hover {
     transform: ${({ status }) => status !== 'booked' ? 'scale(1.1)' : 'none'};
+    box-shadow: ${({ status }) => status !== 'booked' ? '0 3px 10px rgba(0,0,0,0.2)' : 'none'};
   }
 `;
 
 const SeatIcon = styled(FaChair)`
-  font-size: 16px;
-  margin-bottom: 2px;
+  font-size: 18px;
+  margin-bottom: 3px;
 `;
 
 const SeatNumber = styled.span`
   font-size: 12px;
 `;
 
-const LoadingMessage = styled.div`
-  text-align: center;
-  padding: 40px;
-  color: #7f8c8d;
-  font-size: 18px;
-`;
-
-const ErrorMessage = styled.div`
-  text-align: center;
-  padding: 40px;
-  color: #e74c3c;
-  font-size: 18px;
-`;
-
 const SelectedSeatsSection = styled.div`
-  margin-top: 30px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
   padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
+  margin-top: 30px;
+`;
+
+const SectionHeader = styled.h3`
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const ClearSelection = styled.button`
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 const SelectedSeatsList = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 10px;
+  margin-bottom: 20px;
 `;
 
 const SeatBadge = styled.div`
-  padding: 5px 10px;
+  padding: 8px 12px;
   background-color: #4c51bf;
   color: white;
   border-radius: 20px;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+  font-size: 0.9rem;
+`;
+
+const PriceSummary = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 15px 0;
+  border-top: 1px solid #eee;
 `;
 
 const BookButton = styled.button`
   width: 100%;
-  padding: 12px;
+  padding: 15px;
   background-color: #4c51bf;
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   margin-top: 15px;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 
   &:hover {
     background-color: #3a3f99;
+    transform: translateY(-2px);
   }
 
   &:disabled {
     background-color: #bdc3c7;
     cursor: not-allowed;
+    transform: none;
   }
 `;
 
-const TotalPriceDisplay = styled.div`
-  margin-top: 15px;
-  padding: 10px;
-  background-color: #eaeaea;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  color: #333;
+const LoadingMessage = styled.div`
+  text-align: center;
+  padding: 40px;
+  color: #7f8c8d;
+  font-size: 1.1rem;
 `;
 
-// Modal Styles
-const ReviewModal = styled(Modal)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  outline: none;
+const ErrorMessage = styled.div`
+  text-align: center;
+  padding: 40px;
+  color: #e74c3c;
+  font-size: 1.1rem;
 `;
-
-const ModalHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-`;
-
-const ModalTitle = styled.h2`
-  margin: 0;
-  color: #333;
-`;
-
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  color: #666;
-`;
-
-const ReviewContent = styled.div`
-  margin-bottom: 20px;
-`;
-
-const ReviewTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-
-  th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-  }
-
-  th {
-    font-weight: bold;
-    color: #666;
-  }
-`;
-
-const GrandTotal = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-  text-align: right;
-  margin-top: 20px;
-  padding-top: 10px;
-  border-top: 1px solid #eee;
-`;
-
-const ModalActions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-`;
-
-const ActionButton = styled.button`
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:first-child {
-    background-color: #f5f5f5;
-    color: #333;
-    border: 1px solid #ddd;
-
-    &:hover {
-      background-color: #eaeaea;
-    }
-  }
-
-  &:last-child {
-    background-color: #4c51bf;
-    color: white;
-    border: none;
-
-    &:hover {
-      background-color: #3a3f99;
-    }
-  }
-`;
-
-// API base URL
-const API_BASE_URL = 'http://localhost:3001';
-
-// Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
-Modal.setAppElement('#root');
 
 function SeatSelectionPage() {
-  const { busId } = useParams();
+  const { scheduleId } = useParams();
+  const { state: locationState } = useLocation();
   const navigate = useNavigate();
-  const [seats, setSeats] = useState([]);
+
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [bus, setBus] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showReviewModal, setShowReviewModal] = useState(false);
-
-  const fetchWithValidation = async (url) => {
-    try {
-      const response = await fetch(url);
-      
-      // First check if response is HTML
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('text/html')) {
-        const text = await response.text();
-        throw new Error('Server returned HTML instead of JSON. Is the API running?');
-      }
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      return await response.json();
-    } catch (error) {
-      console.error('Fetch error:', error);
-      throw error;
-    }
-  };
+  const [schedule, setSchedule] = useState(null);
+  const [seatLayout, setSeatLayout] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchScheduleAndGenerateSeats = async () => {
       try {
         setLoading(true);
-        setError(null);
         
-        // 1. Verify the bus exists
-        const busData = await fetchWithValidation(`${API_BASE_URL}/buses/${busId}`);
-        setBus(busData);
+        // Get schedule data either from navigation state or API
+        let scheduleData = locationState?.schedule;
+        if (!scheduleData) {
+          const response = await fetch(`http://localhost:7000/api/schedules/${scheduleId}`);
+          const result = await response.json();
+          if (!result.success) throw new Error(result.message);
+          scheduleData = result.data;
+        }
 
-        // 2. Fetch both booked and available seats
-        const [bookedSeats, notbookedSeats] = await Promise.all([
-          fetchWithValidation(`${API_BASE_URL}/booked?busId=${busId}`),
-          fetchWithValidation(`${API_BASE_URL}/notbooked?busId=${busId}`)
-        ]);
+        setSchedule(scheduleData);
 
-        // Combine seats with status
-        const allSeats = [
-          ...bookedSeats.map(seat => ({ ...seat, status: 'booked' })),
-          ...notbookedSeats.map(seat => ({ ...seat, status: 'available' }))
-        ];
+        // Generate seat layout based on capacity and available seats
+        if (scheduleData.busId?.capacity && scheduleData.availableSeats !== undefined) {
+          const totalSeats = scheduleData.busId.capacity;
+          const availableSeats = scheduleData.availableSeats;
+          const bookedSeatsCount = totalSeats - availableSeats;
 
-        setSeats(allSeats);
+          const layout = [];
+          for (let seatNum = 1; seatNum <= totalSeats; seatNum++) {
+            layout.push({
+              _id: `${scheduleId}-${seatNum}`, // Maintain original _id format
+              seatNumber: seatNum, // Maintain original property name
+              status: seatNum <= bookedSeatsCount ? 'booked' : 'available'
+            });
+          }
+
+          setSeatLayout(layout);
+        }
+
       } catch (err) {
         setError(err.message);
-        console.error('API Error:', err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, [busId]);
+    fetchScheduleAndGenerateSeats();
+  }, [scheduleId, locationState]);
 
   const handleSeatClick = (seat) => {
     if (seat.status === 'booked') return;
 
-    setSelectedSeats(prev => 
-      prev.some(s => s.id === seat.id)
-        ? prev.filter(s => s.id !== seat.id)
-        : [...prev, { ...seat, status: 'selected' }]
-    );
+    setSelectedSeats(prev => {
+      const isAlreadySelected = prev.some(s => s._id === seat._id);
+      if (isAlreadySelected) {
+        return prev.filter(s => s._id !== seat._id);
+      } else {
+        return [...prev, { 
+          ...seat, 
+          status: 'selected',
+          // Maintain exact same structure as original
+          _id: seat._id,
+          seatNumber: seat.seatNumber
+        }];
+      }
+    });
   };
 
-  // Calculate total price based on number of selected seats and bus price
-  const calculateTotalPrice = () => {
-    if (!bus || !bus.price) return 0;
-    return selectedSeats.length * bus.price;
+  const clearSelection = () => {
+    setSelectedSeats([]);
   };
 
-  const handleProceedToPayment = () => {
-    setShowReviewModal(true);
+  const calculateTotal = () => {
+    return selectedSeats.length * (schedule?.fare || 0);
   };
 
-  const confirmPayment = () => {
-    setShowReviewModal(false);
-    navigate('/payment', { 
-      state: { 
-        selectedSeats: selectedSeats,
-        busDetails: bus,
-        totalPrice: calculateTotalPrice()
-      } 
+  const handleBookNow = () => {
+    // Maintain EXACT same structure as original when navigating to payment
+    navigate('/payment', {
+      state: {
+        schedule,          // Same as original
+        selectedSeats,     // Same array structure with _id and seatNumber
+        totalPrice: calculateTotal(),
+        scheduleId: scheduleId  // Same as original
+      }
     });
   };
 
   const renderSeats = () => {
-    // Group seats by row for better organization
-    // Assuming seatNumber format is like 'A1', 'B2', etc. where the letter represents a row
-    const groupedSeats = {};
-    
-    seats.forEach(seat => {
-      // Extract row identifier (usually the letter part)
-      const row = seat.seatNumber.charAt(0);
-      
-      if (!groupedSeats[row]) {
-        groupedSeats[row] = [];
-      }
-      
-      groupedSeats[row].push(seat);
-    });
-
-    // Sort each row by seat number
-    Object.keys(groupedSeats).forEach(row => {
-      groupedSeats[row].sort((a, b) => {
-        const numA = parseInt(a.seatNumber.substring(1));
-        const numB = parseInt(b.seatNumber.substring(1));
-        return numA - numB;
-      });
-    });
-    
-    // Sort rows alphabetically
-    return Object.keys(groupedSeats).sort().map(row => (
-      <SeatRow key={`row-${row}`}>
-        {groupedSeats[row].map(seat => {
-          const isSelected = selectedSeats.some(s => s.id === seat.id);
-
-          return (
-            <Seat
-              key={seat.id}
-              status={isSelected ? 'selected' : seat.status}
-              onClick={() => handleSeatClick(seat)}
-            >
-              <SeatIcon />
-              <SeatNumber>{seat.seatNumber}</SeatNumber>
-            </Seat>
-          );
-        })}
-      </SeatRow>
+    return seatLayout.map(seat => (
+      <Seat
+        key={seat._id}
+        status={selectedSeats.some(s => s._id === seat._id) ? 'selected' : seat.status}
+        onClick={() => handleSeatClick(seat)}
+      >
+        <SeatIcon />
+        <SeatNumber>{seat.seatNumber}</SeatNumber>
+      </Seat>
     ));
   };
 
-  if (loading) {
-    return (
-      <Container>
-        <Header>
-          <BackButton onClick={() => navigate(-1)}>
-            <FaArrowLeft /> Back
-          </BackButton>
-        </Header>
-        <LoadingMessage>Loading seat layout...</LoadingMessage>
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container>
-        <Header>
-          <BackButton onClick={() => navigate(-1)}>
-            <FaArrowLeft /> Back
-          </BackButton>
-        </Header>
-        <ErrorMessage>
-          <FaExclamationTriangle style={{ marginRight: 10 }} />
-          {error}
-          {error.includes('not found') && (
-            <div style={{ marginTop: 10, fontSize: 14 }}>
-              Please check the bus ID and try again
-            </div>
-          )}
-        </ErrorMessage>
-      </Container>
-    );
-  }
+  if (loading) return <LoadingMessage>Loading seat information...</LoadingMessage>;
+  if (error) return <ErrorMessage>Error: {error}</ErrorMessage>;
+  if (!schedule) return <ErrorMessage>Schedule not found</ErrorMessage>;
 
   return (
     <Container>
@@ -1385,119 +754,74 @@ function SeatSelectionPage() {
         <BackButton onClick={() => navigate(-1)}>
           <FaArrowLeft /> Back
         </BackButton>
-        <BusTitle>{bus?.name || 'Select Seats'}</BusTitle>
+        <Title>Select Your Seats</Title>
       </Header>
 
-      <PriceInfo>Normal: KES {bus?.price || '0'}</PriceInfo>
+      <TripInfoCard>
+        <InfoItem>
+          <InfoLabel>Bus Number</InfoLabel>
+          <InfoValue>{schedule.busId?.busNumber || 'N/A'}</InfoValue>
+        </InfoItem>
+        <InfoItem>
+          <InfoLabel>Route</InfoLabel>
+          <InfoValue>
+            {schedule.routeId?.startLocation} → {schedule.routeId?.endLocation}
+          </InfoValue>
+        </InfoItem>
+        <InfoItem>
+          <InfoLabel>Departure</InfoLabel>
+          <InfoValue>
+            {new Date(schedule.departureTime).toLocaleString()}
+          </InfoValue>
+        </InfoItem>
+        <InfoItem>
+          <InfoLabel>Fare per Seat</InfoLabel>
+          <InfoValue>KES {schedule.fare?.toLocaleString() || '0'}</InfoValue>
+        </InfoItem>
+      </TripInfoCard>
 
-      <SeatLegend>
-        <LegendItem>
-          <LegendColor color="#2ecc71" />
-          <span>Available Seat</span>
-        </LegendItem>
-        <LegendItem>
-          <LegendColor color="#f39c12" />
-          <span>Selected seats</span>
-        </LegendItem>
-        <LegendItem>
-          <LegendColor color="#e74c3c" />
-          <span>Booked seats</span>
-        </LegendItem>
-      </SeatLegend>
+      <SeatSelectionContainer>
+        <SeatLegend>
+          <LegendItem>
+            <LegendColor color="#2ecc71" /> Available
+          </LegendItem>
+          <LegendItem>
+            <LegendColor color="#f39c12" /> Selected
+          </LegendItem>
+          <LegendItem>
+            <LegendColor color="#e74c3c" /> Booked
+          </LegendItem>
+        </SeatLegend>
 
-      <LocationInfo>
-        <LocationItem>
-          <LocationLabel>Pick Point:</LocationLabel>
-          <LocationValue>KPCU Office</LocationValue>
-        </LocationItem>
-        <LocationItem>
-          <LocationLabel>Drop Point:</LocationLabel>
-          <LocationValue>Kisumu Office</LocationValue>
-        </LocationItem>
-      </LocationInfo>
+        <SeatGrid>
+          {renderSeats()}
+        </SeatGrid>
+      </SeatSelectionContainer>
 
-      <SeatLayout>
-        {renderSeats()}
-      </SeatLayout>
-
-      <SelectedSeatsSection>
-        <h3>Selected Seats:</h3>
-        {selectedSeats.length > 0 ? (
-          <>
-            <SelectedSeatsList>
-              {selectedSeats.map(seat => (
-                <SeatBadge key={seat.id}>
-                  <FaChair size={12} /> {seat.seatNumber}
-                </SeatBadge>
-              ))}
-            </SelectedSeatsList>
-            
-            <TotalPriceDisplay>
-              <span>Total Price:</span>
-              <span>KES {calculateTotalPrice().toLocaleString()}</span>
-            </TotalPriceDisplay>
-            
-            <BookButton onClick={handleProceedToPayment} disabled={selectedSeats.length === 0}>
-              Proceed to Payment
-            </BookButton>
-          </>
-        ) : (
-          <p>No seats selected</p>
-        )}
-      </SelectedSeatsSection>
-
-      {/* Review Modal */}
-      <ReviewModal
-        isOpen={showReviewModal}
-        onRequestClose={() => setShowReviewModal(false)}
-        contentLabel="Trip Review"
-      >
-        <ModalHeader>
-          <ModalTitle>Trip Review</ModalTitle>
-          <CloseButton onClick={() => setShowReviewModal(false)}>
-            <FaTimes />
-          </CloseButton>
-        </ModalHeader>
-
-        <ReviewContent>
-          <h3>{bus?.name || 'Nairobi to Kisumu'} | {new Date().toLocaleDateString()}</h3>
-          
-          <ReviewTable>
-            <thead>
-              <tr>
-                <th>Bus</th>
-                <th>Depart</th>
-                <th>Arrive</th>
-                <th>Seats</th>
-                <th>Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{bus?.name || 'Nairobi - Kisumu'}</td>
-                <td>KPCU Office</td>
-                <td>Kisumu Office</td>
-                <td>{selectedSeats.map(s => s.seatNumber).join(', ')}</td>
-                <td>NORMAL: {selectedSeats.length} X {bus?.price || '1600'} = KES {calculateTotalPrice().toLocaleString()}</td>
-              </tr>
-            </tbody>
-          </ReviewTable>
-
-          <GrandTotal>
-            <div>Grand Total</div>
-            <div>KES {calculateTotalPrice().toLocaleString()}</div>
-          </GrandTotal>
-        </ReviewContent>
-
-        <ModalActions>
-          <ActionButton onClick={() => setShowReviewModal(false)}>
-            Cancel
-          </ActionButton>
-          <ActionButton onClick={confirmPayment}>
-            Confirm & Pay
-          </ActionButton>
-        </ModalActions>
-      </ReviewModal>
+      {selectedSeats.length > 0 && (
+        <SelectedSeatsSection>
+          <SectionHeader>
+            Selected Seats
+            <ClearSelection onClick={clearSelection}>
+              <FaTimes /> Clear
+            </ClearSelection>
+          </SectionHeader>
+          <SelectedSeatsList>
+            {selectedSeats.map(seat => (
+              <SeatBadge key={seat._id}>
+                <FaChair /> {seat.seatNumber}
+              </SeatBadge>
+            ))}
+          </SelectedSeatsList>
+          <PriceSummary>
+            <span>Total Price:</span>
+            <span>KES {calculateTotal().toLocaleString()}</span>
+          </PriceSummary>
+          <BookButton onClick={handleBookNow}>
+            <FaMoneyBillWave /> Enter Your Details
+          </BookButton>
+        </SelectedSeatsSection>
+      )}
     </Container>
   );
 }

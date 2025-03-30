@@ -1,9 +1,9 @@
 // import React, { useState } from 'react';
 // import { useLocation, useNavigate } from 'react-router-dom';
 // import styled from 'styled-components';
-// import { FaArrowLeft, FaUser } from 'react-icons/fa';
+// import { FaArrowLeft } from 'react-icons/fa';
 
-// // Styled Components
+// // Styled Components (unchanged)
 // const Container = styled.div`
 //   max-width: 600px;
 //   margin: 0 auto;
@@ -82,74 +82,14 @@
 //   }
 // `;
 
-// const RadioGroup = styled.div`
-//   display: flex;
-//   gap: 15px;
-//   margin-top: 5px;
-// `;
-
-// const RadioLabel = styled.label`
-//   display: flex;
-//   align-items: center;
-//   gap: 5px;
-//   font-size: 14px;
-//   cursor: pointer;
-// `;
-
-// const RadioInput = styled.input`
-//   margin: 0;
-// `;
-
-// const Table = styled.table`
-//   width: 100%;
-//   border-collapse: collapse;
-//   margin-top: 15px;
-
-//   th, td {
-//     padding: 10px;
-//     text-align: left;
-//     border-bottom: 1px solid #eee;
-//   }
-
-//   th {
-//     font-weight: normal;
-//     color: #666;
-//     font-size: 14px;
-//   }
-// `;
-
-// const AddPassengerButton = styled.button`
-//   display: flex;
-//   align-items: center;
-//   gap: 5px;
-//   background: none;
-//   border: 1px dashed #4c51bf;
-//   color: #4c51bf;
-//   padding: 8px 15px;
+// const SeatDisplay = styled.div`
+//   background-color: #f0f8ff;
+//   border: 1px solid #b0c4de;
 //   border-radius: 4px;
-//   cursor: pointer;
-//   font-size: 14px;
-//   margin-top: 10px;
-//   transition: background-color 0.2s;
-
-//   &:hover {
-//     background-color: #f0f0ff;
-//   }
-// `;
-
-// const TotalSection = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   margin-top: 30px;
-//   padding-top: 20px;
-//   border-top: 1px solid #eee;
-// `;
-
-// const TotalAmount = styled.div`
-//   font-size: 18px;
-//   font-weight: bold;
+//   padding: 10px;
+//   font-size: 16px;
 //   color: #333;
+//   margin-bottom: 15px;
 // `;
 
 // const ProceedButton = styled.button`
@@ -165,88 +105,94 @@
 //   &:hover {
 //     background-color: #3a3f99;
 //   }
+
+//   &:disabled {
+//     background-color: #bdc3c7;
+//     cursor: not-allowed;
+//   }
 // `;
 
 // function PassengerDetailsPage() {
 //   const location = useLocation();
 //   const navigate = useNavigate();
-//   const { selectedSeats, busDetails, totalPrice } = location.state || {};
-  
-//   const [primaryPassenger, setPrimaryPassenger] = useState({
-//     name: '',
-//     gender: 'male',
-//     age: '',
-//     countryCode: '+254',
-//     mobileNumber: '',
-//     nationality: '',
-//     identityNumber: ''
-//   });
+//   const { selectedSeats = [], schedule, totalPrice, scheduleId } = location.state || {};
 
-//   const [coPassengers, setCoPassengers] = useState([]);
-//   const [showCoPassengerForm, setShowCoPassengerForm] = useState(false);
-//   const [newCoPassenger, setNewCoPassenger] = useState({
-//     name: '',
-//     gender: 'male',
-//     age: '',
-//     countryCode: '+254',
-//     mobileNumber: '',
-//     nationality: '',
-//     identityNumber: ''
-//   });
-
-//   const handlePrimaryPassengerChange = (e) => {
-//     const { name, value } = e.target;
-//     setPrimaryPassenger(prev => ({ ...prev, [name]: value }));
+//   const initialPassenger = {
+//     userName: '',
+//     userEmail: '',
+//     userPhone: '',
+//     scheduleId: scheduleId || '',
+//     seatNumber: selectedSeats.map(seat => seat.seatNumber),
 //   };
 
-//   const handleCoPassengerChange = (e) => {
-//     const { name, value } = e.target;
-//     setNewCoPassenger(prev => ({ ...prev, [name]: value }));
+//   const [passenger, setPassenger] = useState(initialPassenger);
+//   const [errors, setErrors] = useState({});
+
+//   const handlePassengerChange = (field, value) => {
+//     setPassenger(prevPassenger => ({
+//       ...prevPassenger,
+//       [field]: value
+//     }));
+
+//     // Clear error for this field if it exists
+//     if (errors[field]) {
+//       const newErrors = { ...errors };
+//       delete newErrors[field];
+//       setErrors(newErrors);
+//     }
 //   };
 
-//   const addCoPassenger = () => {
-//     if (newCoPassenger.name.trim() === '') return;
-//     setCoPassengers(prev => [...prev, newCoPassenger]);
-//     setNewCoPassenger({
-//       name: '',
-//       gender: 'male',
-//       age: '',
-//       countryCode: '+254',
-//       mobileNumber: '',
-//       nationality: '',
-//       identityNumber: ''
-//     });
-//     setShowCoPassengerForm(false);
-//   };
+//   const validateForm = () => {
+//     const newErrors = {};
+//     let isValid = true;
 
-//   const removeCoPassenger = (index) => {
-//     setCoPassengers(prev => prev.filter((_, i) => i !== index));
-//   };
-
-//   const handleProceedToPayment = () => {
-//     // Validate required fields
-//     if (
-//       !primaryPassenger.name ||
-//       !primaryPassenger.age ||
-//       !primaryPassenger.mobileNumber ||
-//       !primaryPassenger.nationality ||
-//       !primaryPassenger.identityNumber
-//     ) {
-//       alert('Please fill in all required fields for the primary passenger');
-//       return;
+//     if (!passenger.userName) {
+//       newErrors.userName = 'Name is required';
+//       isValid = false;
+//     }
+//     if (!passenger.userEmail) {
+//       newErrors.userEmail = 'Email is required';
+//       isValid = false;
+//     }
+//     if (!passenger.userPhone) {
+//       newErrors.userPhone = 'Phone number is required';
+//       isValid = false;
 //     }
 
-//     // Here you would typically send the data to your backend
-//     // Then navigate to payment page
-//     navigate('/payment', {
-//       state: {
-//         primaryPassenger,
-//         coPassengers,
-//         selectedSeats,
-//         busDetails,
-//         totalPrice
+//     setErrors(newErrors);
+//     return isValid;
+//   };
+
+//   const handleProceedToPayment = async () => {
+//     if (validateForm()) {
+//       try {
+//         const response = await fetch('http://localhost:7000/api/v1/bookings', {
+//           method: 'POST',
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//           body: JSON.stringify(passenger),
+//         });
+
+//         if (response.ok) {
+//           const data = await response.json();
+//           console.log('Booking successful:', data);
+//           navigate('/payment', {
+//             state: {
+//               passenger,
+//               selectedSeats,
+//               schedule,
+//               totalPrice,
+//               scheduleId
+//             }
+//           });
+//         } else {
+//           console.error('Booking failed:', await response.text());
+//         }
+//       } catch (error) {
+//         console.error('Booking failed:', error);
 //       }
-//     });
+//     }
 //   };
 
 //   return (
@@ -255,302 +201,65 @@
 //         <BackButton onClick={() => navigate(-1)}>
 //           <FaArrowLeft /> Back
 //         </BackButton>
-//         <PageTitle>Passenger Detail</PageTitle>
+//         <PageTitle>Passenger Details</PageTitle>
 //       </Header>
 
 //       <Section>
-//         <SectionTitle>Contact Detail</SectionTitle>
-        
-//         <FormGroup>
-//           <Label>Email Id</Label>
-//           <Input 
-//             type="email" 
-//             name="email"
-//             value={primaryPassenger.email || ''}
-//             onChange={handlePrimaryPassengerChange}
-//           />
-//         </FormGroup>
+//         <SectionTitle>Passenger Information</SectionTitle>
 
-//         <SectionTitle>Primary Passenger</SectionTitle>
-        
+//         <SeatDisplay>
+//           Seat: {passenger.seatNumber.join(', ')}
+//         </SeatDisplay>
+
 //         <FormGroup>
-//           <Label>Name</Label>
-//           <Input 
-//             type="text" 
-//             name="name"
-//             value={primaryPassenger.name}
-//             onChange={handlePrimaryPassengerChange}
+//           <Label>Email</Label>
+//           <Input
+//             type="email"
+//             value={passenger.userEmail}
+//             onChange={(e) => handlePassengerChange('userEmail', e.target.value)}
 //             required
 //           />
+//           {errors.userEmail && (
+//             <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
+//               {errors.userEmail}
+//             </div>
+//           )}
 //         </FormGroup>
 
-//         <RadioGroup>
-//           <RadioLabel>
-//             <RadioInput 
-//               type="radio" 
-//               name="gender"
-//               value="male"
-//               checked={primaryPassenger.gender === 'male'}
-//               onChange={handlePrimaryPassengerChange}
-//             />
-//             Male
-//           </RadioLabel>
-//           <RadioLabel>
-//             <RadioInput 
-//               type="radio" 
-//               name="gender"
-//               value="female"
-//               checked={primaryPassenger.gender === 'female'}
-//               onChange={handlePrimaryPassengerChange}
-//             />
-//             Female
-//           </RadioLabel>
-//         </RadioGroup>
+//         <FormGroup>
+//           <Label>Name</Label>
+//           <Input
+//             type="text"
+//             value={passenger.userName}
+//             onChange={(e) => handlePassengerChange('userName', e.target.value)}
+//             required
+//           />
+//           {errors.userName && (
+//             <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
+//               {errors.userName}
+//             </div>
+//           )}
+//         </FormGroup>
 
-//         <Table>
-//           <thead>
-//             <tr>
-//               <th>Age</th>
-//               <th>Country Code</th>
-//               <th>Mobile Number</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             <tr>
-//               <td>
-//                 <Input 
-//                   type="number" 
-//                   name="age"
-//                   value={primaryPassenger.age}
-//                   onChange={handlePrimaryPassengerChange}
-//                   required
-//                 />
-//               </td>
-//               <td>
-//                 <Input 
-//                   type="text" 
-//                   name="countryCode"
-//                   value={primaryPassenger.countryCode}
-//                   onChange={handlePrimaryPassengerChange}
-//                 />
-//               </td>
-//               <td>
-//                 <Input 
-//                   type="tel" 
-//                   name="mobileNumber"
-//                   value={primaryPassenger.mobileNumber}
-//                   onChange={handlePrimaryPassengerChange}
-//                   required
-//                 />
-//               </td>
-//             </tr>
-//           </tbody>
-//         </Table>
-
-//         <Table>
-//           <thead>
-//             <tr>
-//               <th>Nationality</th>
-//               <th>Identity Number</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             <tr>
-//               <td>
-//                 <Input 
-//                   type="text" 
-//                   name="nationality"
-//                   value={primaryPassenger.nationality}
-//                   onChange={handlePrimaryPassengerChange}
-//                   required
-//                 />
-//               </td>
-//               <td>
-//                 <Input 
-//                   type="text" 
-//                   name="identityNumber"
-//                   value={primaryPassenger.identityNumber}
-//                   onChange={handlePrimaryPassengerChange}
-//                   required
-//                 />
-//               </td>
-//             </tr>
-//           </tbody>
-//         </Table>
+//         <FormGroup>
+//           <Label>Phone Number</Label>
+//           <Input
+//             type="tel"
+//             value={passenger.userPhone}
+//             onChange={(e) => handlePassengerChange('userPhone', e.target.value)}
+//             required
+//           />
+//           {errors.userPhone && (
+//             <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
+//               {errors.userPhone}
+//             </div>
+//           )}
+//         </FormGroup>
 //       </Section>
 
-//       <Section>
-//         <SectionTitle>Co-Passenger</SectionTitle>
-        
-//         {coPassengers.map((passenger, index) => (
-//           <div key={index} style={{ marginBottom: '20px', border: '1px solid #eee', padding: '15px', borderRadius: '4px' }}>
-//             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-//               <h3 style={{ margin: '0 0 10px 0' }}>{passenger.name}</h3>
-//               <button 
-//                 onClick={() => removeCoPassenger(index)}
-//                 style={{ 
-//                   background: 'none', 
-//                   border: 'none', 
-//                   color: '#e74c3c', 
-//                   cursor: 'pointer',
-//                   fontSize: '14px'
-//                 }}
-//               >
-//                 Remove
-//               </button>
-//             </div>
-//             <p style={{ margin: '5px 0', color: '#666' }}>
-//               {passenger.gender === 'male' ? 'Male' : 'Female'}, {passenger.age} years
-//             </p>
-//             <p style={{ margin: '5px 0', color: '#666' }}>
-//               {passenger.countryCode} {passenger.mobileNumber}
-//             </p>
-//           </div>
-//         ))}
-
-//         {showCoPassengerForm ? (
-//           <div style={{ border: '1px solid #eee', padding: '15px', borderRadius: '4px', marginBottom: '15px' }}>
-//             <FormGroup>
-//               <Label>Name</Label>
-//               <Input 
-//                 type="text" 
-//                 name="name"
-//                 value={newCoPassenger.name}
-//                 onChange={handleCoPassengerChange}
-//               />
-//             </FormGroup>
-
-//             <RadioGroup>
-//               <RadioLabel>
-//                 <RadioInput 
-//                   type="radio" 
-//                   name="gender"
-//                   value="male"
-//                   checked={newCoPassenger.gender === 'male'}
-//                   onChange={handleCoPassengerChange}
-//                 />
-//                 Male
-//               </RadioLabel>
-//               <RadioLabel>
-//                 <RadioInput 
-//                   type="radio" 
-//                   name="gender"
-//                   value="female"
-//                   checked={newCoPassenger.gender === 'female'}
-//                   onChange={handleCoPassengerChange}
-//                 />
-//                 Female
-//               </RadioLabel>
-//             </RadioGroup>
-
-//             <Table>
-//               <thead>
-//                 <tr>
-//                   <th>Age</th>
-//                   <th>Country Code</th>
-//                   <th>Mobile Number</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 <tr>
-//                   <td>
-//                     <Input 
-//                       type="number" 
-//                       name="age"
-//                       value={newCoPassenger.age}
-//                       onChange={handleCoPassengerChange}
-//                     />
-//                   </td>
-//                   <td>
-//                     <Input 
-//                       type="text" 
-//                       name="countryCode"
-//                       value={newCoPassenger.countryCode}
-//                       onChange={handleCoPassengerChange}
-//                     />
-//                   </td>
-//                   <td>
-//                     <Input 
-//                       type="tel" 
-//                       name="mobileNumber"
-//                       value={newCoPassenger.mobileNumber}
-//                       onChange={handleCoPassengerChange}
-//                     />
-//                   </td>
-//                 </tr>
-//               </tbody>
-//             </Table>
-
-//             <Table>
-//               <thead>
-//                 <tr>
-//                   <th>Nationality</th>
-//                   <th>Identity Number</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 <tr>
-//                   <td>
-//                     <Input 
-//                       type="text" 
-//                       name="nationality"
-//                       value={newCoPassenger.nationality}
-//                       onChange={handleCoPassengerChange}
-//                     />
-//                   </td>
-//                   <td>
-//                     <Input 
-//                       type="text" 
-//                       name="identityNumber"
-//                       value={newCoPassenger.identityNumber}
-//                       onChange={handleCoPassengerChange}
-//                     />
-//                   </td>
-//                 </tr>
-//               </tbody>
-//             </Table>
-
-//             <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
-//               <button 
-//                 onClick={() => setShowCoPassengerForm(false)}
-//                 style={{
-//                   padding: '8px 15px',
-//                   background: '#f5f5f5',
-//                   border: '1px solid #ddd',
-//                   borderRadius: '4px',
-//                   cursor: 'pointer'
-//                 }}
-//               >
-//                 Cancel
-//               </button>
-//               <button 
-//                 onClick={addCoPassenger}
-//                 style={{
-//                   padding: '8px 15px',
-//                   background: '#4c51bf',
-//                   color: 'white',
-//                   border: 'none',
-//                   borderRadius: '4px',
-//                   cursor: 'pointer'
-//                 }}
-//               >
-//                 Add Passenger
-//               </button>
-//             </div>
-//           </div>
-//         ) : (
-//           <AddPassengerButton onClick={() => setShowCoPassengerForm(true)}>
-//             <FaUser /> Add Co-Passenger
-//           </AddPassengerButton>
-//         )}
-//       </Section>
-
-//       <TotalSection>
-//         <TotalAmount>KES {totalPrice?.toLocaleString() || '0'}</TotalAmount>
-//         <ProceedButton onClick={handleProceedToPayment}>
-//           PROCEED TO PAY
-//         </ProceedButton>
-//       </TotalSection>
+//       <ProceedButton onClick={handleProceedToPayment}>
+//         PROCEED TO PAY
+//       </ProceedButton>
 //     </Container>
 //   );
 // }
@@ -561,7 +270,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaArrowLeft } from 'react-icons/fa';
 
-// Styled Components
+// Styled Components (unchanged until Modal)
 const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
@@ -615,35 +324,6 @@ const SectionTitle = styled.h2`
   border-bottom: 1px solid #eee;
 `;
 
-const PassengerCard = styled.div`
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  background-color: ${({ isPrimary }) => (isPrimary ? '#f9f9ff' : 'white')};
-`;
-
-const PassengerHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-`;
-
-const PassengerTitle = styled.h3`
-  margin: 0;
-  color: #4c51bf;
-  font-size: 16px;
-`;
-
-const SeatNumber = styled.span`
-  background-color: #4c51bf;
-  color: white;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-`;
-
 const FormGroup = styled.div`
   margin-bottom: 15px;
 `;
@@ -669,55 +349,14 @@ const Input = styled.input`
   }
 `;
 
-const RadioGroup = styled.div`
-  display: flex;
-  gap: 15px;
-  margin-top: 5px;
-`;
-
-const RadioLabel = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 14px;
-  cursor: pointer;
-`;
-
-const RadioInput = styled.input`
-  margin: 0;
-`;
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-
-  th, td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-  }
-
-  th {
-    font-weight: normal;
-    color: #666;
-    font-size: 14px;
-  }
-`;
-
-const TotalSection = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-`;
-
-const TotalAmount = styled.div`
-  font-size: 18px;
-  font-weight: bold;
+const SeatDisplay = styled.div`
+  background-color: #f0f8ff;
+  border: 1px solid #b0c4de;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
   color: #333;
+  margin-bottom: 15px;
 `;
 
 const ProceedButton = styled.button`
@@ -740,41 +379,93 @@ const ProceedButton = styled.button`
   }
 `;
 
+// New Modal Styles
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background-color: white;
+  padding: 25px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+const ModalTitle = styled.h2`
+  margin-top: 0;
+  color: #4c51bf;
+`;
+
+const ModalDetail = styled.div`
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ModalLabel = styled.span`
+  font-weight: bold;
+  color: #333;
+`;
+
+const ModalValue = styled.span`
+  color: #666;
+`;
+
+const ModalButton = styled.button`
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #4c51bf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #3a3f99;
+  }
+`;
+
 function PassengerDetailsPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedSeats = [], busDetails, totalPrice } = location.state || {};
-  
-  // Initialize passengers array with one passenger per selected seat
-  const initialPassengers = selectedSeats.map((seat, index) => ({
-    id: index,
-    seatNumber: seat.seatNumber,
-    isPrimary: index === 0,
-    name: '',
-    gender: 'male',
-    age: '',
-    countryCode: '+254',
-    mobileNumber: index === 0 ? '' : '', // Only require mobile for primary
-    nationality: '',
-    identityNumber: '',
-    email: index === 0 ? '' : undefined // Only require email for primary
-  }));
+  const { selectedSeats = [], schedule, totalPrice, scheduleId } = location.state || {};
 
-  const [passengers, setPassengers] = useState(initialPassengers);
+  const initialPassenger = {
+    userName: '',
+    userEmail: '',
+    userPhone: '',
+    scheduleId: scheduleId || '',
+    seatNumber: selectedSeats.map(seat => seat.seatNumber),
+  };
+
+  const [passenger, setPassenger] = useState(initialPassenger);
   const [errors, setErrors] = useState({});
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [bookingData, setBookingData] = useState(null);
 
-  const handlePassengerChange = (index, field, value) => {
-    const updatedPassengers = [...passengers];
-    updatedPassengers[index] = {
-      ...updatedPassengers[index],
+  const handlePassengerChange = (field, value) => {
+    setPassenger(prevPassenger => ({
+      ...prevPassenger,
       [field]: value
-    };
-    setPassengers(updatedPassengers);
-    
-    // Clear error for this field if it exists
-    if (errors[`passenger-${index}-${field}`]) {
+    }));
+
+    if (errors[field]) {
       const newErrors = { ...errors };
-      delete newErrors[`passenger-${index}-${field}`];
+      delete newErrors[field];
       setErrors(newErrors);
     }
   };
@@ -783,54 +474,60 @@ function PassengerDetailsPage() {
     const newErrors = {};
     let isValid = true;
 
-    passengers.forEach((passenger, index) => {
-      if (!passenger.name) {
-        newErrors[`passenger-${index}-name`] = 'Name is required';
-        isValid = false;
-      }
-      if (!passenger.age) {
-        newErrors[`passenger-${index}-age`] = 'Age is required';
-        isValid = false;
-      }
-      if (passenger.isPrimary) {
-        if (!passenger.email) {
-          newErrors[`passenger-${index}-email`] = 'Email is required';
-          isValid = false;
-        }
-        if (!passenger.mobileNumber) {
-          newErrors[`passenger-${index}-mobileNumber`] = 'Mobile number is required';
-          isValid = false;
-        }
-      }
-      if (!passenger.nationality) {
-        newErrors[`passenger-${index}-nationality`] = 'Nationality is required';
-        isValid = false;
-      }
-      if (!passenger.identityNumber) {
-        newErrors[`passenger-${index}-identityNumber`] = 'Identity number is required';
-        isValid = false;
-      }
-    });
+    if (!passenger.userName) {
+      newErrors.userName = 'Name is required';
+      isValid = false;
+    }
+    if (!passenger.userEmail) {
+      newErrors.userEmail = 'Email is required';
+      isValid = false;
+    }
+    if (!passenger.userPhone) {
+      newErrors.userPhone = 'Phone number is required';
+      isValid = false;
+    }
 
     setErrors(newErrors);
     return isValid;
   };
 
-  const handleProceedToPayment = () => {
+  const handleProceedToPayment = async () => {
     if (validateForm()) {
-      const primaryPassenger = passengers.find(p => p.isPrimary);
-      const coPassengers = passengers.filter(p => !p.isPrimary);
-      
-      navigate('/payment', {
-        state: {
-          primaryPassenger,
-          coPassengers,
-          selectedSeats,
-          busDetails,
-          totalPrice
+      try {
+        const response = await fetch('http://localhost:7000/api/v1/bookings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(passenger),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Booking successful:', data);
+          setBookingData(data);
+          setShowConfirmationModal(true);
+        } else {
+          console.error('Booking failed:', await response.text());
         }
-      });
+      } catch (error) {
+        console.error('Booking failed:', error);
+      }
     }
+  };
+
+  const handleContinueToPayment = () => {
+    setShowConfirmationModal(false);
+    navigate('/payment', {
+      state: {
+        passenger,
+        selectedSeats,
+        schedule,
+        totalPrice,
+        scheduleId,
+        bookingData
+      }
+    });
   };
 
   return (
@@ -843,179 +540,115 @@ function PassengerDetailsPage() {
       </Header>
 
       <Section>
-        <SectionTitle>
-          {selectedSeats.length > 1 
-            ? `Passengers (${selectedSeats.length})` 
-            : 'Passenger'}
-        </SectionTitle>
+        <SectionTitle>Passenger Information</SectionTitle>
 
-        {passengers.map((passenger, index) => (
-          <PassengerCard key={index} isPrimary={passenger.isPrimary}>
-            <PassengerHeader>
-              <PassengerTitle>
-                {passenger.isPrimary ? 'Primary Passenger' : `Passenger ${index + 1}`}
-              </PassengerTitle>
-              <SeatNumber>Seat: {passenger.seatNumber}</SeatNumber>
-            </PassengerHeader>
+        <SeatDisplay>
+          Seat: {passenger.seatNumber.join(', ')}
+        </SeatDisplay>
 
-            {passenger.isPrimary && (
-              <FormGroup>
-                <Label>Email Id</Label>
-                <Input 
-                  type="email" 
-                  value={passenger.email || ''}
-                  onChange={(e) => handlePassengerChange(index, 'email', e.target.value)}
-                  required
-                />
-                {errors[`passenger-${index}-email`] && (
-                  <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
-                    {errors[`passenger-${index}-email`]}
-                  </div>
-                )}
-              </FormGroup>
-            )}
+        <FormGroup>
+          <Label>Email</Label>
+          <Input
+            type="email"
+            value={passenger.userEmail}
+            onChange={(e) => handlePassengerChange('userEmail', e.target.value)}
+            required
+          />
+          {errors.userEmail && (
+            <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
+              {errors.userEmail}
+            </div>
+          )}
+        </FormGroup>
 
-            <FormGroup>
-              <Label>Name</Label>
-              <Input 
-                type="text" 
-                value={passenger.name}
-                onChange={(e) => handlePassengerChange(index, 'name', e.target.value)}
-                required
-              />
-              {errors[`passenger-${index}-name`] && (
-                <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
-                  {errors[`passenger-${index}-name`]}
-                </div>
-              )}
-            </FormGroup>
+        <FormGroup>
+          <Label>Name</Label>
+          <Input
+            type="text"
+            value={passenger.userName}
+            onChange={(e) => handlePassengerChange('userName', e.target.value)}
+            required
+          />
+          {errors.userName && (
+            <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
+              {errors.userName}
+            </div>
+          )}
+        </FormGroup>
 
-            <RadioGroup>
-              <RadioLabel>
-                <RadioInput 
-                  type="radio" 
-                  name={`gender-${index}`}
-                  value="male"
-                  checked={passenger.gender === 'male'}
-                  onChange={() => handlePassengerChange(index, 'gender', 'male')}
-                />
-                Male
-              </RadioLabel>
-              <RadioLabel>
-                <RadioInput 
-                  type="radio" 
-                  name={`gender-${index}`}
-                  value="female"
-                  checked={passenger.gender === 'female'}
-                  onChange={() => handlePassengerChange(index, 'gender', 'female')}
-                />
-                Female
-              </RadioLabel>
-            </RadioGroup>
-
-            <Table>
-              <thead>
-                <tr>
-                  <th>Age</th>
-                  {passenger.isPrimary && (
-                    <>
-                      <th>Country Code</th>
-                      <th>Mobile Number</th>
-                    </>
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <Input 
-                      type="number" 
-                      value={passenger.age}
-                      onChange={(e) => handlePassengerChange(index, 'age', e.target.value)}
-                      required
-                    />
-                    {errors[`passenger-${index}-age`] && (
-                      <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
-                        {errors[`passenger-${index}-age`]}
-                      </div>
-                    )}
-                  </td>
-                  {passenger.isPrimary && (
-                    <>
-                      <td>
-                        <Input 
-                          type="text" 
-                          value={passenger.countryCode}
-                          onChange={(e) => handlePassengerChange(index, 'countryCode', e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <Input 
-                          type="tel" 
-                          value={passenger.mobileNumber}
-                          onChange={(e) => handlePassengerChange(index, 'mobileNumber', e.target.value)}
-                          required={passenger.isPrimary}
-                        />
-                        {errors[`passenger-${index}-mobileNumber`] && (
-                          <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
-                            {errors[`passenger-${index}-mobileNumber`]}
-                          </div>
-                        )}
-                      </td>
-                    </>
-                  )}
-                </tr>
-              </tbody>
-            </Table>
-
-            <Table>
-              <thead>
-                <tr>
-                  <th>Nationality</th>
-                  <th>Identity Number</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <Input 
-                      type="text" 
-                      value={passenger.nationality}
-                      onChange={(e) => handlePassengerChange(index, 'nationality', e.target.value)}
-                      required
-                    />
-                    {errors[`passenger-${index}-nationality`] && (
-                      <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
-                        {errors[`passenger-${index}-nationality`]}
-                      </div>
-                    )}
-                  </td>
-                  <td>
-                    <Input 
-                      type="text" 
-                      value={passenger.identityNumber}
-                      onChange={(e) => handlePassengerChange(index, 'identityNumber', e.target.value)}
-                      required
-                    />
-                    {errors[`passenger-${index}-identityNumber`] && (
-                      <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
-                        {errors[`passenger-${index}-identityNumber`]}
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
-          </PassengerCard>
-        ))}
+        <FormGroup>
+          <Label>Phone Number</Label>
+          <Input
+            type="tel"
+            value={passenger.userPhone}
+            onChange={(e) => handlePassengerChange('userPhone', e.target.value)}
+            required
+          />
+          {errors.userPhone && (
+            <div style={{ color: '#e74c3c', fontSize: '12px', marginTop: '5px' }}>
+              {errors.userPhone}
+            </div>
+          )}
+        </FormGroup>
       </Section>
 
-      <TotalSection>
-        <TotalAmount>KES {totalPrice?.toLocaleString() || '0'}</TotalAmount>
-        <ProceedButton onClick={handleProceedToPayment}>
-          PROCEED TO PAY
-        </ProceedButton>
-      </TotalSection>
+      <ProceedButton onClick={handleProceedToPayment}>
+        PREVIEW DETAILS
+      </ProceedButton>
+
+      {/* Confirmation Modal */}
+      {showConfirmationModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <ModalTitle>Booking Confirmation</ModalTitle>
+            
+            <ModalDetail>
+              <ModalLabel>Passenger Name:</ModalLabel>
+              <ModalValue>{passenger.userName}</ModalValue>
+            </ModalDetail>
+            <ModalDetail>
+              <ModalLabel>Passenger Email:</ModalLabel>
+              <ModalValue>{passenger.userEmail}</ModalValue>
+            </ModalDetail>
+
+            <ModalDetail>
+              <ModalLabel>Passenger Phone Number:</ModalLabel>
+              <ModalValue>{passenger.userPhone}</ModalValue>
+            </ModalDetail>
+            
+            <ModalDetail>
+              <ModalLabel>Seat Numbers:</ModalLabel>
+              <ModalValue>{passenger.seatNumber.join(', ')}</ModalValue>
+            </ModalDetail>
+            
+            <ModalDetail>
+              <ModalLabel>Departure:</ModalLabel>
+              <ModalValue>
+                {schedule?.departureTime
+                  ? new Date(schedule.departureTime).toLocaleString()
+                  : "N/A"}
+              </ModalValue>
+            </ModalDetail>
+            <ModalDetail>
+              <ModalLabel>Arrival:</ModalLabel>
+              <ModalValue>
+                {schedule?.arrivalTime
+                  ? new Date(schedule.arrivalTime).toLocaleString()
+                  : "N/A"}
+              </ModalValue>
+            </ModalDetail>
+            
+            <ModalDetail>
+              <ModalLabel>Total Price:</ModalLabel>
+              <ModalValue>KSH{totalPrice}</ModalValue>
+            </ModalDetail>
+
+            <ModalButton onClick={handleContinueToPayment}>
+              CONTINUE TO PAYMENT
+            </ModalButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </Container>
   );
 }
