@@ -4,7 +4,7 @@ import SeatReservation from '../models/seatReservatonModel';
 import { Booking as BookingInterface } from '../interfaces/booking.interface';
 import { generateTicketId } from '../utils/generateTickets';
 import mongoose from 'mongoose';
-import { emailService } from './emailService';
+import { emailService } from './emailservice';
 import { PopulatedSchedule } from '../interfaces/schedule.interface';
 
 export const bookingService = {

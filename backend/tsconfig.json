@@ -34,13 +34,11 @@
     "target": "ES6",
     "module": "CommonJS",
     "outDir": "./dist",
-    "rootDir": "./src",
     "strict": true,
     "typeRoots": ["./node_modules/@types", "./types"],
      "resolveJsonModule": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
   },
-  "include": ["src"],
   "exclude": ["node_modules"]
 }

@@ -3,7 +3,7 @@ import Payment
 import Booking from '../models/bookingModel';
 import { Payment as IPayment } from '../interfaces/payment.interface';
 import mongoose from 'mongoose';
-import { emailService } from './emailService';
+import { emailService } from './emailservice';
 import { bookingService } from './bookingService';
 import { reservationService } from './Reservationservice';
 import { generateTicketId } from '../utils/generateTickets';
