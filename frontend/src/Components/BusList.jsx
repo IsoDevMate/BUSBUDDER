@@ -60,7 +60,7 @@ const BusName = styled.h2`
 
 const BusPrice = styled.div`
   font-weight: bold;
-  color: #3498db;
+  color: #4c51bf;
   font-size: 1.2em;
 `;
 
@@ -89,7 +89,7 @@ const DetailValue = styled.span`
 const BookButton = styled.button`
   width: 100%;
   padding: 12px;
-  background-color: #3498db;
+  background-color: #4c51bf;
   color: white;
   border: none;
   border-radius: 8px;
@@ -128,8 +128,7 @@ function BusListPage() {
   };
 
   const handleBookBus = (busId) => {
-    // Implement booking logic
-    console.log(`Booking bus ${busId}`);
+    navigate(`/buses/${busId}/seats`);
   };
 
   if (!buses || buses.length === 0) {
@@ -201,7 +200,7 @@ function BusListPage() {
             onClick={() => handleBookBus(bus.id)}
             disabled={bus.availableSeats === 0}
           >
-            {bus.availableSeats > 0 ? 'Book Now' : 'Sold Out'}
+            {bus.availableSeats > 0 ? 'View Seats' : 'Sold Out'}
           </BookButton>
         </BusCard>
       ))}
