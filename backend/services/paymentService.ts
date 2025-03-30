@@ -152,7 +152,7 @@ async processMpesaSTKPush(
       PartyA: formattedPhone,
       PartyB: MPESA_SHORTCODE,
       PhoneNumber: formattedPhone,
-      CallBackURL: "https://kenyapay.onrender.com/callback",
+      CallBackURL: "https://busbudder.onrender.com/api/v1/payments/callback",
       AccountReference: `BUS-${reservationId.slice(-6)}`,
       TransactionDesc: 'Bus Ticket Payment'
     };
