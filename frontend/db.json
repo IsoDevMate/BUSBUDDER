@@ -1,44 +1,204 @@
 {
-    "cities": [
-      {"id": 1, "name": "Nairobi"},
-      {"id": 2, "name": "Mombasa"},
-      {"id": 3, "name": "Eldoret"},
-      {"id": 4, "name": "Kisumu"},
-      {"id": 5, "name": "Nakuru"}
-    ],
-    "buses": [
-      {
-        "id": 1,
-        "name": "Amaam Standard",
-        "origin": "Nairobi",
-        "destination": "Mombasa", 
-        "departureTime": "07:00 AM",
-        "arrivalTime": "02:00 PM",
-        "price": 1500,
-        "availableSeats": 32,
-        "amenities": ["WiFi", "Air Conditioning", "Power Outlets"]
-      },
-      {
-        "id": 2, 
-        "name": "Amaam Premium",
-        "origin": "Nairobi",
-        "destination": "Kisumu",
-        "departureTime": "06:30 AM", 
-        "arrivalTime": "12:30 PM",
-        "price": 1200,
-        "availableSeats": 25,
-        "amenities": ["WiFi", "Comfortable Seats"]
-      },
-      {
-        "id": 3,
-        "name": "Amaam Luxury",
-        "origin": "Nairobi", 
-        "destination": "Eldoret",
-        "departureTime": "08:00 AM",
-        "arrivalTime": "01:00 PM", 
-        "price": 1000,
-        "availableSeats": 40,
-        "amenities": ["Air Conditioning", "Onboard Entertainment"]
-      }
-    ]
-  }
+  "cities": [
+    {"id": 1, "name": "Nairobi"},
+    {"id": 2, "name": "Mombasa"},
+    {"id": 3, "name": "Eldoret"},
+    {"id": 4, "name": "Kisumu"},
+    {"id": 5, "name": "Nakuru"}
+  ],
+  "buses": [
+    {
+      "id": 1,
+      "name": "Amaam Standard",
+      "origin": "Nairobi",
+      "destination": "Mombasa", 
+      "departureTime": "07:00 AM",
+      "arrivalTime": "02:00 PM",
+      "price": 1500,
+      "availableSeats": 32,
+      "amenities": ["WiFi", "Air Conditioning", "Power Outlets"]
+    },
+    {
+      "id": 2, 
+      "name": "Amaam Premium",
+      "origin": "Nairobi",
+      "destination": "Kisumu",
+      "departureTime": "06:30 AM", 
+      "arrivalTime": "12:30 PM",
+      "price": 1200,
+      "availableSeats": 25,
+      "amenities": ["WiFi", "Comfortable Seats"]
+    },
+    {
+      "id": 3,
+      "name": "Amaam Luxury",
+      "origin": "Nairobi", 
+      "destination": "Eldoret",
+      "departureTime": "08:00 AM",
+      "arrivalTime": "01:00 PM", 
+      "price": 1000,
+      "availableSeats": 40,
+      "amenities": ["Air Conditioning", "Onboard Entertainment"]
+    },
+    {
+      "id": 4, 
+      "name": "Amaam Test",
+      "origin": "Nairobi",
+      "destination": "Kisumu",
+      "departureTime": "07:30 AM", 
+      "arrivalTime": "2:30 PM",
+      "price": 2200,
+      "availableSeats": 20,
+      "amenities": ["WiFi", "Comfortable Seats"]
+    }
+  ],
+  "booked": [
+    {
+      "id": 2,
+      "busId": 1,
+      "seatNumber": "1B",
+      "type": "standard"
+    },
+    
+    {
+      "id": 7,
+      "busId": 2,
+      "seatNumber": "2A",
+      "type": "premium"
+    },
+    {
+      "id": 10,
+      "busId": 3,
+      "seatNumber": "1B",
+      "type": "standard"
+    },
+    {
+      "id": 14,
+      "busId": 4,
+      "seatNumber": "1B",
+      "type": "standard"
+    },
+    {
+      "id": 17,
+      "busId": 1,
+      "seatNumber": "3A",
+      "type": "premium"
+    },
+    {
+      "id": 22,
+      "busId": 2,
+      "seatNumber": "4B",
+      "type": "standard"
+    }
+  ],
+  "notbooked": [
+    {
+      "id": 1,
+      "busId": 1,
+      "seatNumber": "1A",
+      "type": "standard"
+    },
+    {
+      "id": 3,
+      "busId": 1,
+      "seatNumber": "2A",
+      "type": "premium"
+    },
+    {
+      "id": 4,
+      "busId": 1,
+      "seatNumber": "2B",
+      "type": "premium"
+    },
+    {
+      "id": 5,
+      "busId": 2,
+      "seatNumber": "1A",
+      "type": "standard"
+    },
+    {
+      "id": 6,
+      "busId": 2,
+      "seatNumber": "1B",
+      "type": "standard"
+    },
+    {
+      "id": 8,
+      "busId": 2,
+      "seatNumber": "2B",
+      "type": "premium"
+    },
+    {
+      "id": 9,
+      "busId": 3,
+      "seatNumber": "1A",
+      "type": "standard"
+    },
+    {
+      "id": 11,
+      "busId": 3,
+      "seatNumber": "2A",
+      "type": "premium"
+    },
+    {
+      "id": 12,
+      "busId": 3,
+      "seatNumber": "2B",
+      "type": "premium"
+    },
+    {
+      "id": 13,
+      "busId": 4,
+      "seatNumber": "1A",
+      "type": "standard"
+    },
+    {
+      "id": 15,
+      "busId": 4,
+      "seatNumber": "2A",
+      "type": "premium"
+    },
+    {
+      "id": 16,
+      "busId": 4,
+      "seatNumber": "2B",
+      "type": "premium"
+    },
+    {
+      "id": 18,
+      "busId": 1,
+      "seatNumber": "3B",
+      "type": "standard"
+    },
+    {
+      "id": 19,
+      "busId": 1,
+      "seatNumber": "4A",
+      "type": "premium"
+    },
+    {
+      "id": 20,
+      "busId": 1,
+      "seatNumber": "4B",
+      "type": "premium"
+    },
+    {
+      "id": 21,
+      "busId": 2,
+      "seatNumber": "4A",
+      "type": "premium"
+    },
+    {
+      "id": 23,
+      "busId": 2,
+      "seatNumber": "5A",
+      "type": "standard"
+    },
+    {
+      "id": 24,
+      "busId": 2,
+      "seatNumber": "5B",
+      "type": "standard"
+    }
+  ]
+}

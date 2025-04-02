@@ -6,7 +6,7 @@ import searchroutes from  './searchroutes'
 import bookingRoutes from './bookingRoutes';
  import paymentRoutes from './paymentRoutes';
 import reservationRoutes from './reservation'
-// import authRoutes from './authRoutes'; // We'll keep this commented out for now
+import authRoutes from './authRoutes';
 
 const router = Router();
 
@@ -23,6 +23,6 @@ router.use(`${API_PREFIX}/bookings`, bookingRoutes);
 router.use(`${API_PREFIX}/payments`, paymentRoutes);
 
 // Authentication routes - will be added later
-// router.use(`${API_PREFIX}/auth`, authRoutes);
+router.use(`${API_PREFIX}/auth`, authRoutes);
 
 export default router;

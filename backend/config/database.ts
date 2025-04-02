@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
 import config from './config';
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 class DatabaseService {
   private connection: mongoose.Connection | null = null;
