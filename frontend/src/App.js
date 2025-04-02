@@ -12,6 +12,7 @@ import RouteManagement from './Components/RouteManagement';
 import ScheduleManagement from './Components/ScheduleManagement';
 import PaymentManagement from './Components/PaymentManagement';
 import DashboardLayout from './Components/AdminDashboard';
+import RegistrationForm from './Components/Registration';
 
 function App() {
   return (
@@ -32,6 +33,8 @@ function App() {
         <Route path='/payment' element={<PaymentPage/>} />
         {/* <Route path="/" element={<Dashboard />} /> */}
         <Route path="/buses" element={<BusManagement />} />
+        <Route path='/register' element={<RegistrationForm />} />
+        <Route path="/routes/:routeId" element={<RouteManagement />} />
         <Route path="/routes" element={<RouteManagement />} />
         <Route path="/schedules" element={<ScheduleManagement />} />
         <Route path="/pays" element={<PaymentManagement />} />
