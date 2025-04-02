@@ -86,14 +86,14 @@ static hasRole(roles: string[]) {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.user) {
-        return ResponseUtil.error(res, 401, 'Not authenticated');
+        return next(new AppError('Not authenticated', 401));
       }
 
       // Type assertion to ensure req.user has the role property
       const user = req.user as { role: string };
 
       if (!roles.includes(user.role)) {
-        return ResponseUtil.error(res, 403, 'Insufficient permissions');
+        return next(new AppError('Insufficient permissions', 403));
       }
 
       next();
