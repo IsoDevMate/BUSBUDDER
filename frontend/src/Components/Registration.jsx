@@ -67,7 +67,7 @@ const RegistrationForm = () => {
     email: '',
     password: '',
     phoneNumber: '',
-    role: 'user',
+    role: 'passenger',
   });
 
   const handleChange = (e) => {
@@ -158,7 +158,7 @@ const RegistrationForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="user">User</option>
+            <option value="passenger">Passenger</option>
             <option value="admin">Admin</option>
           </Select>
         </FormGroup>
