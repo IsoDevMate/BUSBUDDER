@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const FormContainer = styled.div`
   max-width: 400px;
@@ -61,13 +62,14 @@ const Button = styled.button`
 `;
 
 const RegistrationForm = () => {
+    const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
     phoneNumber: '',
-    role: 'user',
+    role: 'passenger',
   });
 
   const handleChange = (e) => {
@@ -99,6 +101,7 @@ const RegistrationForm = () => {
       const result = await response.json();
       console.log('Success:', result);
       alert('Registration successful!');
+      navigate ('/login');
     } catch (error) {
       console.error('Error:', error);
       alert('Registration failed. Please try again.');
@@ -158,7 +161,7 @@ const RegistrationForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="user">User</option>
+            <option value="passenger">Passenger</option>
             <option value="admin">Admin</option>
           </Select>
         </FormGroup>
@@ -172,7 +175,7 @@ const RegistrationForm = () => {
             required
           />
         </FormGroup>
-        <Button type="submit">Register</Button>
+        <Button type="submit" onClick={handleSubmit}>Register</Button>
       </form>
     </FormContainer>
   );
