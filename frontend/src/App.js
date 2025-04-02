@@ -13,6 +13,7 @@ import ScheduleManagement from './Components/ScheduleManagement';
 import PaymentManagement from './Components/PaymentManagement';
 import DashboardLayout from './Components/AdminDashboard';
 import RegistrationForm from './Components/Registration';
+import LoginForm from './Components/Login';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         {/* <Route path="/" element={<Dashboard />} /> */}
         <Route path="/buses" element={<BusManagement />} />
         <Route path='/register' element={<RegistrationForm />} />
+        <Route path='/login' element={<LoginForm />} />
         <Route path="/routes/:routeId" element={<RouteManagement />} />
         <Route path="/routes" element={<RouteManagement />} />
         <Route path="/schedules" element={<ScheduleManagement />} />
