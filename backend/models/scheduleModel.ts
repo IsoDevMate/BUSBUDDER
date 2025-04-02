@@ -8,6 +8,16 @@ const scheduleSchema = new Schema<Schedule>(
       ref: 'Route',
       required: true
     },
+    routeName: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    busNumber: {
+      type: String,
+      required: true,
+      trim: true
+    },
     busId: {
       type: Schema.Types.ObjectId as any,
       ref: 'Bus',

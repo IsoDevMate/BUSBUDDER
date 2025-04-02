@@ -4,9 +4,13 @@ import { apiResponse } from '../utils/apiv2response';
 
 export class BusController {
   // Create a new bus
-    async createBus(req: Request, res: Response) {
+  async createBus(req: Request, res: Response) {
     try {
       const busData = req.body;
+
+      // Set default assignment status to unassigned
+      busData.assignmentStatus = 'unassigned';
+
       const newBus = await busService.createBus(busData);
       return apiResponse(res, 201, 'Bus created successfully', newBus);
     } catch (error) {
@@ -16,9 +20,14 @@ export class BusController {
   }
 
   // Get all buses
-   async getAllBuses(req: Request, res: Response) {
+  async getAllBuses(req: Request, res: Response) {
     try {
-      const filter = req.query.status ? { status: req.query.status } : {};
+      const filter: any = {};
+
+      // Add filters for status and assignmentStatus if provided
+      if (req.query.status) filter.status = req.query.status;
+      if (req.query.assignmentStatus) filter.assignmentStatus = req.query.assignmentStatus;
+
       const buses = await busService.getAllBuses(filter);
       return apiResponse(res, 200, 'Buses retrieved successfully', buses);
     } catch (error) {
@@ -27,8 +36,19 @@ export class BusController {
     }
   }
 
+  // Get available buses
+  async getAvailableBuses(req: Request, res: Response) {
+    try {
+      const buses = await busService.getAvailableBuses();
+      return apiResponse(res, 200, 'Available buses retrieved successfully', buses);
+    } catch (error) {
+      console.error('Error retrieving available buses:', error);
+      return apiResponse(res, 500, 'Failed to retrieve available buses', null, error);
+    }
+  }
+
   // Get bus by ID
-   async getBusById(req: Request, res: Response) {
+  async getBusById(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const bus = await busService.getBusById(id);
@@ -44,8 +64,25 @@ export class BusController {
     }
   }
 
+  // Get bus by number
+  async getBusByNumber(req: Request, res: Response) {
+    try {
+      const { busNumber } = req.params;
+      const bus = await busService.getBusByNumber(busNumber);
+
+      if (!bus) {
+        return apiResponse(res, 404, 'Bus not found', null);
+      }
+
+      return apiResponse(res, 200, 'Bus retrieved successfully', bus);
+    } catch (error) {
+      console.error('Error retrieving bus:', error);
+      return apiResponse(res, 500, 'Failed to retrieve bus', null, error);
+    }
+  }
+
   // Get buses by operator
-   async getBusesByOperator(req: Request, res: Response) {
+  async getBusesByOperator(req: Request, res: Response) {
     try {
       const { operatorId } = req.params;
       const buses = await busService.getBusesByOperator(operatorId);
@@ -55,7 +92,6 @@ export class BusController {
       return apiResponse(res, 500, 'Failed to retrieve operator buses', null, error);
     }
   }
-
 
   // Get buses by route
   async getBusesByRoute(req: Request, res: Response) {
@@ -91,7 +127,7 @@ export class BusController {
   }
 
   // Update bus
-   async updateBus(req: Request, res: Response) {
+  async updateBus(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const updateData = req.body;
@@ -110,7 +146,7 @@ export class BusController {
   }
 
   // Update bus status
-   async updateBusStatus(req: Request, res: Response) {
+  async updateBusStatus(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const { status } = req.body;
@@ -132,8 +168,35 @@ export class BusController {
     }
   }
 
+  // Update bus assignment status
+  async updateBusAssignmentStatus(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { assignmentStatus, availableForAssignmentDate } = req.body;
+
+      if (!['assigned', 'unassigned'].includes(assignmentStatus)) {
+        return apiResponse(res, 400, 'Invalid assignment status value', null);
+      }
+
+      const updatedBus = await busService.updateBusAssignmentStatus(
+        id,
+        assignmentStatus,
+        availableForAssignmentDate ? new Date(availableForAssignmentDate) : undefined
+      );
+
+      if (!updatedBus) {
+        return apiResponse(res, 404, 'Bus not found', null);
+      }
+
+      return apiResponse(res, 200, 'Bus assignment status updated successfully', updatedBus);
+    } catch (error) {
+      console.error('Error updating bus assignment status:', error);
+      return apiResponse(res, 500, 'Failed to update bus assignment status', null, error);
+    }
+  }
+
   // Delete bus
-   async deleteBus(req: Request, res: Response) {
+  async deleteBus(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const deletedBus = await busService.deleteBus(id);

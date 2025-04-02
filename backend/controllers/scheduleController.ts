@@ -1,22 +1,23 @@
 import { Request, Response } from 'express';
 import { scheduleService } from '../services/scheduleService';
 import { successResponse, errorResponse } from '../utils/apiResponse';
+import Schedule from '../models/scheduleModel';
 
 export class ScheduleController {
   // Create a new schedule
   async createSchedule(req: Request, res: Response): Promise<void> {
     try {
-      const { routeId, busId, departureTime, arrivalTime, fare } = req.body;
+      const { routeName, busNumber, departureTime, arrivalTime, fare } = req.body;
 
       // Basic validation
-      if (!routeId || !busId || !departureTime || !arrivalTime || fare === undefined) {
+      if (!routeName || !busNumber || !departureTime || !arrivalTime || fare === undefined) {
         errorResponse(res, 'Missing required fields', 400);
         return;
       }
 
       const schedule = await scheduleService.createSchedule({
-        routeId,
-        busId,
+        routeName,
+        busNumber,
         departureTime: new Date(departureTime),
         arrivalTime: new Date(arrivalTime),
         fare: Number(fare)
@@ -131,6 +132,7 @@ export class ScheduleController {
     }
   }
 
+  // Get available seats for a schedule
   async getAvailableSeats(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
@@ -148,10 +150,10 @@ export class ScheduleController {
   // Get schedule by route ID
   async getSchedulesByRouteId(req: Request, res: Response): Promise<void> {
     try {
-      const { routeId } = req.params;
-      const schedules = await scheduleService.getScheduleById(routeId);
+      const { id } = req.params;
+      const schedules = await Schedule.find({ routeId: id });
 
-      if (!schedules) {
+      if (!schedules || schedules.length === 0) {
         errorResponse(res, 'No schedules found for this route', 404);
         return;
       }

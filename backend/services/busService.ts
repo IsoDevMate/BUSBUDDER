@@ -6,7 +6,13 @@ class BusService {
   // Create a new bus
   async createBus(busData: IBus): Promise<IBus> {
     try {
-      const newBus = new Bus(busData);
+      // Set default assignmentStatus to 'unassigned'
+      const newBusData = {
+        ...busData,
+        assignmentStatus: 'unassigned'
+      };
+
+      const newBus = new Bus(newBusData);
       return await newBus.save();
     } catch (error) {
       throw error;
@@ -29,6 +35,15 @@ class BusService {
         throw new Error('Invalid bus ID');
       }
       return await Bus.findById(id);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Get bus by bus number
+  async getBusByNumber(busNumber: string): Promise<IBus | null> {
+    try {
+      return await Bus.findOne({ busNumber });
     } catch (error) {
       throw error;
     }
@@ -64,6 +79,28 @@ class BusService {
     }
   }
 
+  // Update bus assignment status
+  async updateBusAssignmentStatus(
+    id: string,
+    assignmentStatus: 'assigned' | 'unassigned',
+    availableForAssignmentDate?: Date
+  ): Promise<IBus | null> {
+    try {
+      const updateData: Partial<IBus> = {
+        assignmentStatus,
+        lastAssignmentDate: assignmentStatus === 'assigned' ? new Date() : undefined
+      };
+
+      if (availableForAssignmentDate) {
+        updateData.availableForAssignmentDate = availableForAssignmentDate;
+      }
+
+      return await this.updateBus(id, updateData);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // Delete bus
   async deleteBus(id: string): Promise<IBus | null> {
     try {
@@ -76,7 +113,7 @@ class BusService {
     }
   }
 
-   // Get buses by route ID
+  // Get buses by route ID
   async getBusesByRoute(routeId: string): Promise<IBus[]> {
     try {
       if (!mongoose.Types.ObjectId.isValid(routeId)) {
@@ -92,7 +129,6 @@ class BusService {
   async getBusesByLocations(departure: string, destination: string): Promise<IBus[]> {
     try {
       // Assuming the bus document has servingRoutes array with route information
-      // This implementation might need adjustment based on your data model
       return await Bus.find({
         "servingRoutes.departure": departure,
         "servingRoutes.destination": destination
@@ -102,6 +138,25 @@ class BusService {
     }
   }
 
+  // Get available buses (unassigned and active)
+  async getAvailableBuses(): Promise<IBus[]> {
+    try {
+      const now = new Date();
+
+      return await Bus.find({
+        status: 'active',
+        $or: [
+          { assignmentStatus: 'unassigned' },
+          {
+            assignmentStatus: 'assigned',
+            availableForAssignmentDate: { $lte: now }
+          }
+        ]
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export const busService = new BusService();

@@ -19,9 +19,24 @@ export const routeService = {
       throw new Error('Route already exists');
     }
 
-    // Create new route
-    const newRoute = await Route.create(routeData);
+    // Generate route name
+    const startCode = this.generateLocationCode(routeData.startLocation);
+    const endCode = this.generateLocationCode(routeData.endLocation);
+    const routeName = `${startCode} - ${endCode} (${routeData.distance} km)`;
+
+    // Create new route with name
+    const newRoute = await Route.create({
+      ...routeData,
+      name: routeName
+    });
+
     return newRoute;
+  },
+
+  // Generate location code (first 3-4 letters uppercase)
+  generateLocationCode(location: string): string {
+    // Remove any whitespace and take the first 4 letters
+    return location.replace(/\s+/g, '').substring(0, 4).toUpperCase();
   },
 
   // Get all routes
@@ -42,11 +57,29 @@ export const routeService = {
     return await Route.findById(routeId).exec();
   },
 
+  // Get route by name
+  async getRouteByName(routeName: string): Promise<RouteInterface | null> {
+    return await Route.findOne({ name: routeName }).exec();
+  },
+
   // Update route
   async updateRoute(
     routeId: string,
     routeData: Partial<RouteInterface>
   ): Promise<RouteInterface | null> {
+    // If startLocation or endLocation is being updated, regenerate the name
+    if (routeData.startLocation || routeData.endLocation) {
+      const currentRoute = await Route.findById(routeId).exec();
+      if (currentRoute) {
+        const startLocation = routeData.startLocation || currentRoute.startLocation;
+        const endLocation = routeData.endLocation || currentRoute.endLocation;
+
+        const startCode = this.generateLocationCode(startLocation);
+        const endCode = this.generateLocationCode(endLocation);
+        routeData.name = `${startCode} - ${endCode}`;
+      }
+    }
+
     return await Route.findByIdAndUpdate(routeId, routeData, { new: true }).exec();
   },
 

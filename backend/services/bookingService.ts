@@ -58,11 +58,13 @@ export const bookingService = {
             reservation.userName,
             ticketId,
             {
+
               departureTime: schedule.departureTime,
               arrivalTime: schedule.arrivalTime,
               startLocation: populatedSchedule.routeId.startLocation,
               endLocation: populatedSchedule.routeId.endLocation,
               busNumber: populatedSchedule.busId.busNumber,
+              // routeName: populatedSchedule.routeName,
               seatNumbers: reservation.seatNumber,
               fare: schedule.fare
             }
