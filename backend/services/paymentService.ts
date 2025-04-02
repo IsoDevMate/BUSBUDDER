@@ -108,7 +108,7 @@ async processMpesaSTKPush(
     // M-Pesa API constants
     const MPESA_PASSKEY = config.mpesa.mpesa_passkey || '';
     const MPESA_SHORTCODE = config.mpesa.shortcode || '';
-    const CALLBACK_URL = config.mpesa.callback_URL || '';
+    const CALLBACK_URL = "https://busbudder.onrender.com/api/v1/payments/callback";
 
     // Validate required configuration
     if (!MPESA_SHORTCODE || !MPESA_PASSKEY || !CALLBACK_URL) {

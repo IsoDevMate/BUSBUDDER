@@ -263,7 +263,7 @@ function PaymentPage() {
       console.log("Sending payment request:", stkPayload);
       
       // Call the M-Pesa STK push API with the correct endpoint
-      const response = await fetch('https://busbudder.onrender.com/api/v1/payments/stk-push', {
+      const response = await fetch('http://localhost:7000/api/v1/payments/stk-push', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
