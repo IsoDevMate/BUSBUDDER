@@ -67,9 +67,10 @@ const router = Router();
 // Create a new bus
 router.post('/', (req: Request, res: Response) => {
   AuthMiddleware.verifyToken,
-  AuthMiddleware.hasRole(['admin'])(req, res, async () => {
-    await busController.createBus(req, res);
-  });
+    AuthMiddleware.hasRole(['admin'])(req, res, async () => {
+      await busController.createBus(req, res);
+    });
+})
 
 
 // Get available buses for assignment
