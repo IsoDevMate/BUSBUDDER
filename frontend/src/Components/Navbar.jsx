@@ -104,12 +104,12 @@ const Navbar = () => {
           </LogoIcon>
           <LogoText>AMAAM TRAVELS</LogoText>
         </LogoContainer>
-        <NavLinks>
+        {/* <NavLinks>
           <NavLink to="/home" onClick={closeMenu}>Home</NavLink>
           <NavLink to="/about" onClick={closeMenu}>About Us</NavLink>
           <NavLink to="/fleet" onClick={closeMenu}>Our Fleet</NavLink>
           <NavLink to="/testimonials" onClick={closeMenu}>Testimonials</NavLink>
-        </NavLinks>
+        </NavLinks> */}
         <MobileMenuIcon onClick={toggleMenu}>
           ☰
         </MobileMenuIcon>
@@ -118,10 +118,10 @@ const Navbar = () => {
       {isMenuOpen && (
         <MobileMenuContainer>
           <MobileMenu isOpen={isMenuOpen}>
-            <NavLink to="/home" onClick={closeMenu}>Home</NavLink>
+            {/* <NavLink to="/home" onClick={closeMenu}>Home</NavLink>
             <NavLink to="/about" onClick={closeMenu}>About Us</NavLink>
             <NavLink to="/fleet" onClick={closeMenu}>Our Fleet</NavLink>
-            <NavLink to="/testimonials" onClick={closeMenu}>Testimonials</NavLink>
+            <NavLink to="/testimonials" onClick={closeMenu}>Testimonials</NavLink> */}
           </MobileMenu>
         </MobileMenuContainer>
       )}
