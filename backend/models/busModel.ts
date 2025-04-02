@@ -14,6 +14,53 @@ const busSchema = new Schema<Bus>(
       required: true,
       min: 1
     },
+    model: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    assignmentStatus: {
+      type: String,
+      enum: ['assigned', 'unassigned'],
+      default: 'unassigned'
+    },
+
+    servingRoutes: [
+      {
+        departure: {
+          type: String,
+          required: true
+        },
+        destination: {
+          type: String,
+          required: true
+        }
+      }
+    ],
+
+    lastMaintenanceDate: {
+      type: Date,
+      required: false
+    },
+
+    nextMaintenanceDate: {
+      type: Date,
+      required: false
+    },
+    lastAssignmentDate: {
+      type: Date,
+      required: false
+    },
+    availableForAssignmentDate: {
+      type: Date,
+      required: false
+    },
+    routes: [
+      {
+        type: Schema.Types.ObjectId as any,
+        ref: 'Route'
+      }
+    ],
     operatorId: {
       type: Schema.Types.ObjectId as any,
       ref: 'User',
