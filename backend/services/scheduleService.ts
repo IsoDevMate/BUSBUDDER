@@ -1,14 +1,16 @@
 import Schedule from '../models/scheduleModel';
 import Bus from '../models/busModel';
 import Route from '../models/routeModel';
+import { busService } from './busService';
+import { routeService } from './routeService';
 import { Schedule as ScheduleInterface } from '../interfaces/schedule.interface';
 import mongoose from 'mongoose';
 
 class ScheduleService {
   // Create a new schedule
   async createSchedule(scheduleData: {
-    routeId: string;
-    busId: string;
+    routeName: string;
+    busNumber: string;
     departureTime: Date;
     arrivalTime: Date;
     fare: number;
@@ -17,31 +19,43 @@ class ScheduleService {
     session.startTransaction();
 
     try {
-      const route = await Route.findById(scheduleData.routeId).session(session);
+      // Get the route by name
+      const route = await Route.findOne({ name: scheduleData.routeName }).session(session);
       if (!route) {
         throw new Error('Route not found');
       }
 
-      const bus = await Bus.findById(scheduleData.busId).session(session);
+      // Get the bus by number
+      const bus = await Bus.findOne({ busNumber: scheduleData.busNumber }).session(session);
       if (!bus) {
         throw new Error('Bus not found');
       }
+
+      // Check if bus is active
       if (bus.status !== 'active') {
         throw new Error('Bus is not active');
       }
 
+      // Check if bus is unassigned or available for assignment
+      const now = new Date();
+      if (bus.assignmentStatus === 'assigned' &&
+          bus.availableForAssignmentDate &&
+          bus.availableForAssignmentDate > now) {
+        throw new Error('Bus is not available for assignment at this time');
+      }
+
+      // Validate departure time
       const departureTime = new Date(scheduleData.departureTime);
       if (departureTime <= new Date()) {
         throw new Error('Departure time must be in the future');
       }
 
-      const arrivalTime = new Date(scheduleData.arrivalTime);
-      if (arrivalTime <= departureTime) {
-        throw new Error('Arrival time must be after departure time');
-      }
+      // Validate schedule times
+      this.validateScheduleTimes(departureTime, new Date(scheduleData.arrivalTime));
 
+      // Check for conflicting schedules
       const existingSchedule = await Schedule.findOne({
-        busId: scheduleData.busId,
+        busNumber: scheduleData.busNumber,
         $or: [
           {
             departureTime: {
@@ -51,13 +65,13 @@ class ScheduleService {
           },
           {
             arrivalTime: {
-              $lte: arrivalTime,
-              $gte: arrivalTime
+              $lte: scheduleData.arrivalTime,
+              $gte: scheduleData.arrivalTime
             }
           },
           {
-            departureTime: { $gte: departureTime },
-            arrivalTime: { $lte: arrivalTime }
+            departureTime: { $lte: departureTime },
+            arrivalTime: { $gte: scheduleData.arrivalTime }
           }
         ],
         status: { $in: ['scheduled', 'in-transit'] }
@@ -67,11 +81,31 @@ class ScheduleService {
         throw new Error('Bus is already scheduled for this time period');
       }
 
-      const newSchedule = await Schedule.create([{
-        ...scheduleData,
+      // Create the schedule
+      const newScheduleData = {
+        routeId: route._id,
+        routeName: route.name,
+        busId: bus._id,
+        busNumber: bus.busNumber,
+        departureTime: departureTime,
+        arrivalTime: new Date(scheduleData.arrivalTime),
+        fare: scheduleData.fare,
         availableSeats: bus.capacity,
         status: 'scheduled'
-      }], { session });
+      };
+
+      const newSchedule = await Schedule.create([newScheduleData], { session });
+
+      // Update bus assignment status
+      await Bus.findByIdAndUpdate(
+        bus._id,
+        {
+          assignmentStatus: 'assigned',
+          lastAssignmentDate: new Date(),
+          availableForAssignmentDate: new Date(scheduleData.arrivalTime)
+        },
+        { session }
+      );
 
       await session.commitTransaction();
       return newSchedule[0];
@@ -80,6 +114,41 @@ class ScheduleService {
       throw error;
     } finally {
       session.endSession();
+    }
+  }
+
+  // Validate schedule times to ensure they meet business rules
+  validateScheduleTimes(departureTime: Date, arrivalTime: Date): void {
+    // Check that arrival time is after departure time
+    if (arrivalTime <= departureTime) {
+      throw new Error('Arrival time must be after departure time');
+    }
+
+    // Calculate duration in hours
+    const durationMs = arrivalTime.getTime() - departureTime.getTime();
+    const durationMinutes = durationMs / (1000 * 60);
+
+    // Check minimum duration (420 minutes, equivalent to 7 hours)
+    if (durationMinutes < 420) {
+      throw new Error('Schedule duration must be at least 7 hours');
+    }
+
+    // Check maximum duration (10 hours)
+    if (durationMinutes > 600) {
+      throw new Error('Schedule duration must not exceed 10 hours');
+    }
+
+    // Check departure time (must be between 8:00am and 10:00pm)
+    const departureHour = departureTime.getHours();
+    const departureMinutes = departureTime.getMinutes();
+
+    if (departureHour < 8 || (departureHour === 22 && departureMinutes > 0) || departureHour > 22) {
+      throw new Error('Departure time must be between 8:00am and 10:00pm');
+    }
+
+    // First bus leaves at 8:30am
+    if (departureHour === 8 && departureMinutes < 30) {
+      throw new Error('First bus of the day leaves at 8:30am');
     }
   }
 
@@ -109,8 +178,6 @@ class ScheduleService {
     }
 
     return await Schedule.find(query)
-      .populate('routeId')
-      .populate('busId')
       .sort({ departureTime: 1 })
       .skip(skip)
       .limit(limit)
@@ -118,10 +185,7 @@ class ScheduleService {
   }
 
   async getScheduleById(scheduleId: string): Promise<ScheduleInterface | null> {
-    return await Schedule.findById(scheduleId)
-      .populate('routeId')
-      .populate('busId')
-      .exec();
+    return await Schedule.findById(scheduleId).exec();
   }
 
   async updateSchedule(
@@ -144,34 +208,67 @@ class ScheduleService {
       throw new Error('Cannot decrease available seats below already booked seats');
     }
 
-    return await Schedule.findByIdAndUpdate(scheduleId, scheduleData, { new: true })
-      .populate('routeId')
-      .populate('busId')
-      .exec();
+    // If times are being updated, validate them
+    if (scheduleData.departureTime || scheduleData.arrivalTime) {
+      const departureTime = scheduleData.departureTime
+        ? new Date(scheduleData.departureTime)
+        : schedule.departureTime;
+
+      const arrivalTime = scheduleData.arrivalTime
+        ? new Date(scheduleData.arrivalTime)
+        : schedule.arrivalTime;
+
+      this.validateScheduleTimes(departureTime, arrivalTime);
+    }
+
+    return await Schedule.findByIdAndUpdate(scheduleId, scheduleData, { new: true }).exec();
   }
 
   async cancelSchedule(scheduleId: string): Promise<ScheduleInterface | null> {
-    const schedule = await Schedule.findById(scheduleId);
-    if (!schedule) {
-      throw new Error('Schedule not found');
-    }
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-    if (schedule.status === 'completed') {
-      throw new Error('Cannot cancel completed schedule');
-    }
+    try {
+      const schedule = await Schedule.findById(scheduleId).session(session);
+      if (!schedule) {
+        throw new Error('Schedule not found');
+      }
 
-    if (schedule.status === 'cancelled') {
-      throw new Error('Schedule is already cancelled');
-    }
+      if (schedule.status === 'completed') {
+        throw new Error('Cannot cancel completed schedule');
+      }
 
-    return await Schedule.findByIdAndUpdate(
-      scheduleId,
-      { status: 'cancelled' },
-      { new: true }
-    )
-      .populate('routeId')
-      .populate('busId')
-      .exec();
+      if (schedule.status === 'cancelled') {
+        throw new Error('Schedule is already cancelled');
+      }
+
+      // Update schedule status
+      const updatedSchedule = await Schedule.findByIdAndUpdate(
+        scheduleId,
+        { status: 'cancelled' },
+        { new: true, session }
+      ).exec();
+
+      // Update bus assignment status if the schedule is in the future
+      if (schedule.departureTime > new Date()) {
+        await Bus.findByIdAndUpdate(
+          schedule.busId,
+          {
+            assignmentStatus: 'unassigned',
+            availableForAssignmentDate: null
+          },
+          { session }
+        );
+      }
+
+      await session.commitTransaction();
+      return updatedSchedule;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
   }
 
   async searchSchedules(
@@ -199,10 +296,10 @@ class ScheduleService {
     }
 
     const routes = await Route.find(routeQuery).exec();
-    const routeIds = routes.map(route => route._id);
+    const routeNames = routes.map(route => route.name);
 
     const scheduleQuery: any = {
-      routeId: { $in: routeIds },
+      routeName: { $in: routeNames },
       status: 'scheduled'
     };
 
@@ -222,8 +319,6 @@ class ScheduleService {
     }
 
     const schedules = await Schedule.find(scheduleQuery)
-      .populate('routeId')
-      .populate('busId')
       .sort({ departureTime: 1 })
       .exec();
 
@@ -260,7 +355,7 @@ class ScheduleService {
     return bookedSeats;
   }
 
-  getAvailableSeats(scheduleId: string): Promise<number> {
+  async getAvailableSeats(scheduleId: string): Promise<number> {
     return Schedule.aggregate([
       {
         $match: { _id: new mongoose.Types.ObjectId(scheduleId) }
@@ -276,7 +371,15 @@ class ScheduleService {
       {
         $project: {
           availableSeats: 1,
-          bookedSeatsCount: { $size: '$bookings.seatNumber' }
+          bookedSeatsCount: {
+            $sum: {
+              $map: {
+                input: '$bookings',
+                as: 'booking',
+                in: { $size: '$$booking.seatNumber' }
+              }
+            }
+          }
         }
       }
     ]).then(results => {
@@ -288,14 +391,6 @@ class ScheduleService {
       }
     });
   }
-
-  async getScheduleByBusId(busId: string): Promise<ScheduleInterface[]> {
-    return await Schedule.find({ busId })
-      .populate('routeId')
-      .populate('busId')
-      .exec();
-  }
-  
 }
 
 export const scheduleService = new ScheduleService();

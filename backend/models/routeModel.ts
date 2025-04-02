@@ -3,6 +3,11 @@ import { Route } from '../interfaces/route.interface';
 
 const routeSchema = new Schema<Route>(
   {
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
     startLocation: {
       type: String,
       required: true,
