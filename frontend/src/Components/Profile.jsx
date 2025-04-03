@@ -1,8 +1,9 @@
-// // // import React, { useState, useEffect } from 'react';
+// // // import React, { useState, useEffect, useRef } from 'react';
 // // // import styled from 'styled-components';
 // // // import { useNavigate } from 'react-router-dom';
+// // // import { usePDF } from 'react-to-pdf';
 
-// // // // Main Container Styles
+// // // // Styled Components
 // // // const DashboardContainer = styled.div`
 // // //   max-width: 1200px;
 // // //   margin: 0 auto;
@@ -10,7 +11,6 @@
 // // //   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 // // // `;
 
-// // // // Header Styles
 // // // const Header = styled.header`
 // // //   display: flex;
 // // //   justify-content: space-between;
@@ -61,7 +61,6 @@
 // // //   color: #2d3748;
 // // // `;
 
-// // // // Dashboard Layout
 // // // const DashboardContent = styled.div`
 // // //   display: grid;
 // // //   grid-template-columns: 300px 1fr;
@@ -72,7 +71,6 @@
 // // //   }
 // // // `;
 
-// // // // Profile Card Styles
 // // // const ProfileCard = styled.div`
 // // //   background-color: white;
 // // //   border-radius: 10px;
@@ -132,7 +130,6 @@
 // // //   font-weight: bold;
 // // // `;
 
-// // // // Stats Card Styles
 // // // const StatsCard = styled.div`
 // // //   background-color: white;
 // // //   border-radius: 10px;
@@ -170,7 +167,6 @@
 // // //   color: #718096;
 // // // `;
 
-// // // // Activity Styles
 // // // const RecentActivity = styled.div`
 // // //   background-color: white;
 // // //   border-radius: 10px;
@@ -217,7 +213,6 @@
 // // //   color: #718096;
 // // // `;
 
-// // // // Button Styles
 // // // const Button = styled.button`
 // // //   padding: 10px 20px;
 // // //   border: none;
@@ -249,133 +244,71 @@
 // // //   margin-top: 10px;
 // // // `;
 
-// // // // Edit Modal Styles
-// // // const EditProfileModal = styled.div`
-// // //   position: fixed;
-// // //   top: 0;
-// // //   left: 0;
-// // //   right: 0;
-// // //   bottom: 0;
-// // //   background-color: rgba(0, 0, 0, 0.5);
-// // //   display: flex;
-// // //   align-items: center;
-// // //   justify-content: center;
-// // //   z-index: 1000;
-// // // `;
-
-// // // const ModalContent = styled.div`
-// // //   background-color: white;
-// // //   border-radius: 10px;
-// // //   padding: 30px;
-// // //   width: 90%;
-// // //   max-width: 500px;
-// // //   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-// // // `;
-
-// // // const ModalHeader = styled.div`
-// // //   display: flex;
-// // //   justify-content: space-between;
-// // //   align-items: center;
-// // //   margin-bottom: 20px;
-// // // `;
-
-// // // const ModalTitle = styled.h3`
-// // //   margin: 0;
-// // //   color: #2d3748;
-// // // `;
-
-// // // const CloseButton = styled.button`
-// // //   background: none;
+// // // const DownloadButton = styled(Button)`
+// // //   padding: 6px 12px;
+// // //   background-color: #38a169;
+// // //   color: white;
 // // //   border: none;
-// // //   font-size: 20px;
-// // //   cursor: pointer;
-// // //   color: #718096;
-// // // `;
-
-// // // const FormGroup = styled.div`
-// // //   margin-bottom: 20px;
-// // // `;
-
-// // // const FormLabel = styled.label`
-// // //   display: block;
-// // //   margin-bottom: 8px;
-// // //   font-weight: 500;
-// // //   color: #4a5568;
-// // // `;
-
-// // // const FormInput = styled.input`
-// // //   width: 100%;
-// // //   padding: 10px 15px;
-// // //   border: 1px solid #e2e8f0;
-// // //   border-radius: 6px;
-// // //   font-size: 16px;
-// // //   transition: border-color 0.3s;
-
-// // //   &:focus {
-// // //     outline: none;
-// // //     border-color: #4c51bf;
-// // //   }
-// // // `;
-
-// // // const FormTextarea = styled.textarea`
-// // //   width: 100%;
-// // //   padding: 10px 15px;
-// // //   border: 1px solid #e2e8f0;
-// // //   border-radius: 6px;
-// // //   font-size: 16px;
-// // //   min-height: 100px;
-// // //   resize: vertical;
-// // //   transition: border-color 0.3s;
-
-// // //   &:focus {
-// // //     outline: none;
-// // //     border-color: #4c51bf;
-// // //   }
-// // // `;
-
-// // // const ImageUploadWrapper = styled.div`
-// // //   display: flex;
-// // //   flex-direction: column;
-// // //   align-items: center;
-// // //   margin-bottom: 20px;
-// // // `;
-
-// // // const ImagePreview = styled.img`
-// // //   width: 150px;
-// // //   height: 150px;
-// // //   border-radius: 50%;
-// // //   object-fit: cover;
-// // //   margin-bottom: 15px;
-// // //   border: 2px solid #e2e8f0;
-// // // `;
-
-// // // const UploadLabel = styled.label`
-// // //   padding: 8px 15px;
-// // //   background-color: #edf2f7;
-// // //   border-radius: 6px;
-// // //   cursor: pointer;
-// // //   transition: background-color 0.3s;
+// // //   border-radius: 4px;
+// // //   font-size: 14px;
+// // //   margin-top: 10px;
 
 // // //   &:hover {
-// // //     background-color: #e2e8f0;
+// // //     background-color: #2f855a;
 // // //   }
 // // // `;
 
-// // // const UploadInput = styled.input`
-// // //   display: none;
+// // // const TicketContainer = styled.div`
+// // //   width: 100%;
+// // //   max-width: 500px;
+// // //   background-color: white;
 // // // `;
 
-// // // const ModalFooter = styled.div`
-// // //   display: flex;
-// // //   justify-content: flex-end;
-// // //   gap: 15px;
-// // //   margin-top: 30px;
+// // // const Ticket = styled.div`
+// // //   width: 100%;
+// // //   padding: 20px;
+// // //   background-color: #ffffff;
+// // //   border: 1px solid #e2e8f0;
+// // //   border-radius: 8px;
+// // //   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 // // // `;
 
-// // // const ErrorMessage = styled.p`
-// // //   color: #e53e3e;
-// // //   margin-top: 10px;
+// // // const TicketHeader = styled.div`
 // // //   text-align: center;
+// // //   margin-bottom: 20px;
+// // //   padding-bottom: 15px;
+// // //   border-bottom: 1px solid #e2e8f0;
+// // // `;
+
+// // // const TicketTitle = styled.h2`
+// // //   color: #2d3748;
+// // //   margin: 0;
+// // // `;
+
+// // // const TicketBody = styled.div`
+// // //   display: grid;
+// // //   grid-template-columns: 1fr 1fr;
+// // //   gap: 20px;
+// // //   margin-bottom: 20px;
+// // // `;
+
+// // // const TicketSection = styled.div`
+// // //   margin-bottom: 15px;
+// // // `;
+
+// // // const SectionTitle = styled.h3`
+// // //   color: #4a5568;
+// // //   font-size: 16px;
+// // //   margin: 0 0 10px 0;
+// // // `;
+
+// // // const TicketFooter = styled.div`
+// // //   margin-top: 20px;
+// // //   padding-top: 15px;
+// // //   border-top: 1px solid #e2e8f0;
+// // //   text-align: center;
+// // //   font-size: 12px;
+// // //   color: #718096;
 // // // `;
 
 // // // const LoadingMessage = styled.div`
@@ -390,8 +323,90 @@
 // // //   padding: 40px;
 // // // `;
 
+// // // const EditForm = styled.form`
+// // //   display: flex;
+// // //   flex-direction: column;
+// // //   gap: 15px;
+// // // `;
+
+// // // const FormGroup = styled.div`
+// // //   display: flex;
+// // //   flex-direction: column;
+// // //   gap: 5px;
+// // // `;
+
+// // // const FormLabel = styled.label`
+// // //   font-size: 14px;
+// // //   color: #4a5568;
+// // // `;
+
+// // // const FormInput = styled.input`
+// // //   padding: 10px;
+// // //   border: 1px solid #e2e8f0;
+// // //   border-radius: 4px;
+// // //   font-size: 16px;
+
+// // //   &:focus {
+// // //     outline: none;
+// // //     border-color: #4c51bf;
+// // //     box-shadow: 0 0 0 1px #4c51bf;
+// // //   }
+// // // `;
+
+// // // const FormTextarea = styled.textarea`
+// // //   padding: 10px;
+// // //   border: 1px solid #e2e8f0;
+// // //   border-radius: 4px;
+// // //   font-size: 16px;
+// // //   min-height: 100px;
+// // //   resize: vertical;
+
+// // //   &:focus {
+// // //     outline: none;
+// // //     border-color: #4c51bf;
+// // //     box-shadow: 0 0 0 1px #4c51bf;
+// // //   }
+// // // `;
+
+// // // const ButtonGroup = styled.div`
+// // //   display: flex;
+// // //   gap: 10px;
+// // //   margin-top: 20px;
+// // // `;
+
+// // // const SecondaryButton = styled(Button)`
+// // //   background-color: #e2e8f0;
+// // //   color: #4a5568;
+// // // `;
+
+// // // const Modal = styled.div`
+// // //   position: fixed;
+// // //   top: 0;
+// // //   left: 0;
+// // //   right: 0;
+// // //   bottom: 0;
+// // //   background-color: rgba(0, 0, 0, 0.5);
+// // //   display: flex;
+// // //   justify-content: center;
+// // //   align-items: center;
+// // //   z-index: 1000;
+// // // `;
+
+// // // const ModalContent = styled.div`
+// // //   background-color: white;
+// // //   padding: 20px;
+// // //   border-radius: 8px;
+// // //   max-width: 500px;
+// // //   width: 100%;
+// // //   max-height: 90vh;
+// // //   overflow-y: auto;
+// // // `;
+
 // // // const PassengerDashboard = () => {
 // // //   const navigate = useNavigate();
+// // //   const ticketRef = useRef(null);
+// // //   const { toPDF } = usePDF();
+  
 // // //   const [passenger, setPassenger] = useState(null);
 // // //   const [bookings, setBookings] = useState([]);
 // // //   const [loading, setLoading] = useState(true);
@@ -409,13 +424,21 @@
 // // //   const [imagePreview, setImagePreview] = useState('');
 // // //   const [isUpdating, setIsUpdating] = useState(false);
 // // //   const [updateError, setUpdateError] = useState('');
+// // //   const [selectedTicket, setSelectedTicket] = useState(null);
+// // //   const [showTicketModal, setShowTicketModal] = useState(false);
 
+// // //   // Fetch passenger details
 // // //   useEffect(() => {
 // // //     const fetchPassengerDetails = async () => {
 // // //       setLoading(true);
 // // //       setError(null);
 // // //       try {
 // // //         const token = localStorage.getItem('accessToken');
+// // //         if (!token) {
+// // //           navigate('/login');
+// // //           return;
+// // //         }
+        
 // // //         const response = await fetch('http://localhost:7000/api/v1/auth/profile', {
 // // //           headers: {
 // // //             'Authorization': `Bearer ${token}`,
@@ -423,6 +446,11 @@
 // // //         });
 
 // // //         if (!response.ok) {
+// // //           if (response.status === 401) {
+// // //             localStorage.removeItem('accessToken');
+// // //             navigate('/login');
+// // //             return;
+// // //           }
 // // //           throw new Error('Failed to fetch passenger details');
 // // //         }
 
@@ -447,16 +475,22 @@
 // // //     fetchPassengerDetails();
 // // //   }, [navigate]);
 
+// // //   // Fetch bookings when passenger data is available
 // // //   useEffect(() => {
 // // //     const fetchBookings = async () => {
 // // //       if (!passenger?.email) return;
-      
+
 // // //       setBookingsLoading(true);
 // // //       setBookingsError(null);
 // // //       try {
 // // //         const token = localStorage.getItem('accessToken');
+// // //         if (!token) {
+// // //           navigate('/login');
+// // //           return;
+// // //         }
+        
 // // //         const response = await fetch(
-// // //           `http://localhost:7000/api/v1/bookings?email=${passenger.email}`, 
+// // //           `http://localhost:7000/api/v1/bookings?email=${passenger.email}`,
 // // //           {
 // // //             headers: {
 // // //               'Authorization': `Bearer ${token}`,
@@ -465,6 +499,11 @@
 // // //         );
 
 // // //         if (!response.ok) {
+// // //           if (response.status === 401) {
+// // //             localStorage.removeItem('accessToken');
+// // //             navigate('/login');
+// // //             return;
+// // //           }
 // // //           throw new Error('Failed to fetch bookings');
 // // //         }
 
@@ -479,7 +518,7 @@
 // // //     };
 
 // // //     fetchBookings();
-// // //   }, [passenger?.email]);
+// // //   }, [passenger?.email, navigate]);
 
 // // //   const getInitials = (firstName, lastName) => {
 // // //     return `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase();
@@ -508,13 +547,18 @@
 // // //     }
 // // //   };
 
-// // //   const handleUpdateProfile = async () => {
+// // //   const handleUpdateProfile = async (e) => {
+// // //     e.preventDefault();
 // // //     setIsUpdating(true);
 // // //     setUpdateError('');
-    
+
 // // //     try {
 // // //       const token = localStorage.getItem('accessToken');
-      
+// // //       if (!token) {
+// // //         navigate('/login');
+// // //         return;
+// // //       }
+
 // // //       const formData = new FormData();
 // // //       formData.append('firstName', editData.firstName);
 // // //       formData.append('lastName', editData.lastName);
@@ -533,17 +577,52 @@
 // // //       });
 
 // // //       if (!response.ok) {
+// // //         if (response.status === 401) {
+// // //           localStorage.removeItem('accessToken');
+// // //           navigate('/login');
+// // //           return;
+// // //         }
 // // //         throw new Error('Failed to update profile');
 // // //       }
 
 // // //       const data = await response.json();
 // // //       setPassenger(data.data);
 // // //       setIsEditing(false);
+// // //       // Show success message
+// // //       alert('Profile updated successfully!');
 // // //     } catch (err) {
 // // //       console.error('Error updating profile:', err);
 // // //       setUpdateError(err.message || 'Failed to update profile. Please try again.');
 // // //     } finally {
 // // //       setIsUpdating(false);
+// // //     }
+// // //   };
+
+// // //   const handleViewTicket = (booking) => {
+// // //     setSelectedTicket({
+// // //       ...booking,
+// // //       passengerName: `${passenger?.firstName} ${passenger?.lastName}`,
+// // //       passengerEmail: passenger?.email,
+// // //       passengerPhone: passenger?.phoneNumber
+// // //     });
+// // //     setShowTicketModal(true);
+// // //   };
+  
+// // //   const handleDownloadTicket = () => {
+// // //     if (ticketRef.current) {
+// // //       try {
+// // //         toPDF(ticketRef, { 
+// // //           filename: `ticket-${selectedTicket.ticketId}.pdf`,
+// // //           page: { 
+// // //             margin: 10,
+// // //             format: 'letter',
+// // //             orientation: 'portrait'
+// // //           }
+// // //         });
+// // //       } catch (err) {
+// // //         console.error("Error generating PDF:", err);
+// // //         alert("Failed to generate PDF. Please try again.");
+// // //       }
 // // //     }
 // // //   };
 
@@ -571,7 +650,6 @@
 // // //     );
 // // //   }
 
-// // //   // Calculate stats from bookings data
 // // //   const stats = {
 // // //     tripsCompleted: bookings.filter(b => b.status === 'completed').length,
 // // //     upcomingTrips: bookings.filter(b => b.status === 'confirmed').length,
@@ -593,76 +671,175 @@
 
 // // //       <DashboardContent>
 // // //         <div>
-// // //           <ProfileCard>
-// // //             <ProfileImage>
-// // //               {passenger?.profileImage ? (
-// // //                 <img 
-// // //                   src={passenger.profileImage} 
-// // //                   alt="Profile" 
-// // //                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-// // //                 />
-// // //               ) : (
-// // //                 <InitialsAvatar>
-// // //                   {getInitials(passenger?.firstName, passenger?.lastName)}
-// // //                 </InitialsAvatar>
-// // //               )}
-// // //             </ProfileImage>
-            
-// // //             <CardTitle>Profile Details</CardTitle>
-            
-// // //             <ProfileDetail>
-// // //               <DetailLabel>Full Name</DetailLabel>
-// // //               <DetailValue>{passenger?.firstName} {passenger?.lastName}</DetailValue>
-// // //             </ProfileDetail>
-            
-// // //             <ProfileDetail>
-// // //               <DetailLabel>Email</DetailLabel>
-// // //               <DetailValue>{passenger?.email}</DetailValue>
-// // //             </ProfileDetail>
-            
-// // //             <ProfileDetail>
-// // //               <DetailLabel>Phone Number</DetailLabel>
-// // //               <DetailValue>{passenger?.phoneNumber || 'Not provided'}</DetailValue>
-// // //             </ProfileDetail>
-            
-// // //             <ProfileDetail>
-// // //               <DetailLabel>Account Type</DetailLabel>
-// // //               <DetailValue style={{ 
-// // //                 textTransform: 'capitalize',
-// // //                 color: passenger?.role === 'admin' ? '#9f7aea' : '#4c51bf'
-// // //               }}>
-// // //                 {passenger?.role}
-// // //               </DetailValue>
-// // //             </ProfileDetail>
-            
-// // //             {passenger?.bio && (
+// // //           {isEditing ? (
+// // //             <ProfileCard>
+// // //               <CardTitle>Edit Profile</CardTitle>
+              
+// // //               <EditForm onSubmit={handleUpdateProfile}>
+// // //                 <ProfileImage>
+// // //                   {imagePreview ? (
+// // //                     <img
+// // //                       src={imagePreview}
+// // //                       alt="Profile Preview"
+// // //                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+// // //                     />
+// // //                   ) : (
+// // //                     <InitialsAvatar>
+// // //                       {getInitials(editData.firstName, editData.lastName)}
+// // //                     </InitialsAvatar>
+// // //                   )}
+// // //                 </ProfileImage>
+                
+// // //                 <FormGroup>
+// // //                   <FormLabel htmlFor="profileImage">Profile Image</FormLabel>
+// // //                   <FormInput
+// // //                     type="file"
+// // //                     id="profileImage"
+// // //                     accept="image/*"
+// // //                     onChange={handleImageChange}
+// // //                   />
+// // //                 </FormGroup>
+                
+// // //                 <FormGroup>
+// // //                   <FormLabel htmlFor="firstName">First Name</FormLabel>
+// // //                   <FormInput
+// // //                     type="text"
+// // //                     id="firstName"
+// // //                     name="firstName"
+// // //                     value={editData.firstName}
+// // //                     onChange={handleEditChange}
+// // //                     required
+// // //                   />
+// // //                 </FormGroup>
+                
+// // //                 <FormGroup>
+// // //                   <FormLabel htmlFor="lastName">Last Name</FormLabel>
+// // //                   <FormInput
+// // //                     type="text"
+// // //                     id="lastName"
+// // //                     name="lastName"
+// // //                     value={editData.lastName}
+// // //                     onChange={handleEditChange}
+// // //                     required
+// // //                   />
+// // //                 </FormGroup>
+                
+// // //                 <FormGroup>
+// // //                   <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
+// // //                   <FormInput
+// // //                     type="tel"
+// // //                     id="phoneNumber"
+// // //                     name="phoneNumber"
+// // //                     value={editData.phoneNumber}
+// // //                     onChange={handleEditChange}
+// // //                   />
+// // //                 </FormGroup>
+                
+// // //                 <FormGroup>
+// // //                   <FormLabel htmlFor="bio">Bio</FormLabel>
+// // //                   <FormTextarea
+// // //                     id="bio"
+// // //                     name="bio"
+// // //                     value={editData.bio}
+// // //                     onChange={handleEditChange}
+// // //                     placeholder="Tell us a bit about yourself..."
+// // //                   />
+// // //                 </FormGroup>
+                
+// // //                 {updateError && (
+// // //                   <ErrorAlert>{updateError}</ErrorAlert>
+// // //                 )}
+                
+// // //                 <ButtonGroup>
+// // //                   <SecondaryButton 
+// // //                     type="button" 
+// // //                     onClick={() => setIsEditing(false)}
+// // //                     disabled={isUpdating}
+// // //                   >
+// // //                     Cancel
+// // //                   </SecondaryButton>
+// // //                   <PrimaryButton 
+// // //                     type="submit"
+// // //                     disabled={isUpdating}
+// // //                     style={{ margin: 0 }}
+// // //                   >
+// // //                     {isUpdating ? 'Updating...' : 'Save Changes'}
+// // //                   </PrimaryButton>
+// // //                 </ButtonGroup>
+// // //               </EditForm>
+// // //             </ProfileCard>
+// // //           ) : (
+// // //             <ProfileCard>
+// // //               <ProfileImage>
+// // //                 {passenger?.profileImage ? (
+// // //                   <img
+// // //                     src={passenger.profileImage}
+// // //                     alt="Profile"
+// // //                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+// // //                   />
+// // //                 ) : (
+// // //                   <InitialsAvatar>
+// // //                     {getInitials(passenger?.firstName, passenger?.lastName)}
+// // //                   </InitialsAvatar>
+// // //                 )}
+// // //               </ProfileImage>
+
+// // //               <CardTitle>Profile Details</CardTitle>
+
 // // //               <ProfileDetail>
-// // //                 <DetailLabel>Bio</DetailLabel>
-// // //                 <DetailValue>{passenger.bio}</DetailValue>
+// // //                 <DetailLabel>Full Name</DetailLabel>
+// // //                 <DetailValue>{passenger?.firstName} {passenger?.lastName}</DetailValue>
 // // //               </ProfileDetail>
-// // //             )}
-            
-// // //             <ProfileDetail>
-// // //               <DetailLabel>Member Since</DetailLabel>
-// // //               <DetailValue>
-// // //                 {new Date(passenger?.createdAt).toLocaleDateString('en-US', {
-// // //                   year: 'numeric',
-// // //                   month: 'long',
-// // //                   day: 'numeric'
-// // //                 })}
-// // //               </DetailValue>
-// // //             </ProfileDetail>
-            
-// // //             <PrimaryButton onClick={() => setIsEditing(true)}>
-// // //               <i className="fas fa-edit"></i> Edit Profile
-// // //             </PrimaryButton>
-            
-// // //             <DangerButton onClick={handleLogout}>
-// // //               <i className="fas fa-sign-out-alt"></i> Logout
-// // //             </DangerButton>
-// // //           </ProfileCard>
+
+// // //               <ProfileDetail>
+// // //                 <DetailLabel>Email</DetailLabel>
+// // //                 <DetailValue>{passenger?.email}</DetailValue>
+// // //               </ProfileDetail>
+
+// // //               <ProfileDetail>
+// // //                 <DetailLabel>Phone Number</DetailLabel>
+// // //                 <DetailValue>{passenger?.phoneNumber || 'Not provided'}</DetailValue>
+// // //               </ProfileDetail>
+
+// // //               <ProfileDetail>
+// // //                 <DetailLabel>Account Type</DetailLabel>
+// // //                 <DetailValue style={{
+// // //                   textTransform: 'capitalize',
+// // //                   color: passenger?.role === 'admin' ? '#9f7aea' : '#4c51bf'
+// // //                 }}>
+// // //                   {passenger?.role}
+// // //                 </DetailValue>
+// // //               </ProfileDetail>
+
+// // //               {passenger?.bio && (
+// // //                 <ProfileDetail>
+// // //                   <DetailLabel>Bio</DetailLabel>
+// // //                   <DetailValue>{passenger.bio}</DetailValue>
+// // //                 </ProfileDetail>
+// // //               )}
+
+// // //               <ProfileDetail>
+// // //                 <DetailLabel>Member Since</DetailLabel>
+// // //                 <DetailValue>
+// // //                   {new Date(passenger?.createdAt).toLocaleDateString('en-US', {
+// // //                     year: 'numeric',
+// // //                     month: 'long',
+// // //                     day: 'numeric'
+// // //                   })}
+// // //                 </DetailValue>
+// // //               </ProfileDetail>
+
+// // //               <PrimaryButton onClick={() => setIsEditing(true)}>
+// // //                 <i className="fas fa-edit"></i> Edit Profile
+// // //               </PrimaryButton>
+
+// // //               <DangerButton onClick={handleLogout}>
+// // //                 <i className="fas fa-sign-out-alt"></i> Logout
+// // //               </DangerButton>
+// // //             </ProfileCard>
+// // //           )}
 // // //         </div>
-        
+
 // // //         <div>
 // // //           <StatsCard>
 // // //             <CardTitle>Your Travel Stats</CardTitle>
@@ -681,10 +858,10 @@
 // // //               </StatItem>
 // // //             </StatsGrid>
 // // //           </StatsCard>
-          
+
 // // //           <RecentActivity>
 // // //             <CardTitle>Recent Bookings</CardTitle>
-            
+
 // // //             {bookingsLoading ? (
 // // //               <LoadingMessage>Loading bookings...</LoadingMessage>
 // // //             ) : bookingsError ? (
@@ -692,7 +869,7 @@
 // // //             ) : bookings.length === 0 ? (
 // // //               <LoadingMessage>No bookings found</LoadingMessage>
 // // //             ) : (
-// // //               bookings.slice(0, 3).map(booking => (
+// // //               bookings.slice(0, 5).map(booking => (
 // // //                 <ActivityItem key={booking._id}>
 // // //                   <ActivityIcon>
 // // //                     <i className="fas fa-bus"></i>
@@ -710,6 +887,9 @@
 // // //                         minute: '2-digit'
 // // //                       })} • Seats: {booking.seatNumber?.join(', ') || 'Not assigned'}
 // // //                     </ActivityDate>
+// // //                     <DownloadButton onClick={() => handleViewTicket(booking)}>
+// // //                       <i className="fas fa-ticket-alt"></i> View Ticket
+// // //                     </DownloadButton>
 // // //                   </ActivityText>
 // // //                 </ActivityItem>
 // // //               ))
@@ -718,98 +898,86 @@
 // // //         </div>
 // // //       </DashboardContent>
 
-// // //       {isEditing && (
-// // //         <EditProfileModal>
+// // //       {/* Ticket Modal */}
+// // //       {showTicketModal && selectedTicket && (
+// // //         <Modal>
 // // //           <ModalContent>
-// // //             <ModalHeader>
-// // //               <ModalTitle>Edit Profile</ModalTitle>
-// // //               <CloseButton onClick={() => setIsEditing(false)}>×</CloseButton>
-// // //             </ModalHeader>
-            
-// // //             <ImageUploadWrapper>
-// // //               {imagePreview ? (
-// // //                 <ImagePreview src={imagePreview} alt="Profile Preview" />
-// // //               ) : (
-// // //                 <InitialsAvatar>
-// // //                   {getInitials(editData.firstName, editData.lastName)}
-// // //                 </InitialsAvatar>
-// // //               )}
-// // //               <UploadLabel>
-// // //                 <i className="fas fa-camera"></i> Change Photo
-// // //                 <UploadInput 
-// // //                   type="file" 
-// // //                   accept="image/*" 
-// // //                   onChange={handleImageChange}
-// // //                 />
-// // //               </UploadLabel>
-// // //             </ImageUploadWrapper>
-            
-// // //             <FormGroup>
-// // //               <FormLabel>First Name</FormLabel>
-// // //               <FormInput
-// // //                 type="text"
-// // //                 name="firstName"
-// // //                 value={editData.firstName}
-// // //                 onChange={handleEditChange}
-// // //                 required
-// // //               />
-// // //             </FormGroup>
-            
-// // //             <FormGroup>
-// // //               <FormLabel>Last Name</FormLabel>
-// // //               <FormInput
-// // //                 type="text"
-// // //                 name="lastName"
-// // //                 value={editData.lastName}
-// // //                 onChange={handleEditChange}
-// // //                 required
-// // //               />
-// // //             </FormGroup>
-            
-// // //             <FormGroup>
-// // //               <FormLabel>Phone Number</FormLabel>
-// // //               <FormInput
-// // //                 type="tel"
-// // //                 name="phoneNumber"
-// // //                 value={editData.phoneNumber}
-// // //                 onChange={handleEditChange}
-// // //               />
-// // //             </FormGroup>
-            
-// // //             <FormGroup>
-// // //               <FormLabel>Bio</FormLabel>
-// // //               <FormTextarea
-// // //                 name="bio"
-// // //                 value={editData.bio}
-// // //                 onChange={handleEditChange}
-// // //                 placeholder="Tell us about yourself..."
-// // //               />
-// // //             </FormGroup>
-            
-// // //             {updateError && <ErrorMessage>{updateError}</ErrorMessage>}
-            
-// // //             <ModalFooter>
-// // //               <Button 
-// // //                 onClick={() => setIsEditing(false)} 
-// // //                 disabled={isUpdating}
-// // //                 style={{ background: '#e2e8f0', color: '#4a5568' }}
-// // //               >
-// // //                 Cancel
+// // //             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+// // //               <h2 style={{ margin: 0 }}>Ticket Preview</h2>
+// // //               <Button onClick={() => setShowTicketModal(false)} style={{ padding: '5px 10px', backgroundColor: '#e2e8f0' }}>
+// // //                 <i className="fas fa-times"></i>
 // // //               </Button>
-// // //               <PrimaryButton onClick={handleUpdateProfile} disabled={isUpdating}>
-// // //                 {isUpdating ? (
-// // //                   <>
-// // //                     <i className="fas fa-spinner fa-spin"></i> Updating...
-// // //                   </>
-// // //                 ) : (
-// // //                   <>
-// // //                     <i className="fas fa-save"></i> Save Changes
-// // //                   </>
-// // //                 )}
-// // //               </PrimaryButton>
-// // //             </ModalFooter>
+// // //             </div>
+            
+// // //             <TicketContainer ref={ticketRef}>
+// // //               <Ticket>
+// // //                 <TicketHeader>
+// // //                   <TicketTitle>Bus Ticket</TicketTitle>
+// // //                   <p>Ticket ID: {selectedTicket.ticketId}</p>
+// // //                 </TicketHeader>
+
+// // //                 <TicketBody>
+// // //                   <div>
+// // //                     <TicketSection>
+// // //                       <SectionTitle>Journey Details</SectionTitle>
+// // //                       <div>
+// // //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Booking Date: </span>
+// // //                         <span style={{ color: '#2d3748' }}>
+// // //                           {new Date(selectedTicket.bookingDate).toLocaleString()}
+// // //                         </span>
+// // //                       </div>
+// // //                       <div style={{ marginTop: '8px' }}>
+// // //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Status: </span>
+// // //                         <span style={{ color: '#2d3748' }}>
+// // //                           {selectedTicket.status}
+// // //                         </span>
+// // //                       </div>
+// // //                       <div style={{ marginTop: '8px' }}>
+// // //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Payment: </span>
+// // //                         <span style={{ color: '#2d3748' }}>
+// // //                           {selectedTicket.paymentStatus}
+// // //                         </span>
+// // //                       </div>
+// // //                       <div style={{ marginTop: '8px' }}>
+// // //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Seats: </span>
+// // //                         <span style={{ color: '#2d3748' }}>
+// // //                           {selectedTicket.seatNumber?.join(', ') || 'Not assigned'}
+// // //                         </span>
+// // //                       </div>
+// // //                     </TicketSection>
+// // //                   </div>
+
+// // //                   <div>
+// // //                     <TicketSection>
+// // //                       <SectionTitle>Passenger Details</SectionTitle>
+// // //                       <div>
+// // //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Name: </span>
+// // //                         <span style={{ color: '#2d3748' }}>{selectedTicket.passengerName}</span>
+// // //                       </div>
+// // //                       <div style={{ marginTop: '8px' }}>
+// // //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Email: </span>
+// // //                         <span style={{ color: '#2d3748' }}>{selectedTicket.passengerEmail}</span>
+// // //                       </div>
+// // //                       <div style={{ marginTop: '8px' }}>
+// // //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Phone: </span>
+// // //                         <span style={{ color: '#2d3748' }}>{selectedTicket.passengerPhone || 'Not provided'}</span>
+// // //                       </div>
+// // //                     </TicketSection>
+// // //                   </div>
+// // //                 </TicketBody>
+
+// // //                 <TicketFooter>
+// // //                   <p>Thank you for choosing our service. Please present this ticket when boarding.</p>
+// // //                   <p>For any inquiries, contact support@busbudder.com</p>
+// // //                 </TicketFooter>
+// // //               </Ticket>
+// // //             </TicketContainer>
+            
+// // //             <PrimaryButton onClick={handleDownloadTicket} style={{ marginTop: '20px' }}>
+// // //               <i className="fas fa-download"></i> Download as PDF
+// // //             </PrimaryButton>
 // // //           </ModalContent>
-// // //         </EditProfileModal>
+// // //         </Modal>
 // // //       )}
 // // //     </DashboardContainer>
 // // //   );
@@ -821,7 +989,7 @@
 // // import { useNavigate } from 'react-router-dom';
 // // import { usePDF } from 'react-to-pdf';
 
-// // // Main Container Styles
+// // // Styled Components
 // // const DashboardContainer = styled.div`
 // //   max-width: 1200px;
 // //   margin: 0 auto;
@@ -829,7 +997,6 @@
 // //   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 // // `;
 
-// // // Header Styles
 // // const Header = styled.header`
 // //   display: flex;
 // //   justify-content: space-between;
@@ -880,7 +1047,6 @@
 // //   color: #2d3748;
 // // `;
 
-// // // Dashboard Layout
 // // const DashboardContent = styled.div`
 // //   display: grid;
 // //   grid-template-columns: 300px 1fr;
@@ -891,7 +1057,6 @@
 // //   }
 // // `;
 
-// // // Profile Card Styles
 // // const ProfileCard = styled.div`
 // //   background-color: white;
 // //   border-radius: 10px;
@@ -912,11 +1077,11 @@
 // //   margin-bottom: 20px;
 // // `;
 
-// // // const DetailLabel = styled.p`
-// // //   color: #718096;
-// // //   font-size: 14px;
-// // //   margin: 0 0 5px 0;
-// // // `;
+// // const DetailLabel = styled.p`
+// //   color: #718096;
+// //   font-size: 14px;
+// //   margin: 0 0 5px 0;
+// // `;
 
 // // const DetailValue = styled.p`
 // //   color: #2d3748;
@@ -951,7 +1116,6 @@
 // //   font-weight: bold;
 // // `;
 
-// // // Stats Card Styles
 // // const StatsCard = styled.div`
 // //   background-color: white;
 // //   border-radius: 10px;
@@ -989,7 +1153,6 @@
 // //   color: #718096;
 // // `;
 
-// // // Activity Styles
 // // const RecentActivity = styled.div`
 // //   background-color: white;
 // //   border-radius: 10px;
@@ -1036,7 +1199,6 @@
 // //   color: #718096;
 // // `;
 
-// // // Button Styles
 // // const Button = styled.button`
 // //   padding: 10px 20px;
 // //   border: none;
@@ -1068,7 +1230,6 @@
 // //   margin-top: 10px;
 // // `;
 
-// // // Ticket Download Styles
 // // const DownloadButton = styled(Button)`
 // //   padding: 6px 12px;
 // //   background-color: #38a169;
@@ -1083,15 +1244,14 @@
 // //   }
 // // `;
 
-// // // Ticket PDF Styles (hidden)
 // // const TicketContainer = styled.div`
-// //   display: none;
+// //   width: 100%;
+// //   max-width: 500px;
+// //   background-color: white;
 // // `;
 
 // // const Ticket = styled.div`
 // //   width: 100%;
-// //   max-width: 500px;
-// //   margin: 0 auto;
 // //   padding: 20px;
 // //   background-color: #ffffff;
 // //   border: 1px solid #e2e8f0;
@@ -1128,19 +1288,6 @@
 // //   margin: 0 0 10px 0;
 // // `;
 
-// // const TicketDetail = styled.div`
-// //   margin-bottom: 8px;
-// // `;
-
-// // const DetailLabel = styled.span`
-// //   font-weight: 500;
-// //   color: #4a5568;
-// // `;
-
-// // // const DetailValue = styled.span`
-// // //   color: #2d3748;
-// // // `;
-
 // // const TicketFooter = styled.div`
 // //   margin-top: 20px;
 // //   padding-top: 15px;
@@ -1150,7 +1297,6 @@
 // //   color: #718096;
 // // `;
 
-// // // Loading and Error Messages
 // // const LoadingMessage = styled.div`
 // //   text-align: center;
 // //   padding: 40px;
@@ -1163,10 +1309,89 @@
 // //   padding: 40px;
 // // `;
 
+// // const EditForm = styled.form`
+// //   display: flex;
+// //   flex-direction: column;
+// //   gap: 15px;
+// // `;
+
+// // const FormGroup = styled.div`
+// //   display: flex;
+// //   flex-direction: column;
+// //   gap: 5px;
+// // `;
+
+// // const FormLabel = styled.label`
+// //   font-size: 14px;
+// //   color: #4a5568;
+// // `;
+
+// // const FormInput = styled.input`
+// //   padding: 10px;
+// //   border: 1px solid #e2e8f0;
+// //   border-radius: 4px;
+// //   font-size: 16px;
+
+// //   &:focus {
+// //     outline: none;
+// //     border-color: #4c51bf;
+// //     box-shadow: 0 0 0 1px #4c51bf;
+// //   }
+// // `;
+
+// // const FormTextarea = styled.textarea`
+// //   padding: 10px;
+// //   border: 1px solid #e2e8f0;
+// //   border-radius: 4px;
+// //   font-size: 16px;
+// //   min-height: 100px;
+// //   resize: vertical;
+
+// //   &:focus {
+// //     outline: none;
+// //     border-color: #4c51bf;
+// //     box-shadow: 0 0 0 1px #4c51bf;
+// //   }
+// // `;
+
+// // const ButtonGroup = styled.div`
+// //   display: flex;
+// //   gap: 10px;
+// //   margin-top: 20px;
+// // `;
+
+// // const SecondaryButton = styled(Button)`
+// //   background-color: #e2e8f0;
+// //   color: #4a5568;
+// // `;
+
+// // const Modal = styled.div`
+// //   position: fixed;
+// //   top: 0;
+// //   left: 0;
+// //   right: 0;
+// //   bottom: 0;
+// //   background-color: rgba(0, 0, 0, 0.5);
+// //   display: flex;
+// //   justify-content: center;
+// //   align-items: center;
+// //   z-index: 1000;
+// // `;
+
+// // const ModalContent = styled.div`
+// //   background-color: white;
+// //   padding: 20px;
+// //   border-radius: 8px;
+// //   max-width: 500px;
+// //   width: 100%;
+// //   max-height: 90vh;
+// //   overflow-y: auto;
+// // `;
+
 // // const PassengerDashboard = () => {
 // //   const navigate = useNavigate();
-// //   const { toPDF, targetRef } = usePDF({ filename: 'bus-ticket.pdf' });
 // //   const ticketRef = useRef(null);
+// //   const { toPDF } = usePDF();
 
 // //   const [passenger, setPassenger] = useState(null);
 // //   const [bookings, setBookings] = useState([]);
@@ -1185,13 +1410,21 @@
 // //   const [imagePreview, setImagePreview] = useState('');
 // //   const [isUpdating, setIsUpdating] = useState(false);
 // //   const [updateError, setUpdateError] = useState('');
+// //   const [selectedTicket, setSelectedTicket] = useState(null);
+// //   const [showTicketModal, setShowTicketModal] = useState(false);
 
+// //   // Fetch passenger details
 // //   useEffect(() => {
 // //     const fetchPassengerDetails = async () => {
 // //       setLoading(true);
 // //       setError(null);
 // //       try {
 // //         const token = localStorage.getItem('accessToken');
+// //         if (!token) {
+// //           navigate('/login');
+// //           return;
+// //         }
+
 // //         const response = await fetch('http://localhost:7000/api/v1/auth/profile', {
 // //           headers: {
 // //             'Authorization': `Bearer ${token}`,
@@ -1199,6 +1432,11 @@
 // //         });
 
 // //         if (!response.ok) {
+// //           if (response.status === 401) {
+// //             localStorage.removeItem('accessToken');
+// //             navigate('/login');
+// //             return;
+// //           }
 // //           throw new Error('Failed to fetch passenger details');
 // //         }
 
@@ -1223,16 +1461,22 @@
 // //     fetchPassengerDetails();
 // //   }, [navigate]);
 
+// //   // Fetch bookings when passenger data is available
 // //   useEffect(() => {
 // //     const fetchBookings = async () => {
 // //       if (!passenger?.email) return;
-      
+
 // //       setBookingsLoading(true);
 // //       setBookingsError(null);
 // //       try {
 // //         const token = localStorage.getItem('accessToken');
+// //         if (!token) {
+// //           navigate('/login');
+// //           return;
+// //         }
+
 // //         const response = await fetch(
-// //           `http://localhost:7000/api/v1/bookings?email=${passenger.email}`, 
+// //           `http://localhost:7000/api/v1/bookings?email=${passenger.email}`,
 // //           {
 // //             headers: {
 // //               'Authorization': `Bearer ${token}`,
@@ -1241,6 +1485,11 @@
 // //         );
 
 // //         if (!response.ok) {
+// //           if (response.status === 401) {
+// //             localStorage.removeItem('accessToken');
+// //             navigate('/login');
+// //             return;
+// //           }
 // //           throw new Error('Failed to fetch bookings');
 // //         }
 
@@ -1255,7 +1504,7 @@
 // //     };
 
 // //     fetchBookings();
-// //   }, [passenger?.email]);
+// //   }, [passenger?.email, navigate]);
 
 // //   const getInitials = (firstName, lastName) => {
 // //     return `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase();
@@ -1284,13 +1533,18 @@
 // //     }
 // //   };
 
-// //   const handleUpdateProfile = async () => {
+// //   const handleUpdateProfile = async (e) => {
+// //     e.preventDefault();
 // //     setIsUpdating(true);
 // //     setUpdateError('');
-    
+
 // //     try {
 // //       const token = localStorage.getItem('accessToken');
-      
+// //       if (!token) {
+// //         navigate('/login');
+// //         return;
+// //       }
+
 // //       const formData = new FormData();
 // //       formData.append('firstName', editData.firstName);
 // //       formData.append('lastName', editData.lastName);
@@ -1309,12 +1563,18 @@
 // //       });
 
 // //       if (!response.ok) {
+// //         if (response.status === 401) {
+// //           localStorage.removeItem('accessToken');
+// //           navigate('/login');
+// //           return;
+// //         }
 // //         throw new Error('Failed to update profile');
 // //       }
 
 // //       const data = await response.json();
 // //       setPassenger(data.data);
 // //       setIsEditing(false);
+// //       alert('Profile updated successfully!');
 // //     } catch (err) {
 // //       console.error('Error updating profile:', err);
 // //       setUpdateError(err.message || 'Failed to update profile. Please try again.');
@@ -1323,14 +1583,66 @@
 // //     }
 // //   };
 
-// //   const handleDownloadTicket = (booking) => {
-// //     ticketRef.current = {
+// //   const handleResetPassword = async () => {
+// //     try {
+// //       const token = localStorage.getItem('accessToken');
+// //       if (!token) {
+// //         navigate('/login');
+// //         return;
+// //       }
+
+// //       const response = await fetch('http://localhost:7000/api/v1/auth/reset-password', {
+// //         method: 'POST',
+// //         headers: {
+// //           'Authorization': `Bearer ${token}`,
+// //           'Content-Type': 'application/json',
+// //         },
+// //         body: JSON.stringify({ email: passenger?.email }),
+// //       });
+
+// //       if (!response.ok) {
+// //         if (response.status === 401) {
+// //           localStorage.removeItem('accessToken');
+// //           navigate('/login');
+// //           return;
+// //         }
+// //         throw new Error('Failed to initiate password reset');
+// //       }
+
+// //       const data = await response.json();
+// //       alert('Password reset link sent to your email!');
+// //     } catch (err) {
+// //       console.error('Error initiating password reset:', err);
+// //       alert('Failed to initiate password reset. Please try again.');
+// //     }
+// //   };
+
+// //   const handleViewTicket = (booking) => {
+// //     setSelectedTicket({
 // //       ...booking,
 // //       passengerName: `${passenger?.firstName} ${passenger?.lastName}`,
 // //       passengerEmail: passenger?.email,
 // //       passengerPhone: passenger?.phoneNumber
-// //     };
-// //     toPDF();
+// //     });
+// //     setShowTicketModal(true);
+// //   };
+
+// //   const handleDownloadTicket = () => {
+// //     if (ticketRef.current) {
+// //       try {
+// //         toPDF(ticketRef, {
+// //           filename: `ticket-${selectedTicket.ticketId}.pdf`,
+// //           page: {
+// //             margin: 10,
+// //             format: 'letter',
+// //             orientation: 'portrait'
+// //           }
+// //         });
+// //       } catch (err) {
+// //         console.error("Error generating PDF:", err);
+// //         alert("Failed to generate PDF. Please try again.");
+// //       }
+// //     }
 // //   };
 
 // //   const handleLogout = () => {
@@ -1357,7 +1669,6 @@
 // //     );
 // //   }
 
-// //   // Calculate stats from bookings data
 // //   const stats = {
 // //     tripsCompleted: bookings.filter(b => b.status === 'completed').length,
 // //     upcomingTrips: bookings.filter(b => b.status === 'confirmed').length,
@@ -1379,76 +1690,179 @@
 
 // //       <DashboardContent>
 // //         <div>
-// //           <ProfileCard>
-// //             <ProfileImage>
-// //               {passenger?.profileImage ? (
-// //                 <img 
-// //                   src={passenger.profileImage} 
-// //                   alt="Profile" 
-// //                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-// //                 />
-// //               ) : (
-// //                 <InitialsAvatar>
-// //                   {getInitials(passenger?.firstName, passenger?.lastName)}
-// //                 </InitialsAvatar>
-// //               )}
-// //             </ProfileImage>
-            
-// //             <CardTitle>Profile Details</CardTitle>
-            
-// //             <ProfileDetail>
-// //               <DetailLabel>Full Name</DetailLabel>
-// //               <DetailValue>{passenger?.firstName} {passenger?.lastName}</DetailValue>
-// //             </ProfileDetail>
-            
-// //             <ProfileDetail>
-// //               <DetailLabel>Email</DetailLabel>
-// //               <DetailValue>{passenger?.email}</DetailValue>
-// //             </ProfileDetail>
-            
-// //             <ProfileDetail>
-// //               <DetailLabel>Phone Number</DetailLabel>
-// //               <DetailValue>{passenger?.phoneNumber || 'Not provided'}</DetailValue>
-// //             </ProfileDetail>
-            
-// //             <ProfileDetail>
-// //               <DetailLabel>Account Type</DetailLabel>
-// //               <DetailValue style={{ 
-// //                 textTransform: 'capitalize',
-// //                 color: passenger?.role === 'admin' ? '#9f7aea' : '#4c51bf'
-// //               }}>
-// //                 {passenger?.role}
-// //               </DetailValue>
-// //             </ProfileDetail>
-            
-// //             {passenger?.bio && (
+// //           {isEditing ? (
+// //             <ProfileCard>
+// //               <CardTitle>Edit Profile</CardTitle>
+
+// //               <EditForm onSubmit={handleUpdateProfile}>
+// //                 <ProfileImage>
+// //                   {imagePreview ? (
+// //                     <img
+// //                       src={imagePreview}
+// //                       alt="Profile Preview"
+// //                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+// //                     />
+// //                   ) : (
+// //                     <InitialsAvatar>
+// //                       {getInitials(editData.firstName, editData.lastName)}
+// //                     </InitialsAvatar>
+// //                   )}
+// //                 </ProfileImage>
+
+// //                 <FormGroup>
+// //                   <FormLabel htmlFor="profileImage">Profile Image</FormLabel>
+// //                   <FormInput
+// //                     type="file"
+// //                     id="profileImage"
+// //                     accept="image/*"
+// //                     onChange={handleImageChange}
+// //                   />
+// //                 </FormGroup>
+
+// //                 <FormGroup>
+// //                   <FormLabel htmlFor="firstName">First Name</FormLabel>
+// //                   <FormInput
+// //                     type="text"
+// //                     id="firstName"
+// //                     name="firstName"
+// //                     value={editData.firstName}
+// //                     onChange={handleEditChange}
+// //                     required
+// //                   />
+// //                 </FormGroup>
+
+// //                 <FormGroup>
+// //                   <FormLabel htmlFor="lastName">Last Name</FormLabel>
+// //                   <FormInput
+// //                     type="text"
+// //                     id="lastName"
+// //                     name="lastName"
+// //                     value={editData.lastName}
+// //                     onChange={handleEditChange}
+// //                     required
+// //                   />
+// //                 </FormGroup>
+
+// //                 <FormGroup>
+// //                   <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
+// //                   <FormInput
+// //                     type="tel"
+// //                     id="phoneNumber"
+// //                     name="phoneNumber"
+// //                     value={editData.phoneNumber}
+// //                     onChange={handleEditChange}
+// //                   />
+// //                 </FormGroup>
+
+// //                 <FormGroup>
+// //                   <FormLabel htmlFor="bio">Bio</FormLabel>
+// //                   <FormTextarea
+// //                     id="bio"
+// //                     name="bio"
+// //                     value={editData.bio}
+// //                     onChange={handleEditChange}
+// //                     placeholder="Tell us a bit about yourself..."
+// //                   />
+// //                 </FormGroup>
+
+// //                 {updateError && (
+// //                   <ErrorAlert>{updateError}</ErrorAlert>
+// //                 )}
+
+// //                 <ButtonGroup>
+// //                   <SecondaryButton
+// //                     type="button"
+// //                     onClick={() => setIsEditing(false)}
+// //                     disabled={isUpdating}
+// //                   >
+// //                     Cancel
+// //                   </SecondaryButton>
+// //                   <PrimaryButton
+// //                     type="submit"
+// //                     disabled={isUpdating}
+// //                     style={{ margin: 0 }}
+// //                   >
+// //                     {isUpdating ? 'Updating...' : 'Save Changes'}
+// //                   </PrimaryButton>
+// //                 </ButtonGroup>
+// //               </EditForm>
+// //             </ProfileCard>
+// //           ) : (
+// //             <ProfileCard>
+// //               <ProfileImage>
+// //                 {passenger?.profileImage ? (
+// //                   <img
+// //                     src={passenger.profileImage}
+// //                     alt="Profile"
+// //                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+// //                   />
+// //                 ) : (
+// //                   <InitialsAvatar>
+// //                     {getInitials(passenger?.firstName, passenger?.lastName)}
+// //                   </InitialsAvatar>
+// //                 )}
+// //               </ProfileImage>
+
+// //               <CardTitle>Profile Details</CardTitle>
+
 // //               <ProfileDetail>
-// //                 <DetailLabel>Bio</DetailLabel>
-// //                 <DetailValue>{passenger.bio}</DetailValue>
+// //                 <DetailLabel>Full Name</DetailLabel>
+// //                 <DetailValue>{passenger?.firstName} {passenger?.lastName}</DetailValue>
 // //               </ProfileDetail>
-// //             )}
-            
-// //             <ProfileDetail>
-// //               <DetailLabel>Member Since</DetailLabel>
-// //               <DetailValue>
-// //                 {new Date(passenger?.createdAt).toLocaleDateString('en-US', {
-// //                   year: 'numeric',
-// //                   month: 'long',
-// //                   day: 'numeric'
-// //                 })}
-// //               </DetailValue>
-// //             </ProfileDetail>
-            
-// //             <PrimaryButton onClick={() => setIsEditing(true)}>
-// //               <i className="fas fa-edit"></i> Edit Profile
-// //             </PrimaryButton>
-            
-// //             <DangerButton onClick={handleLogout}>
-// //               <i className="fas fa-sign-out-alt"></i> Logout
-// //             </DangerButton>
-// //           </ProfileCard>
+
+// //               <ProfileDetail>
+// //                 <DetailLabel>Email</DetailLabel>
+// //                 <DetailValue>{passenger?.email}</DetailValue>
+// //               </ProfileDetail>
+
+// //               <ProfileDetail>
+// //                 <DetailLabel>Phone Number</DetailLabel>
+// //                 <DetailValue>{passenger?.phoneNumber || 'Not provided'}</DetailValue>
+// //               </ProfileDetail>
+
+// //               <ProfileDetail>
+// //                 <DetailLabel>Account Type</DetailLabel>
+// //                 <DetailValue style={{
+// //                   textTransform: 'capitalize',
+// //                   color: passenger?.role === 'admin' ? '#9f7aea' : '#4c51bf'
+// //                 }}>
+// //                   {passenger?.role}
+// //                 </DetailValue>
+// //               </ProfileDetail>
+
+// //               {passenger?.bio && (
+// //                 <ProfileDetail>
+// //                   <DetailLabel>Bio</DetailLabel>
+// //                   <DetailValue>{passenger.bio}</DetailValue>
+// //                 </ProfileDetail>
+// //               )}
+
+// //               <ProfileDetail>
+// //                 <DetailLabel>Member Since</DetailLabel>
+// //                 <DetailValue>
+// //                   {new Date(passenger?.createdAt).toLocaleDateString('en-US', {
+// //                     year: 'numeric',
+// //                     month: 'long',
+// //                     day: 'numeric'
+// //                   })}
+// //                 </DetailValue>
+// //               </ProfileDetail>
+
+// //               <PrimaryButton onClick={() => setIsEditing(true)}>
+// //                 <i className="fas fa-edit"></i> Edit Profile
+// //               </PrimaryButton>
+
+// //               <DangerButton onClick={handleResetPassword}>
+// //                 <i className="fas fa-key"></i> Reset Password
+// //               </DangerButton>
+
+// //               <DangerButton onClick={handleLogout}>
+// //                 <i className="fas fa-sign-out-alt"></i> Logout
+// //               </DangerButton>
+// //             </ProfileCard>
+// //           )}
 // //         </div>
-        
+
 // //         <div>
 // //           <StatsCard>
 // //             <CardTitle>Your Travel Stats</CardTitle>
@@ -1467,10 +1881,10 @@
 // //               </StatItem>
 // //             </StatsGrid>
 // //           </StatsCard>
-          
+
 // //           <RecentActivity>
 // //             <CardTitle>Recent Bookings</CardTitle>
-            
+
 // //             {bookingsLoading ? (
 // //               <LoadingMessage>Loading bookings...</LoadingMessage>
 // //             ) : bookingsError ? (
@@ -1478,7 +1892,7 @@
 // //             ) : bookings.length === 0 ? (
 // //               <LoadingMessage>No bookings found</LoadingMessage>
 // //             ) : (
-// //               bookings.slice(0, 3).map(booking => (
+// //               bookings.slice(0, 5).map(booking => (
 // //                 <ActivityItem key={booking._id}>
 // //                   <ActivityIcon>
 // //                     <i className="fas fa-bus"></i>
@@ -1496,8 +1910,8 @@
 // //                         minute: '2-digit'
 // //                       })} • Seats: {booking.seatNumber?.join(', ') || 'Not assigned'}
 // //                     </ActivityDate>
-// //                     <DownloadButton onClick={() => handleDownloadTicket(booking)}>
-// //                       <i className="fas fa-download"></i> Download Ticket
+// //                     <DownloadButton onClick={() => handleViewTicket(booking)}>
+// //                       <i className="fas fa-ticket-alt"></i> View Ticket
 // //                     </DownloadButton>
 // //                   </ActivityText>
 // //                 </ActivityItem>
@@ -1507,72 +1921,87 @@
 // //         </div>
 // //       </DashboardContent>
 
-// //       {/* Hidden ticket template for PDF generation */}
-// //       <TicketContainer ref={targetRef}>
-// //         {ticketRef.current && (
-// //           <Ticket>
-// //             <TicketHeader>
-// //               <TicketTitle>Bus Ticket</TicketTitle>
-// //               <p>Ticket ID: {ticketRef.current.ticketId}</p>
-// //             </TicketHeader>
-            
-// //             <TicketBody>
-// //               <div>
-// //                 <TicketSection>
-// //                   <SectionTitle>Journey Details</SectionTitle>
-// //                   <TicketDetail>
-// //                     <DetailLabel>Booking Date: </DetailLabel>
-// //                     <DetailValue>
-// //                       {new Date(ticketRef.current.bookingDate).toLocaleString()}
-// //                     </DetailValue>
-// //                   </TicketDetail>
-// //                   <TicketDetail>
-// //                     <DetailLabel>Status: </DetailLabel>
-// //                     <DetailValue>
-// //                       {ticketRef.current.status}
-// //                     </DetailValue>
-// //                   </TicketDetail>
-// //                   <TicketDetail>
-// //                     <DetailLabel>Payment: </DetailLabel>
-// //                     <DetailValue>
-// //                       {ticketRef.current.paymentStatus}
-// //                     </DetailValue>
-// //                   </TicketDetail>
-// //                   <TicketDetail>
-// //                     <DetailLabel>Seats: </DetailLabel>
-// //                     <DetailValue>
-// //                       {ticketRef.current.seatNumber?.join(', ') || 'Not assigned'}
-// //                     </DetailValue>
-// //                   </TicketDetail>
-// //                 </TicketSection>
-// //               </div>
-              
-// //               <div>
-// //                 <TicketSection>
-// //                   <SectionTitle>Passenger Details</SectionTitle>
-// //                   <TicketDetail>
-// //                     <DetailLabel>Name: </DetailLabel>
-// //                     <DetailValue>{ticketRef.current.passengerName}</DetailValue>
-// //                   </TicketDetail>
-// //                   <TicketDetail>
-// //                     <DetailLabel>Email: </DetailLabel>
-// //                     <DetailValue>{ticketRef.current.passengerEmail}</DetailValue>
-// //                   </TicketDetail>
-// //                   <TicketDetail>
-// //                     <DetailLabel>Phone: </DetailLabel>
-// //                     <DetailValue>{ticketRef.current.passengerPhone || 'Not provided'}</DetailValue>
-// //                   </TicketDetail>
-// //                 </TicketSection>
-// //               </div>
-// //             </TicketBody>
-            
-// //             <TicketFooter>
-// //               <p>Thank you for choosing our service. Please present this ticket when boarding.</p>
-// //               <p>For any inquiries, contact support@busbudder.com</p>
-// //             </TicketFooter>
-// //           </Ticket>
-// //         )}
-// //       </TicketContainer>
+// //       {/* Ticket Modal */}
+// //       {showTicketModal && selectedTicket && (
+// //         <Modal>
+// //           <ModalContent>
+// //             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+// //               <h2 style={{ margin: 0 }}>Ticket Preview</h2>
+// //               <Button onClick={() => setShowTicketModal(false)} style={{ padding: '5px 10px', backgroundColor: '#e2e8f0' }}>
+// //                 <i className="fas fa-times"></i>
+// //               </Button>
+// //             </div>
+
+// //             <TicketContainer ref={ticketRef}>
+// //               <Ticket>
+// //                 <TicketHeader>
+// //                   <TicketTitle>Bus Ticket</TicketTitle>
+// //                   <p>Ticket ID: {selectedTicket.ticketId}</p>
+// //                 </TicketHeader>
+
+// //                 <TicketBody>
+// //                   <div>
+// //                     <TicketSection>
+// //                       <SectionTitle>Journey Details</SectionTitle>
+// //                       <div>
+// //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Booking Date: </span>
+// //                         <span style={{ color: '#2d3748' }}>
+// //                           {new Date(selectedTicket.bookingDate).toLocaleString()}
+// //                         </span>
+// //                       </div>
+// //                       <div style={{ marginTop: '8px' }}>
+// //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Status: </span>
+// //                         <span style={{ color: '#2d3748' }}>
+// //                           {selectedTicket.status}
+// //                         </span>
+// //                       </div>
+// //                       <div style={{ marginTop: '8px' }}>
+// //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Payment: </span>
+// //                         <span style={{ color: '#2d3748' }}>
+// //                           {selectedTicket.paymentStatus}
+// //                         </span>
+// //                       </div>
+// //                       <div style={{ marginTop: '8px' }}>
+// //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Seats: </span>
+// //                         <span style={{ color: '#2d3748' }}>
+// //                           {selectedTicket.seatNumber?.join(', ') || 'Not assigned'}
+// //                         </span>
+// //                       </div>
+// //                     </TicketSection>
+// //                   </div>
+
+// //                   <div>
+// //                     <TicketSection>
+// //                       <SectionTitle>Passenger Details</SectionTitle>
+// //                       <div>
+// //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Name: </span>
+// //                         <span style={{ color: '#2d3748' }}>{selectedTicket.passengerName}</span>
+// //                       </div>
+// //                       <div style={{ marginTop: '8px' }}>
+// //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Email: </span>
+// //                         <span style={{ color: '#2d3748' }}>{selectedTicket.passengerEmail}</span>
+// //                       </div>
+// //                       <div style={{ marginTop: '8px' }}>
+// //                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Phone: </span>
+// //                         <span style={{ color: '#2d3748' }}>{selectedTicket.passengerPhone || 'Not provided'}</span>
+// //                       </div>
+// //                     </TicketSection>
+// //                   </div>
+// //                 </TicketBody>
+
+// //                 <TicketFooter>
+// //                   <p>Thank you for choosing our service. Please present this ticket when boarding.</p>
+// //                   <p>For any inquiries, contact support@busbudder.com</p>
+// //                 </TicketFooter>
+// //               </Ticket>
+// //             </TicketContainer>
+
+// //             <PrimaryButton onClick={handleDownloadTicket} style={{ marginTop: '20px' }}>
+// //               <i className="fas fa-download"></i> Download as PDF
+// //             </PrimaryButton>
+// //           </ModalContent>
+// //         </Modal>
+// //       )}
 // //     </DashboardContainer>
 // //   );
 // // };
@@ -1583,7 +2012,7 @@
 // import { useNavigate } from 'react-router-dom';
 // import { usePDF } from 'react-to-pdf';
 
-// // ... all your styled components remain the same ...
+// // Styled Components
 // const DashboardContainer = styled.div`
 //   max-width: 1200px;
 //   margin: 0 auto;
@@ -1591,7 +2020,6 @@
 //   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 // `;
 
-// // Header Styles
 // const Header = styled.header`
 //   display: flex;
 //   justify-content: space-between;
@@ -1642,7 +2070,6 @@
 //   color: #2d3748;
 // `;
 
-// // Dashboard Layout
 // const DashboardContent = styled.div`
 //   display: grid;
 //   grid-template-columns: 300px 1fr;
@@ -1653,7 +2080,6 @@
 //   }
 // `;
 
-// // Profile Card Styles
 // const ProfileCard = styled.div`
 //   background-color: white;
 //   border-radius: 10px;
@@ -1713,7 +2139,6 @@
 //   font-weight: bold;
 // `;
 
-// // Stats Card Styles
 // const StatsCard = styled.div`
 //   background-color: white;
 //   border-radius: 10px;
@@ -1751,7 +2176,6 @@
 //   color: #718096;
 // `;
 
-// // Activity Styles
 // const RecentActivity = styled.div`
 //   background-color: white;
 //   border-radius: 10px;
@@ -1798,7 +2222,6 @@
 //   color: #718096;
 // `;
 
-// // Button Styles
 // const Button = styled.button`
 //   padding: 10px 20px;
 //   border: none;
@@ -1830,7 +2253,6 @@
 //   margin-top: 10px;
 // `;
 
-// // Ticket Download Styles
 // const DownloadButton = styled(Button)`
 //   padding: 6px 12px;
 //   background-color: #38a169;
@@ -1845,15 +2267,14 @@
 //   }
 // `;
 
-// // Ticket PDF Styles
 // const TicketContainer = styled.div`
-//   margin-top: 20px;
+//   width: 100%;
+//   max-width: 500px;
+//   background-color: white;
 // `;
 
 // const Ticket = styled.div`
 //   width: 100%;
-//   max-width: 500px;
-//   margin: 0 auto;
 //   padding: 20px;
 //   background-color: #ffffff;
 //   border: 1px solid #e2e8f0;
@@ -1899,7 +2320,6 @@
 //   color: #718096;
 // `;
 
-// // Loading and Error Messages
 // const LoadingMessage = styled.div`
 //   text-align: center;
 //   padding: 40px;
@@ -1912,11 +2332,89 @@
 //   padding: 40px;
 // `;
 
+// const EditForm = styled.form`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 15px;
+// `;
+
+// const FormGroup = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 5px;
+// `;
+
+// const FormLabel = styled.label`
+//   font-size: 14px;
+//   color: #4a5568;
+// `;
+
+// const FormInput = styled.input`
+//   padding: 10px;
+//   border: 1px solid #e2e8f0;
+//   border-radius: 4px;
+//   font-size: 16px;
+
+//   &:focus {
+//     outline: none;
+//     border-color: #4c51bf;
+//     box-shadow: 0 0 0 1px #4c51bf;
+//   }
+// `;
+
+// const FormTextarea = styled.textarea`
+//   padding: 10px;
+//   border: 1px solid #e2e8f0;
+//   border-radius: 4px;
+//   font-size: 16px;
+//   min-height: 100px;
+//   resize: vertical;
+
+//   &:focus {
+//     outline: none;
+//     border-color: #4c51bf;
+//     box-shadow: 0 0 0 1px #4c51bf;
+//   }
+// `;
+
+// const ButtonGroup = styled.div`
+//   display: flex;
+//   gap: 10px;
+//   margin-top: 20px;
+// `;
+
+// const SecondaryButton = styled(Button)`
+//   background-color: #e2e8f0;
+//   color: #4a5568;
+// `;
+
+// const Modal = styled.div`
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   background-color: rgba(0, 0, 0, 0.5);
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: 1000;
+// `;
+
+// const ModalContent = styled.div`
+//   background-color: white;
+//   padding: 20px;
+//   border-radius: 8px;
+//   max-width: 500px;
+//   width: 100%;
+//   max-height: 90vh;
+//   overflow-y: auto;
+// `;
 
 // const PassengerDashboard = () => {
 //   const navigate = useNavigate();
-//   const targetRef = useRef(null);
-//   const { toPDF } = usePDF({ targetRef });
+//   const ticketRef = useRef(null);
+//   const { toPDF } = usePDF();
 
 //   const [passenger, setPassenger] = useState(null);
 //   const [bookings, setBookings] = useState([]);
@@ -1936,15 +2434,20 @@
 //   const [isUpdating, setIsUpdating] = useState(false);
 //   const [updateError, setUpdateError] = useState('');
 //   const [selectedTicket, setSelectedTicket] = useState(null);
-//   const [showTicket, setShowTicket] = useState(false);
-//   const [pdfReady, setPdfReady] = useState(false);
+//   const [showTicketModal, setShowTicketModal] = useState(false);
 
+//   // Fetch passenger details
 //   useEffect(() => {
 //     const fetchPassengerDetails = async () => {
 //       setLoading(true);
 //       setError(null);
 //       try {
 //         const token = localStorage.getItem('accessToken');
+//         if (!token) {
+//           navigate('/login');
+//           return;
+//         }
+
 //         const response = await fetch('http://localhost:7000/api/v1/auth/profile', {
 //           headers: {
 //             'Authorization': `Bearer ${token}`,
@@ -1952,6 +2455,11 @@
 //         });
 
 //         if (!response.ok) {
+//           if (response.status === 401) {
+//             localStorage.removeItem('accessToken');
+//             navigate('/login');
+//             return;
+//           }
 //           throw new Error('Failed to fetch passenger details');
 //         }
 
@@ -1976,16 +2484,22 @@
 //     fetchPassengerDetails();
 //   }, [navigate]);
 
+//   // Fetch bookings when passenger data is available
 //   useEffect(() => {
 //     const fetchBookings = async () => {
 //       if (!passenger?.email) return;
-      
+
 //       setBookingsLoading(true);
 //       setBookingsError(null);
 //       try {
 //         const token = localStorage.getItem('accessToken');
+//         if (!token) {
+//           navigate('/login');
+//           return;
+//         }
+
 //         const response = await fetch(
-//           `http://localhost:7000/api/v1/bookings?email=${passenger.email}`, 
+//           `http://localhost:7000/api/v1/bookings?email=${passenger.email}`,
 //           {
 //             headers: {
 //               'Authorization': `Bearer ${token}`,
@@ -1994,6 +2508,11 @@
 //         );
 
 //         if (!response.ok) {
+//           if (response.status === 401) {
+//             localStorage.removeItem('accessToken');
+//             navigate('/login');
+//             return;
+//           }
 //           throw new Error('Failed to fetch bookings');
 //         }
 
@@ -2008,21 +2527,7 @@
 //     };
 
 //     fetchBookings();
-//   }, [passenger?.email]);
-
-//   // New effect to handle PDF generation after ticket is shown
-//   useEffect(() => {
-//     if (showTicket && selectedTicket && pdfReady) {
-//       // Use a longer timeout to ensure the component is fully rendered
-//       const timer = setTimeout(() => {
-//         if (targetRef.current) {
-//           toPDF();
-//         }
-//       }, 500);
-      
-//       return () => clearTimeout(timer);
-//     }
-//   }, [showTicket, selectedTicket, pdfReady, toPDF]);
+//   }, [passenger?.email, navigate]);
 
 //   const getInitials = (firstName, lastName) => {
 //     return `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase();
@@ -2051,13 +2556,18 @@
 //     }
 //   };
 
-//   const handleUpdateProfile = async () => {
+//   const handleUpdateProfile = async (e) => {
+//     e.preventDefault();
 //     setIsUpdating(true);
 //     setUpdateError('');
-    
+
 //     try {
 //       const token = localStorage.getItem('accessToken');
-      
+//       if (!token) {
+//         navigate('/login');
+//         return;
+//       }
+
 //       const formData = new FormData();
 //       formData.append('firstName', editData.firstName);
 //       formData.append('lastName', editData.lastName);
@@ -2076,12 +2586,18 @@
 //       });
 
 //       if (!response.ok) {
+//         if (response.status === 401) {
+//           localStorage.removeItem('accessToken');
+//           navigate('/login');
+//           return;
+//         }
 //         throw new Error('Failed to update profile');
 //       }
 
 //       const data = await response.json();
 //       setPassenger(data.data);
 //       setIsEditing(false);
+//       alert('Profile updated successfully!');
 //     } catch (err) {
 //       console.error('Error updating profile:', err);
 //       setUpdateError(err.message || 'Failed to update profile. Please try again.');
@@ -2090,19 +2606,36 @@
 //     }
 //   };
 
-//   const handleDownloadTicket = (booking) => {
+//   const handleResetPassword = () => {
+//     navigate('/reset');
+//   };
+
+//   const handleViewTicket = (booking) => {
 //     setSelectedTicket({
 //       ...booking,
 //       passengerName: `${passenger?.firstName} ${passenger?.lastName}`,
 //       passengerEmail: passenger?.email,
 //       passengerPhone: passenger?.phoneNumber
 //     });
-//     setShowTicket(true);
-    
-//     // Use setTimeout to ensure the ticket component is rendered before generating PDF
-//     setTimeout(() => {
-//       toPDF();
-//     }, 100);
+//     setShowTicketModal(true);
+//   };
+
+//   const handleDownloadTicket = () => {
+//     if (ticketRef.current) {
+//       try {
+//         toPDF(ticketRef, {
+//           filename: `ticket-${selectedTicket.ticketId}.pdf`,
+//           page: {
+//             margin: 10,
+//             format: 'letter',
+//             orientation: 'portrait'
+//           }
+//         });
+//       } catch (err) {
+//         console.error("Error generating PDF:", err);
+//         alert("Failed to generate PDF. Please try again.");
+//       }
+//     }
 //   };
 
 //   const handleLogout = () => {
@@ -2129,7 +2662,6 @@
 //     );
 //   }
 
-//   // Calculate stats from bookings data
 //   const stats = {
 //     tripsCompleted: bookings.filter(b => b.status === 'completed').length,
 //     upcomingTrips: bookings.filter(b => b.status === 'confirmed').length,
@@ -2151,76 +2683,179 @@
 
 //       <DashboardContent>
 //         <div>
-//           <ProfileCard>
-//             <ProfileImage>
-//               {passenger?.profileImage ? (
-//                 <img 
-//                   src={passenger.profileImage} 
-//                   alt="Profile" 
-//                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-//                 />
-//               ) : (
-//                 <InitialsAvatar>
-//                   {getInitials(passenger?.firstName, passenger?.lastName)}
-//                 </InitialsAvatar>
-//               )}
-//             </ProfileImage>
-            
-//             <CardTitle>Profile Details</CardTitle>
-            
-//             <ProfileDetail>
-//               <DetailLabel>Full Name</DetailLabel>
-//               <DetailValue>{passenger?.firstName} {passenger?.lastName}</DetailValue>
-//             </ProfileDetail>
-            
-//             <ProfileDetail>
-//               <DetailLabel>Email</DetailLabel>
-//               <DetailValue>{passenger?.email}</DetailValue>
-//             </ProfileDetail>
-            
-//             <ProfileDetail>
-//               <DetailLabel>Phone Number</DetailLabel>
-//               <DetailValue>{passenger?.phoneNumber || 'Not provided'}</DetailValue>
-//             </ProfileDetail>
-            
-//             <ProfileDetail>
-//               <DetailLabel>Account Type</DetailLabel>
-//               <DetailValue style={{ 
-//                 textTransform: 'capitalize',
-//                 color: passenger?.role === 'admin' ? '#9f7aea' : '#4c51bf'
-//               }}>
-//                 {passenger?.role}
-//               </DetailValue>
-//             </ProfileDetail>
-            
-//             {passenger?.bio && (
+//           {isEditing ? (
+//             <ProfileCard>
+//               <CardTitle>Edit Profile</CardTitle>
+
+//               <EditForm onSubmit={handleUpdateProfile}>
+//                 <ProfileImage>
+//                   {imagePreview ? (
+//                     <img
+//                       src={imagePreview}
+//                       alt="Profile Preview"
+//                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+//                     />
+//                   ) : (
+//                     <InitialsAvatar>
+//                       {getInitials(editData.firstName, editData.lastName)}
+//                     </InitialsAvatar>
+//                   )}
+//                 </ProfileImage>
+
+//                 <FormGroup>
+//                   <FormLabel htmlFor="profileImage">Profile Image</FormLabel>
+//                   <FormInput
+//                     type="file"
+//                     id="profileImage"
+//                     accept="image/*"
+//                     onChange={handleImageChange}
+//                   />
+//                 </FormGroup>
+
+//                 <FormGroup>
+//                   <FormLabel htmlFor="firstName">First Name</FormLabel>
+//                   <FormInput
+//                     type="text"
+//                     id="firstName"
+//                     name="firstName"
+//                     value={editData.firstName}
+//                     onChange={handleEditChange}
+//                     required
+//                   />
+//                 </FormGroup>
+
+//                 <FormGroup>
+//                   <FormLabel htmlFor="lastName">Last Name</FormLabel>
+//                   <FormInput
+//                     type="text"
+//                     id="lastName"
+//                     name="lastName"
+//                     value={editData.lastName}
+//                     onChange={handleEditChange}
+//                     required
+//                   />
+//                 </FormGroup>
+
+//                 <FormGroup>
+//                   <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
+//                   <FormInput
+//                     type="tel"
+//                     id="phoneNumber"
+//                     name="phoneNumber"
+//                     value={editData.phoneNumber}
+//                     onChange={handleEditChange}
+//                   />
+//                 </FormGroup>
+
+//                 <FormGroup>
+//                   <FormLabel htmlFor="bio">Bio</FormLabel>
+//                   <FormTextarea
+//                     id="bio"
+//                     name="bio"
+//                     value={editData.bio}
+//                     onChange={handleEditChange}
+//                     placeholder="Tell us a bit about yourself..."
+//                   />
+//                 </FormGroup>
+
+//                 {updateError && (
+//                   <ErrorAlert>{updateError}</ErrorAlert>
+//                 )}
+
+//                 <ButtonGroup>
+//                   <SecondaryButton
+//                     type="button"
+//                     onClick={() => setIsEditing(false)}
+//                     disabled={isUpdating}
+//                   >
+//                     Cancel
+//                   </SecondaryButton>
+//                   <PrimaryButton
+//                     type="submit"
+//                     disabled={isUpdating}
+//                     style={{ margin: 0 }}
+//                   >
+//                     {isUpdating ? 'Updating...' : 'Save Changes'}
+//                   </PrimaryButton>
+//                 </ButtonGroup>
+//               </EditForm>
+//             </ProfileCard>
+//           ) : (
+//             <ProfileCard>
+//               <ProfileImage>
+//                 {passenger?.profileImage ? (
+//                   <img
+//                     src={passenger.profileImage}
+//                     alt="Profile"
+//                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+//                   />
+//                 ) : (
+//                   <InitialsAvatar>
+//                     {getInitials(passenger?.firstName, passenger?.lastName)}
+//                   </InitialsAvatar>
+//                 )}
+//               </ProfileImage>
+
+//               <CardTitle>Profile Details</CardTitle>
+
 //               <ProfileDetail>
-//                 <DetailLabel>Bio</DetailLabel>
-//                 <DetailValue>{passenger.bio}</DetailValue>
+//                 <DetailLabel>Full Name</DetailLabel>
+//                 <DetailValue>{passenger?.firstName} {passenger?.lastName}</DetailValue>
 //               </ProfileDetail>
-//             )}
-            
-//             <ProfileDetail>
-//               <DetailLabel>Member Since</DetailLabel>
-//               <DetailValue>
-//                 {new Date(passenger?.createdAt).toLocaleDateString('en-US', {
-//                   year: 'numeric',
-//                   month: 'long',
-//                   day: 'numeric'
-//                 })}
-//               </DetailValue>
-//             </ProfileDetail>
-            
-//             <PrimaryButton onClick={() => setIsEditing(true)}>
-//               <i className="fas fa-edit"></i> Edit Profile
-//             </PrimaryButton>
-            
-//             <DangerButton onClick={handleLogout}>
-//               <i className="fas fa-sign-out-alt"></i> Logout
-//             </DangerButton>
-//           </ProfileCard>
+
+//               <ProfileDetail>
+//                 <DetailLabel>Email</DetailLabel>
+//                 <DetailValue>{passenger?.email}</DetailValue>
+//               </ProfileDetail>
+
+//               <ProfileDetail>
+//                 <DetailLabel>Phone Number</DetailLabel>
+//                 <DetailValue>{passenger?.phoneNumber || 'Not provided'}</DetailValue>
+//               </ProfileDetail>
+
+//               <ProfileDetail>
+//                 <DetailLabel>Account Type</DetailLabel>
+//                 <DetailValue style={{
+//                   textTransform: 'capitalize',
+//                   color: passenger?.role === 'admin' ? '#9f7aea' : '#4c51bf'
+//                 }}>
+//                   {passenger?.role}
+//                 </DetailValue>
+//               </ProfileDetail>
+
+//               {passenger?.bio && (
+//                 <ProfileDetail>
+//                   <DetailLabel>Bio</DetailLabel>
+//                   <DetailValue>{passenger.bio}</DetailValue>
+//                 </ProfileDetail>
+//               )}
+
+//               <ProfileDetail>
+//                 <DetailLabel>Member Since</DetailLabel>
+//                 <DetailValue>
+//                   {new Date(passenger?.createdAt).toLocaleDateString('en-US', {
+//                     year: 'numeric',
+//                     month: 'long',
+//                     day: 'numeric'
+//                   })}
+//                 </DetailValue>
+//               </ProfileDetail>
+
+//               <PrimaryButton onClick={() => setIsEditing(true)}>
+//                 <i className="fas fa-edit"></i> Edit Profile
+//               </PrimaryButton>
+
+//               <DangerButton onClick={handleResetPassword}>
+//                 <i className="fas fa-key"></i> Reset Password
+//               </DangerButton>
+
+//               <DangerButton onClick={handleLogout}>
+//                 <i className="fas fa-sign-out-alt"></i> Logout
+//               </DangerButton>
+//             </ProfileCard>
+//           )}
 //         </div>
-        
+
 //         <div>
 //           <StatsCard>
 //             <CardTitle>Your Travel Stats</CardTitle>
@@ -2239,10 +2874,10 @@
 //               </StatItem>
 //             </StatsGrid>
 //           </StatsCard>
-          
+
 //           <RecentActivity>
 //             <CardTitle>Recent Bookings</CardTitle>
-            
+
 //             {bookingsLoading ? (
 //               <LoadingMessage>Loading bookings...</LoadingMessage>
 //             ) : bookingsError ? (
@@ -2250,7 +2885,7 @@
 //             ) : bookings.length === 0 ? (
 //               <LoadingMessage>No bookings found</LoadingMessage>
 //             ) : (
-//               bookings.slice(0, 3).map(booking => (
+//               bookings.slice(0, 5).map(booking => (
 //                 <ActivityItem key={booking._id}>
 //                   <ActivityIcon>
 //                     <i className="fas fa-bus"></i>
@@ -2268,8 +2903,8 @@
 //                         minute: '2-digit'
 //                       })} • Seats: {booking.seatNumber?.join(', ') || 'Not assigned'}
 //                     </ActivityDate>
-//                     <DownloadButton onClick={() => handleDownloadTicket(booking)}>
-//                       <i className="fas fa-download"></i> Download Ticket
+//                     <DownloadButton onClick={() => handleViewTicket(booking)}>
+//                       <i className="fas fa-ticket-alt"></i> View Ticket
 //                     </DownloadButton>
 //                   </ActivityText>
 //                 </ActivityItem>
@@ -2279,73 +2914,86 @@
 //         </div>
 //       </DashboardContent>
 
-//       {/* The ticket component for PDF generation - Only shown when needed */}
-//       {showTicket && selectedTicket && (
-//         <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
-//           <div ref={targetRef}>
-//             <Ticket>
-//               <TicketHeader>
-//                 <TicketTitle>Bus Ticket</TicketTitle>
-//                 <p>Ticket ID: {selectedTicket.ticketId}</p>
-//               </TicketHeader>
-              
-//               <TicketBody>
-//                 <div>
-//                   <TicketSection>
-//                     <SectionTitle>Journey Details</SectionTitle>
-//                     <div>
-//                       <span style={{ fontWeight: 500, color: '#4a5568' }}>Booking Date: </span>
-//                       <span style={{ color: '#2d3748' }}>
-//                         {new Date(selectedTicket.bookingDate).toLocaleString()}
-//                       </span>
-//                     </div>
-//                     <div style={{ marginTop: '8px' }}>
-//                       <span style={{ fontWeight: 500, color: '#4a5568' }}>Status: </span>
-//                       <span style={{ color: '#2d3748' }}>
-//                         {selectedTicket.status}
-//                       </span>
-//                     </div>
-//                     <div style={{ marginTop: '8px' }}>
-//                       <span style={{ fontWeight: 500, color: '#4a5568' }}>Payment: </span>
-//                       <span style={{ color: '#2d3748' }}>
-//                         {selectedTicket.paymentStatus}
-//                       </span>
-//                     </div>
-//                     <div style={{ marginTop: '8px' }}>
-//                       <span style={{ fontWeight: 500, color: '#4a5568' }}>Seats: </span>
-//                       <span style={{ color: '#2d3748' }}>
-//                         {selectedTicket.seatNumber?.join(', ') || 'Not assigned'}
-//                       </span>
-//                     </div>
-//                   </TicketSection>
-//                 </div>
-                
-//                 <div>
-//                   <TicketSection>
-//                     <SectionTitle>Passenger Details</SectionTitle>
-//                     <div>
-//                       <span style={{ fontWeight: 500, color: '#4a5568' }}>Name: </span>
-//                       <span style={{ color: '#2d3748' }}>{selectedTicket.passengerName}</span>
-//                     </div>
-//                     <div style={{ marginTop: '8px' }}>
-//                       <span style={{ fontWeight: 500, color: '#4a5568' }}>Email: </span>
-//                       <span style={{ color: '#2d3748' }}>{selectedTicket.passengerEmail}</span>
-//                     </div>
-//                     <div style={{ marginTop: '8px' }}>
-//                       <span style={{ fontWeight: 500, color: '#4a5568' }}>Phone: </span>
-//                       <span style={{ color: '#2d3748' }}>{selectedTicket.passengerPhone || 'Not provided'}</span>
-//                     </div>
-//                   </TicketSection>
-//                 </div>
-//               </TicketBody>
-              
-//               <TicketFooter>
-//                 <p>Thank you for choosing our service. Please present this ticket when boarding.</p>
-//                 <p>For any inquiries, contact support@busbudder.com</p>
-//               </TicketFooter>
-//             </Ticket>
-//           </div>
-//         </div>
+//       {/* Ticket Modal */}
+//       {showTicketModal && selectedTicket && (
+//         <Modal>
+//           <ModalContent>
+//             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+//               <h2 style={{ margin: 0 }}>Ticket Preview</h2>
+//               <Button onClick={() => setShowTicketModal(false)} style={{ padding: '5px 10px', backgroundColor: '#e2e8f0' }}>
+//                 <i className="fas fa-times"></i>
+//               </Button>
+//             </div>
+
+//             <TicketContainer ref={ticketRef}>
+//               <Ticket>
+//                 <TicketHeader>
+//                   <TicketTitle>Bus Ticket</TicketTitle>
+//                   <p>Ticket ID: {selectedTicket.ticketId}</p>
+//                 </TicketHeader>
+
+//                 <TicketBody>
+//                   <div>
+//                     <TicketSection>
+//                       <SectionTitle>Journey Details</SectionTitle>
+//                       <div>
+//                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Booking Date: </span>
+//                         <span style={{ color: '#2d3748' }}>
+//                           {new Date(selectedTicket.bookingDate).toLocaleString()}
+//                         </span>
+//                       </div>
+//                       <div style={{ marginTop: '8px' }}>
+//                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Status: </span>
+//                         <span style={{ color: '#2d3748' }}>
+//                           {selectedTicket.status}
+//                         </span>
+//                       </div>
+//                       <div style={{ marginTop: '8px' }}>
+//                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Payment: </span>
+//                         <span style={{ color: '#2d3748' }}>
+//                           {selectedTicket.paymentStatus}
+//                         </span>
+//                       </div>
+//                       <div style={{ marginTop: '8px' }}>
+//                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Seats: </span>
+//                         <span style={{ color: '#2d3748' }}>
+//                           {selectedTicket.seatNumber?.join(', ') || 'Not assigned'}
+//                         </span>
+//                       </div>
+//                     </TicketSection>
+//                   </div>
+
+//                   <div>
+//                     <TicketSection>
+//                       <SectionTitle>Passenger Details</SectionTitle>
+//                       <div>
+//                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Name: </span>
+//                         <span style={{ color: '#2d3748' }}>{selectedTicket.passengerName}</span>
+//                       </div>
+//                       <div style={{ marginTop: '8px' }}>
+//                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Email: </span>
+//                         <span style={{ color: '#2d3748' }}>{selectedTicket.passengerEmail}</span>
+//                       </div>
+//                       <div style={{ marginTop: '8px' }}>
+//                         <span style={{ fontWeight: 500, color: '#4a5568' }}>Phone: </span>
+//                         <span style={{ color: '#2d3748' }}>{selectedTicket.passengerPhone || 'Not provided'}</span>
+//                       </div>
+//                     </TicketSection>
+//                   </div>
+//                 </TicketBody>
+
+//                 <TicketFooter>
+//                   <p>Thank you for choosing our service. Please present this ticket when boarding.</p>
+//                   <p>For any inquiries, contact support@busbudder.com</p>
+//                 </TicketFooter>
+//               </Ticket>
+//             </TicketContainer>
+
+//             <PrimaryButton onClick={handleDownloadTicket} style={{ marginTop: '20px' }}>
+//               <i className="fas fa-download"></i> Download as PDF
+//             </PrimaryButton>
+//           </ModalContent>
+//         </Modal>
 //       )}
 //     </DashboardContainer>
 //   );
@@ -2357,12 +3005,11 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { usePDF } from 'react-to-pdf';
 
-// Styled Components
 const DashboardContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
+   max-width: 1200px;
+   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 `;
 
 const Header = styled.header`
@@ -2760,7 +3407,7 @@ const PassengerDashboard = () => {
   const navigate = useNavigate();
   const ticketRef = useRef(null);
   const { toPDF } = usePDF();
-  
+
   const [passenger, setPassenger] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -2792,7 +3439,7 @@ const PassengerDashboard = () => {
           navigate('/login');
           return;
         }
-        
+
         const response = await fetch('http://localhost:7000/api/v1/auth/profile', {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -2842,7 +3489,7 @@ const PassengerDashboard = () => {
           navigate('/login');
           return;
         }
-        
+
         const response = await fetch(
           `http://localhost:7000/api/v1/bookings?email=${passenger.email}`,
           {
@@ -2942,13 +3589,21 @@ const PassengerDashboard = () => {
       const data = await response.json();
       setPassenger(data.data);
       setIsEditing(false);
-      // Show success message
       alert('Profile updated successfully!');
     } catch (err) {
       console.error('Error updating profile:', err);
       setUpdateError(err.message || 'Failed to update profile. Please try again.');
     } finally {
       setIsUpdating(false);
+    }
+  };
+
+  const handleResetPassword = () => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      navigate(`/reset?token=${token}`);
+    } else {
+      console.error('No token available for password reset.');
     }
   };
 
@@ -2961,13 +3616,13 @@ const PassengerDashboard = () => {
     });
     setShowTicketModal(true);
   };
-  
+
   const handleDownloadTicket = () => {
     if (ticketRef.current) {
       try {
-        toPDF(ticketRef, { 
+        toPDF(ticketRef, {
           filename: `ticket-${selectedTicket.ticketId}.pdf`,
-          page: { 
+          page: {
             margin: 10,
             format: 'letter',
             orientation: 'portrait'
@@ -3028,7 +3683,7 @@ const PassengerDashboard = () => {
           {isEditing ? (
             <ProfileCard>
               <CardTitle>Edit Profile</CardTitle>
-              
+
               <EditForm onSubmit={handleUpdateProfile}>
                 <ProfileImage>
                   {imagePreview ? (
@@ -3043,7 +3698,7 @@ const PassengerDashboard = () => {
                     </InitialsAvatar>
                   )}
                 </ProfileImage>
-                
+
                 <FormGroup>
                   <FormLabel htmlFor="profileImage">Profile Image</FormLabel>
                   <FormInput
@@ -3053,7 +3708,7 @@ const PassengerDashboard = () => {
                     onChange={handleImageChange}
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <FormLabel htmlFor="firstName">First Name</FormLabel>
                   <FormInput
@@ -3065,7 +3720,7 @@ const PassengerDashboard = () => {
                     required
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <FormLabel htmlFor="lastName">Last Name</FormLabel>
                   <FormInput
@@ -3077,7 +3732,7 @@ const PassengerDashboard = () => {
                     required
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
                   <FormInput
@@ -3088,7 +3743,7 @@ const PassengerDashboard = () => {
                     onChange={handleEditChange}
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <FormLabel htmlFor="bio">Bio</FormLabel>
                   <FormTextarea
@@ -3099,20 +3754,20 @@ const PassengerDashboard = () => {
                     placeholder="Tell us a bit about yourself..."
                   />
                 </FormGroup>
-                
+
                 {updateError && (
                   <ErrorAlert>{updateError}</ErrorAlert>
                 )}
-                
+
                 <ButtonGroup>
-                  <SecondaryButton 
-                    type="button" 
+                  <SecondaryButton
+                    type="button"
                     onClick={() => setIsEditing(false)}
                     disabled={isUpdating}
                   >
                     Cancel
                   </SecondaryButton>
-                  <PrimaryButton 
+                  <PrimaryButton
                     type="submit"
                     disabled={isUpdating}
                     style={{ margin: 0 }}
@@ -3186,6 +3841,10 @@ const PassengerDashboard = () => {
               <PrimaryButton onClick={() => setIsEditing(true)}>
                 <i className="fas fa-edit"></i> Edit Profile
               </PrimaryButton>
+
+              <DangerButton onClick={handleResetPassword}>
+                <i className="fas fa-key"></i> Reset Password
+              </DangerButton>
 
               <DangerButton onClick={handleLogout}>
                 <i className="fas fa-sign-out-alt"></i> Logout
@@ -3262,7 +3921,7 @@ const PassengerDashboard = () => {
                 <i className="fas fa-times"></i>
               </Button>
             </div>
-            
+
             <TicketContainer ref={ticketRef}>
               <Ticket>
                 <TicketHeader>
@@ -3326,7 +3985,7 @@ const PassengerDashboard = () => {
                 </TicketFooter>
               </Ticket>
             </TicketContainer>
-            
+
             <PrimaryButton onClick={handleDownloadTicket} style={{ marginTop: '20px' }}>
               <i className="fas fa-download"></i> Download as PDF
             </PrimaryButton>
@@ -3338,3 +3997,4 @@ const PassengerDashboard = () => {
 };
 
 export default PassengerDashboard;
+

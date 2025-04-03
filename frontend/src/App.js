@@ -15,6 +15,8 @@ import DashboardLayout from './Components/AdminDashboard';
 import RegistrationForm from './Components/Registration';
 import LoginForm from './Components/Login';
 import PassengerProfile from './Components/Profile';
+import ResetPassword from './Components/ResetPassword';
+import ForgotPassword from './Components/ForgotPassword';
 
 function App() {
   return (
@@ -43,6 +45,8 @@ function App() {
         <Route path="/schedules" element={<ScheduleManagement />} />
         <Route path="/pays" element={<PaymentManagement />} />
         <Route path="/admin" element={<DashboardLayout />} />
+        <Route path='/reset' element={<ResetPassword />} />
+        <Route path='/forgot' element={<ForgotPassword />} />
         {/* <Route path="/bookings" element={<BookingManagement />} /> */}
       </Routes>
     </BrowserRouter>
