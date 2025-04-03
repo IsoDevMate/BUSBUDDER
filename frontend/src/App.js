@@ -14,6 +14,7 @@ import PaymentManagement from './Components/PaymentManagement';
 import DashboardLayout from './Components/AdminDashboard';
 import RegistrationForm from './Components/Registration';
 import LoginForm from './Components/Login';
+import PassengerProfile from './Components/Profile';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/buses" element={<BusManagement />} />
         <Route path='/register' element={<RegistrationForm />} />
         <Route path='/login' element={<LoginForm />} />
+        <Route path='/profile' element={<PassengerProfile />} />
         <Route path="/routes/:routeId" element={<RouteManagement />} />
         <Route path="/routes" element={<RouteManagement />} />
         <Route path="/schedules" element={<ScheduleManagement />} />
