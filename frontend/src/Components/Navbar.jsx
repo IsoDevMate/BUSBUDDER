@@ -110,6 +110,7 @@ const Navbar = () => {
           <NavLink to="/fleet" onClick={closeMenu}>Our Fleet</NavLink>
           <NavLink to="/testimonials" onClick={closeMenu}>Testimonials</NavLink>
         </NavLinks> */}
+        <NavLink to="/login" onClick={closeMenu}>LOGIN</NavLink>
         <MobileMenuIcon onClick={toggleMenu}>
           ☰
         </MobileMenuIcon>
