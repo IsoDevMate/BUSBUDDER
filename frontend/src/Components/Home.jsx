@@ -1374,7 +1374,7 @@ const Home = () => {
     try {
       // Updated to use the correct schedules search endpoint
       const response = await fetch(
-        `http://localhost:7000/api/v1/schedules/search?startLocation=${encodeURIComponent(searchParams.startLocation)}&endLocation=${encodeURIComponent(searchParams.endLocation)}&date=${encodeURIComponent(searchParams.date)}`
+        `http://localhost:7000/api/v1/schedules/search?startLocation=${encodeURIComponent(searchParams.startLocation)}&endLocation=${encodeURIComponent(searchParams.endLocation)}}`
       );
       
       if (!response.ok) {
