@@ -1,6 +1,6 @@
 // import React, { useState } from 'react';
 // import styled from 'styled-components';
-// import { useNavigate } from 'react-router-dom';
+// import { useNavigate, useLocation } from 'react-router-dom';
 
 // const FormContainer = styled.div`
 //   max-width: 400px;
@@ -59,11 +59,13 @@
 //   text-align: center;
 // `;
 
-// const LoginForm = () => {
+// const ResetPassword = () => {
 //   const navigate = useNavigate();
+//   const location = useLocation();
 //   const [formData, setFormData] = useState({
-//     email: '',
+//     token: '',
 //     password: '',
+//     confirmPassword: '',
 //   });
 //   const [error, setError] = useState('');
 //   const [loading, setLoading] = useState(false);
@@ -81,7 +83,13 @@
 //     setError('');
 //     setLoading(true);
 
-//     const url = 'http://localhost:7000/api/v1/auth/login';
+//     if (formData.password !== formData.confirmPassword) {
+//       setError('Passwords do not match.');
+//       setLoading(false);
+//       return;
+//     }
+
+//     const url = 'http://localhost:7000/api/v1/auth/reset-password';
 
 //     try {
 //       const response = await fetch(url, {
@@ -95,54 +103,35 @@
 //       const result = await response.json();
 
 //       if (!response.ok || !result.success) {
-//         throw new Error(result.message || 'Login failed');
+//         throw new Error(result.message || 'Password reset failed');
 //       }
 
-//       // Extract user data and tokens from the response structure
-//       const { user, tokens } = result.data;
-      
-//       // Store the access token in localStorage for future authenticated requests
-//       localStorage.setItem('accessToken', tokens.accessToken);
-      
-//       // Optionally store other user details you might need across the app
-//       localStorage.setItem('userId', user._id);
-//       localStorage.setItem('userRole', user.role);
-//       localStorage.setItem('userName', `${user.firstName} ${user.lastName}`);
-      
-//       console.log('Login successful:', result.message);
-      
-//       // Redirect based on user role
-//       if (user.role === 'admin') {
-//         navigate('/admin');
-//       } else {
-//         navigate('/profile');
-//       }
-      
+//       console.log('Password reset successful:', result.message);
+//       navigate('/login');
+
 //     } catch (error) {
 //       console.error('Error:', error);
-//       setError(error.message || 'Login failed. Please check your credentials and try again.');
+//       setError(error.message || 'Password reset failed. Please try again.');
 //     } finally {
 //       setLoading(false);
 //     }
 //   };
 
+//   // Extract token from the URL
+//   React.useEffect(() => {
+//     const params = new URLSearchParams(location.search);
+//     const token = params.get('token');
+//     if (token) {
+//       setFormData((prev) => ({ ...prev, token }));
+//     }
+//   }, [location.search]);
+
 //   return (
 //     <FormContainer>
-//       <FormTitle>Login</FormTitle>
+//       <FormTitle>Reset Password</FormTitle>
 //       <form onSubmit={handleSubmit}>
 //         <FormGroup>
-//           <Label>Email:</Label>
-//           <Input
-//             type="email"
-//             name="email"
-//             value={formData.email}
-//             onChange={handleChange}
-//             required
-//             disabled={loading}
-//           />
-//         </FormGroup>
-//         <FormGroup>
-//           <Label>Password:</Label>
+//           <Label>New Password:</Label>
 //           <Input
 //             type="password"
 //             name="password"
@@ -152,19 +141,30 @@
 //             disabled={loading}
 //           />
 //         </FormGroup>
+//         <FormGroup>
+//           <Label>Confirm Password:</Label>
+//           <Input
+//             type="password"
+//             name="confirmPassword"
+//             value={formData.confirmPassword}
+//             onChange={handleChange}
+//             required
+//             disabled={loading}
+//           />
+//         </FormGroup>
 //         {error && <ErrorMessage>{error}</ErrorMessage>}
 //         <Button type="submit" disabled={loading}>
-//           {loading ? 'Logging in...' : 'Login'}
+//           {loading ? 'Resetting...' : 'Reset Password'}
 //         </Button>
 //       </form>
 //     </FormContainer>
 //   );
 // };
 
-// export default LoginForm;
-import React, { useState } from 'react';
+// export default ResetPassword;
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const FormContainer = styled.div`
   max-width: 400px;
@@ -223,36 +223,13 @@ const ErrorMessage = styled.p`
   text-align: center;
 `;
 
-const ForgotPasswordLink = styled(Link)`
-  display: block;
-  text-align: right;
-  margin-top: -10px;
-  margin-bottom: 10px;
-  color: #4c51bf;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const SignupLink = styled(Link)`
-  display: block;
-  text-align: center;
-  margin-top: 20px;
-  color: #4c51bf;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const LoginForm = () => {
+const ResetPassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
-    email: '',
+    token: '',
     password: '',
+    confirmPassword: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -270,7 +247,13 @@ const LoginForm = () => {
     setError('');
     setLoading(true);
 
-    const url = 'http://localhost:7000/api/v1/auth/login';
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match.');
+      setLoading(false);
+      return;
+    }
+
+    const url = 'http://localhost:7000/api/v1/auth/reset-password';
 
     try {
       const response = await fetch(url, {
@@ -278,55 +261,44 @@ const LoginForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          token: formData.token,
+          password: formData.password,
+        }),
       });
 
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        throw new Error(result.message || 'Login failed');
+        throw new Error(result.message || 'Password reset failed');
       }
 
-      const { user, tokens } = result.data;
-
-      localStorage.setItem('accessToken', tokens.accessToken);
-      localStorage.setItem('userId', user._id);
-      localStorage.setItem('userRole', user.role);
-      localStorage.setItem('userName', `${user.firstName} ${user.lastName}`);
-
-      console.log('Login successful:', result.message);
-
-      if (user.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/profile');
-      }
+      console.log('Password reset successful:', result.message);
+      navigate('/login');
 
     } catch (error) {
       console.error('Error:', error);
-      setError(error.message || 'Login failed. Please check your credentials and try again.');
+      setError(error.message || 'Password reset failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  // Extract token from the URL
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+    if (token) {
+      setFormData((prev) => ({ ...prev, token }));
+    }
+  }, [location.search]);
+
   return (
     <FormContainer>
-      <FormTitle>Login</FormTitle>
+      <FormTitle>Reset Password</FormTitle>
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <Label>Email:</Label>
-          <Input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            disabled={loading}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>Password:</Label>
+          <Label>New Password:</Label>
           <Input
             type="password"
             name="password"
@@ -335,17 +307,25 @@ const LoginForm = () => {
             required
             disabled={loading}
           />
-          
         </FormGroup>
-        <ForgotPasswordLink to="/forgot">Forgot Password?</ForgotPasswordLink>
+        <FormGroup>
+          <Label>Confirm Password:</Label>
+          <Input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+            disabled={loading}
+          />
+        </FormGroup>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <Button type="submit" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
+          {loading ? 'Resetting...' : 'Reset Password'}
         </Button>
-        <SignupLink to="/register">Don't have an account? Go to Signup</SignupLink>
       </form>
     </FormContainer>
   );
 };
 
-export default LoginForm;
+export default ResetPassword;

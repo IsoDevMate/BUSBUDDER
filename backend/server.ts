@@ -67,7 +67,7 @@ async function startServer() {
     });
 
     // Schedule a cron job to keep the server alive
-    cron.schedule('*/1 * * * *', () => {
+    cron.schedule('*/10 * * * * *', () => {
       console.log('Cron job running every 1 minutes to keep the server alive');
     });
 
