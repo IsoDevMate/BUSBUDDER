@@ -243,6 +243,19 @@ private generateNumericCode(length: number = 6): string {
   }
 
 
+  async getAllUsers(): Promise<User[]>{
+    const users = await User.find();
+
+    if (!users) {
+      throw new AppError('Users not found', 404);
+    }
+
+    // Remove password from response
+    const userObject = users.map(user => user.toObject());
+
+    return userObject as User[];
+  }
+
   // async logout(refreshToken: string): Promise<void> {
   //   // Delete refresh token from database
   //   const tokenDoc = await Token.findOne({ token: refreshToken });

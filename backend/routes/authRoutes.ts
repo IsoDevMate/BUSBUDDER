@@ -49,4 +49,12 @@ router.get('/profile',
   }
 )
 
+router.get('/all-users',
+  AuthMiddleware.verifyToken,
+  AuthMiddleware.hasRole(['admin']),
+  (req, res, next) => {
+    (AuthController.getAllusers as any)(req, res, next);
+  }
+)
+
 export default router;
