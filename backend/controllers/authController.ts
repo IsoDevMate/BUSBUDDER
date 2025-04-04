@@ -149,6 +149,20 @@ static async updateProfile(req: Request, res: Response, next: NextFunction) {
       return ResponseUtil.error(res, 500, 'An unexpected error occurred while retrieving profile');
     }
   }
+
+  static async getAllusers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const users = await authService.getAllUsers();
+      return ResponseUtil.success(res, 200, users, 'Users retrieved successfully');
+    } catch (error) {
+      if (error instanceof AppError) {
+        return ResponseUtil.error(res, error.statusCode, error.message);
+      }
+      // Log the unexpected error for server-side tracking
+      console.error('Unexpected get all users error:', error);
+      return ResponseUtil.error(res, 500, 'An unexpected error occurred while retrieving users');
+    }
+  }
 }
 
 export default new AuthController();
