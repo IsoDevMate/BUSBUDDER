@@ -266,15 +266,15 @@ function SeatSelectionPage() {
 
         const bookedSeatsResponse = await fetch(`http://localhost:7000/api/v1/schedules/${scheduleId}/seats`);
         const bookedSeatsResult = await bookedSeatsResponse.json();
-        
+
         if (!bookedSeatsResult.success) throw new Error(bookedSeatsResult.message);
-        
+
         const bookedSeatNumbers = bookedSeatsResult.data.bookedSeats || [];
         setBookedSeats(bookedSeatNumbers);
 
-        if (scheduleData.busId?.capacity) {
-          const totalSeats = scheduleData.busId.capacity;
-          
+        if (scheduleData?.availableSeats) {
+          const totalSeats = scheduleData.availableSeats
+
           const layout = [];
           for (let seatNum = 1; seatNum <= totalSeats; seatNum++) {
             layout.push({
@@ -305,8 +305,8 @@ function SeatSelectionPage() {
       if (isAlreadySelected) {
         return prev.filter(s => s._id !== seat._id);
       } else {
-        return [...prev, { 
-          ...seat, 
+        return [...prev, {
+          ...seat,
           status: 'selected',
           _id: seat._id,
           seatNumber: seat.seatNumber
@@ -363,12 +363,12 @@ function SeatSelectionPage() {
       <TripInfoCard>
         <InfoItem>
           <InfoLabel>Bus Number</InfoLabel>
-          <InfoValue>{schedule.busId?.busNumber || 'N/A'}</InfoValue>
+          <InfoValue>{schedule?.busNumber || 'N/A'}</InfoValue>
         </InfoItem>
         <InfoItem>
           <InfoLabel>Route</InfoLabel>
           <InfoValue>
-            {schedule.routeId?.startLocation} → {schedule.routeId?.endLocation}
+            {schedule.routeName || 'N/A'}
           </InfoValue>
         </InfoItem>
         <InfoItem>

@@ -6,6 +6,11 @@ import { databaseService } from './config/database';
 import { Request, Response, NextFunction } from 'express';
 import cron from 'node-cron';
 
+// Schedule a cron job to keep the server alive
+cron.schedule('*/10 * * * * *', () => {
+  console.log('Cron job running every 1 minutes to keep the server alive');
+});
+
 const corsOptions = {
   origin: "*"
 };
@@ -66,10 +71,6 @@ async function startServer() {
       console.log(`Error is : ${error}`);
     });
 
-    // Schedule a cron job to keep the server alive
-    cron.schedule('*/10 * * * * *', () => {
-      console.log('Cron job running every 1 minutes to keep the server alive');
-    });
 
   } catch (error) {
     console.error("Failed to start server:", error);
