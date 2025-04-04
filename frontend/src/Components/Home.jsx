@@ -128,7 +128,7 @@
 // //   font-size: 2.2rem;
 // //   font-weight: 700;
 // //   letter-spacing: -0.5px;
-  
+
 // //   svg {
 // //     margin-right: 15px;
 // //     color: #4c51bf;
@@ -137,7 +137,7 @@
 
 // //   @media (max-width: 768px) {
 // //     font-size: 1.8rem;
-    
+
 // //     svg {
 // //       font-size: 1.5rem;
 // //     }
@@ -187,7 +187,7 @@
 // //     border-color: #3498db;
 // //     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 // //     background-color: white;
-    
+
 // //     ~ ${InputIcon} {
 // //       color: #3498db;
 // //     }
@@ -261,7 +261,7 @@
 
 // // const Home = () => {
 // //   const navigate = useNavigate();
-  
+
 // //   const [cities, setCities] = useState([]);
 // //   const [searchParams, setSearchParams] = useState({
 // //     origin: '',
@@ -276,7 +276,7 @@
 // //       try {
 // //         const response = await fetch('http://localhost:3001/cities');
 // //         if (!response.ok) throw new Error('Failed to fetch cities');
-        
+
 // //         const data = await response.json();
 // //         setCities(data);
 // //       } catch (err) {
@@ -317,11 +317,11 @@
 // //       const response = await fetch(
 // //         `http://localhost:3001/api/v1/buses/search?departure=${encodeURIComponent(searchParams.origin)}&destination=${encodeURIComponent(searchParams.destination)}`
 // //       );
-      
+
 // //       if (!response.ok) {
 // //         throw new Error('No buses found for the selected route');
 // //       }
-      
+
 // //       const filteredBuses = await response.json();
 
 // //       if (filteredBuses.length === 0) {
@@ -330,11 +330,11 @@
 // //         return;
 // //       }
 
-// //       navigate('/bus-list', { 
-// //         state: { 
-// //           buses: filteredBuses, 
-// //           searchParams 
-// //         } 
+// //       navigate('/bus-list', {
+// //         state: {
+// //           buses: filteredBuses,
+// //           searchParams
+// //         }
 // //       });
 // //     } catch (err) {
 // //       setError(err.message || 'An error occurred while searching for buses');
@@ -349,7 +349,7 @@
 // //       <HeroSection>
 // //         <HeroTitle>Welcome to Amaam Travels</HeroTitle>
 // //         <HeroSubtitle>
-// //           Experience comfortable, safe, and reliable bus travel across the country. 
+// //           Experience comfortable, safe, and reliable bus travel across the country.
 // //           Book your tickets in just a few clicks!
 // //         </HeroSubtitle>
 // //       </HeroSection>
@@ -365,7 +365,7 @@
 // //           <FormGrid onSubmit={handleSubmit}>
 // //             <InputWrapper>
 // //               <InputIcon><FaMapMarkerAlt /></InputIcon>
-// //               <StyledInput 
+// //               <StyledInput
 // //                 name="origin"
 // //                 list="originCities"
 // //                 placeholder="From (City or Station)"
@@ -382,7 +382,7 @@
 
 // //             <InputWrapper>
 // //               <InputIcon><FaMapMarkerAlt /></InputIcon>
-// //               <StyledInput 
+// //               <StyledInput
 // //                 name="destination"
 // //                 list="destinationCities"
 // //                 placeholder="To (City or Station)"
@@ -399,7 +399,7 @@
 
 // //             <InputWrapper>
 // //               <InputIcon><FaCalendarAlt /></InputIcon>
-// //               <StyledInput 
+// //               <StyledInput
 // //                 type="date"
 // //                 name="date"
 // //                 value={searchParams.date}
@@ -409,8 +409,8 @@
 // //               />
 // //             </InputWrapper>
 
-// //             <SearchButton 
-// //               type="submit" 
+// //             <SearchButton
+// //               type="submit"
 // //               disabled={isSearchDisabled}
 // //             >
 // //               {isLoading ? (
@@ -559,7 +559,7 @@
 //   font-size: 2.2rem;
 //   font-weight: 700;
 //   letter-spacing: -0.5px;
-  
+
 //   svg {
 //     margin-right: 15px;
 //     color: #4c51bf;
@@ -568,7 +568,7 @@
 
 //   @media (max-width: 768px) {
 //     font-size: 1.8rem;
-    
+
 //     svg {
 //       font-size: 1.5rem;
 //     }
@@ -618,7 +618,7 @@
 //     border-color: #3498db;
 //     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 //     background-color: white;
-    
+
 //     ~ ${InputIcon} {
 //       color: #3498db;
 //     }
@@ -692,7 +692,7 @@
 
 // const Home = () => {
 //   const navigate = useNavigate();
-  
+
 //   const [locations, setLocations] = useState([]);
 //   const [searchParams, setSearchParams] = useState({
 //     startLocation: '',
@@ -707,15 +707,15 @@
 //       try {
 //         const response = await fetch('http://localhost:7000/api/v1/routes?limit=1000');
 //         if (!response.ok) throw new Error('Failed to fetch locations');
-        
+
 //         const data = await response.json();
-        
+
 //         // Extract unique locations from all routes
 //         const allLocations = data.data.flatMap(route => [
-//           route.startLocation, 
+//           route.startLocation,
 //           route.endLocation
 //         ]);
-        
+
 //         const uniqueLocations = [...new Set(allLocations)];
 //         setLocations(uniqueLocations);
 //       } catch (err) {
@@ -754,15 +754,15 @@
 //     try {
 //       // Format the date to YYYY-MM-DD
 //       const formattedDate = searchParams.date ? new Date(searchParams.date).toISOString().split('T')[0] : '';
-      
+
 //       const response = await fetch(
 //         `http://localhost:7000/api/v1/schedules/search?startLocation=${encodeURIComponent(searchParams.startLocation)}&endLocation=${encodeURIComponent(searchParams.endLocation)}&date=${formattedDate}`
 //       );
-      
+
 //       if (!response.ok) {
 //         throw new Error('No schedules found for the selected criteria');
 //       }
-      
+
 //       const result = await response.json();
 //       const schedules = result.data || [];
 
@@ -772,11 +772,11 @@
 //         return;
 //       }
 
-//       navigate('/bus-list', { 
-//         state: { 
+//       navigate('/bus-list', {
+//         state: {
 //           schedules,
-//           searchParams 
-//         } 
+//           searchParams
+//         }
 //       });
 //     } catch (err) {
 //       setError(err.message || 'An error occurred while searching for buses');
@@ -791,7 +791,7 @@
 //       <HeroSection>
 //         <HeroTitle>Welcome to Amaam Travels</HeroTitle>
 //         <HeroSubtitle>
-//           Experience comfortable, safe, and reliable bus travel across the country. 
+//           Experience comfortable, safe, and reliable bus travel across the country.
 //           Book your tickets in just a few clicks!
 //         </HeroSubtitle>
 //       </HeroSection>
@@ -807,7 +807,7 @@
 //           <FormGrid onSubmit={handleSubmit}>
 //             <InputWrapper>
 //               <InputIcon><FaMapMarkerAlt /></InputIcon>
-//               <StyledInput 
+//               <StyledInput
 //                 name="startLocation"
 //                 list="startLocations"
 //                 placeholder="From (City or Station)"
@@ -824,7 +824,7 @@
 
 //             <InputWrapper>
 //               <InputIcon><FaMapMarkerAlt /></InputIcon>
-//               <StyledInput 
+//               <StyledInput
 //                 name="endLocation"
 //                 list="endLocations"
 //                 placeholder="To (City or Station)"
@@ -841,7 +841,7 @@
 
 //             <InputWrapper>
 //               <InputIcon><FaCalendarAlt /></InputIcon>
-//               <StyledInput 
+//               <StyledInput
 //                 type="date"
 //                 name="date"
 //                 value={searchParams.date}
@@ -851,8 +851,8 @@
 //               />
 //             </InputWrapper>
 
-//             <SearchButton 
-//               type="submit" 
+//             <SearchButton
+//               type="submit"
 //               disabled={isSearchDisabled}
 //             >
 //               {isLoading ? (
@@ -874,7 +874,7 @@
 
 // // const Home = () => {
 // //   const navigate = useNavigate();
-  
+
 // //   const [routes, setRoutes] = useState([]);
 // //   const [searchParams, setSearchParams] = useState({
 // //     startLocation: '',
@@ -889,7 +889,7 @@
 // //       try {
 // //         const response = await fetch('http://localhost:7000/api/v1/routes?skip=0&limit=10&sortBy=startLocation');
 // //         if (!response.ok) throw new Error('Failed to fetch routes');
-        
+
 // //         const data = await response.json();
 // //         setRoutes(data.data || []);
 // //       } catch (err) {
@@ -929,11 +929,11 @@
 // //       const response = await fetch(
 // //         `http://localhost:7000/api/v1/routes/search?startLocation=${encodeURIComponent(searchParams.startLocation)}&endLocation=${encodeURIComponent(searchParams.endLocation)}`
 // //       );
-      
+
 // //       if (!response.ok) {
 // //         throw new Error('No routes found for the selected locations');
 // //       }
-      
+
 // //       const result = await response.json();
 // //       const filteredRoutes = result.data || [];
 
@@ -943,11 +943,11 @@
 // //         return;
 // //       }
 
-// //       navigate('/bus-list', { 
-// //         state: { 
-// //           routes: filteredRoutes, 
-// //           searchParams 
-// //         } 
+// //       navigate('/bus-list', {
+// //         state: {
+// //           routes: filteredRoutes,
+// //           searchParams
+// //         }
 // //       });
 // //     } catch (err) {
 // //       setError(err.message || 'An error occurred while searching for routes');
@@ -967,7 +967,7 @@
 // //       <HeroSection>
 // //         <HeroTitle>Welcome to Amaam Travels</HeroTitle>
 // //         <HeroSubtitle>
-// //           Experience comfortable, safe, and reliable bus travel across the country. 
+// //           Experience comfortable, safe, and reliable bus travel across the country.
 // //           Book your tickets in just a few clicks!
 // //         </HeroSubtitle>
 // //       </HeroSection>
@@ -983,7 +983,7 @@
 // //           <FormGrid onSubmit={handleSubmit}>
 // //             <InputWrapper>
 // //               <InputIcon><FaMapMarkerAlt /></InputIcon>
-// //               <StyledInput 
+// //               <StyledInput
 // //                 name="startLocation"
 // //                 list="startLocations"
 // //                 placeholder="From (City or Station)"
@@ -1000,7 +1000,7 @@
 
 // //             <InputWrapper>
 // //               <InputIcon><FaMapMarkerAlt /></InputIcon>
-// //               <StyledInput 
+// //               <StyledInput
 // //                 name="endLocation"
 // //                 list="endLocations"
 // //                 placeholder="To (City or Station)"
@@ -1017,7 +1017,7 @@
 
 // //             <InputWrapper>
 // //               <InputIcon><FaCalendarAlt /></InputIcon>
-// //               <StyledInput 
+// //               <StyledInput
 // //                 type="date"
 // //                 name="date"
 // //                 value={searchParams.date}
@@ -1027,8 +1027,8 @@
 // //               />
 // //             </InputWrapper>
 
-// //             <SearchButton 
-// //               type="submit" 
+// //             <SearchButton
+// //               type="submit"
 // //               disabled={isSearchDisabled}
 // //             >
 // //               {isLoading ? (
@@ -1177,7 +1177,7 @@ const Title = styled.h1`
   font-size: 2.2rem;
   font-weight: 700;
   letter-spacing: -0.5px;
-  
+
   svg {
     margin-right: 15px;
     color: #4c51bf;
@@ -1186,7 +1186,7 @@ const Title = styled.h1`
 
   @media (max-width: 768px) {
     font-size: 1.8rem;
-    
+
     svg {
       font-size: 1.5rem;
     }
@@ -1236,7 +1236,7 @@ const StyledInput = styled.input`
     border-color: #3498db;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
     background-color: white;
-    
+
     ~ ${InputIcon} {
       color: #3498db;
     }
@@ -1310,7 +1310,7 @@ const ErrorMessage = styled.div`
 
 const Home = () => {
   const navigate = useNavigate();
-  
+
   const [locations, setLocations] = useState([]);
   const [searchParams, setSearchParams] = useState({
     startLocation: '',
@@ -1325,15 +1325,16 @@ const Home = () => {
       try {
         const response = await fetch('http://localhost:7000/api/v1/routes?skip=0&limit=100&sortBy=startLocation');
         if (!response.ok) throw new Error('Failed to fetch routes');
-        
+
         const data = await response.json();
         const routes = data.data || [];
-        
+
         // Extract unique locations from routes
         const uniqueLocations = [...new Set(
           routes.flatMap(route => [route.startLocation, route.endLocation])
         )].filter(Boolean).sort();
-        
+
+
         setLocations(uniqueLocations);
       } catch (err) {
         setError('Unable to load locations. Please check your connection.');
@@ -1349,7 +1350,7 @@ const Home = () => {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user changes input
     if (error) setError(null);
   };
@@ -1374,13 +1375,13 @@ const Home = () => {
     try {
       // Updated to use the correct schedules search endpoint
       const response = await fetch(
-        `http://localhost:7000/api/v1/schedules/search?startLocation=${encodeURIComponent(searchParams.startLocation)}&endLocation=${encodeURIComponent(searchParams.endLocation)}}`
+        `http://localhost:7000/api/v1/schedules/search?startLocation=${encodeURIComponent(searchParams.startLocation)}&endLocation=${encodeURIComponent(searchParams.endLocation)}`
       );
-      
+
       if (!response.ok) {
         throw new Error('No schedules found for the selected criteria');
       }
-      
+
       const result = await response.json();
       const schedules = result.data || [];
 
@@ -1390,11 +1391,11 @@ const Home = () => {
         return;
       }
 
-      navigate('/bus-list', { 
-        state: { 
-          schedules: schedules, 
-          searchParams 
-        } 
+      navigate('/bus-list', {
+        state: {
+          schedules: schedules,
+          searchParams
+        }
       });
     } catch (err) {
       setError(err.message || 'An error occurred while searching for buses');
@@ -1409,7 +1410,7 @@ const Home = () => {
       <HeroSection>
         <HeroTitle>Welcome to Amaam Travels</HeroTitle>
         <HeroSubtitle>
-          Experience comfortable, safe, and reliable bus travel across the country. 
+          Experience comfortable, safe, and reliable bus travel across the country.
           Book your tickets in just a few clicks!
         </HeroSubtitle>
       </HeroSection>
@@ -1425,7 +1426,7 @@ const Home = () => {
           <FormGrid onSubmit={handleSubmit}>
             <InputWrapper>
               <InputIcon><FaMapMarkerAlt /></InputIcon>
-              <StyledInput 
+              <StyledInput
                 name="startLocation"
                 list="startLocations"
                 placeholder="From (City or Station)"
@@ -1442,7 +1443,7 @@ const Home = () => {
 
             <InputWrapper>
               <InputIcon><FaMapMarkerAlt /></InputIcon>
-              <StyledInput 
+              <StyledInput
                 name="endLocation"
                 list="endLocations"
                 placeholder="To (City or Station)"
@@ -1459,7 +1460,7 @@ const Home = () => {
 
             <InputWrapper>
               <InputIcon><FaCalendarAlt /></InputIcon>
-              <StyledInput 
+              <StyledInput
                 type="date"
                 name="date"
                 value={searchParams.date}
@@ -1469,8 +1470,8 @@ const Home = () => {
               />
             </InputWrapper>
 
-            <SearchButton 
-              type="submit" 
+            <SearchButton
+              type="submit"
               disabled={isSearchDisabled}
             >
               {isLoading ? (

@@ -189,12 +189,12 @@ const NoResultsMessage = styled.div`
 function BusListPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
 
   // Extract schedules and search parameters from location state
-  const { schedules, searchParams } = location.state || { 
-    schedules: [], 
-    searchParams: {} 
+  const { schedules, searchParams } = location.state || {
+    schedules: [],
+    searchParams: {}
   };
 
   const handleGoBack = () => {
@@ -204,28 +204,28 @@ function BusListPage() {
   const handleBookNow = (scheduleId) => {
     // Find the selected schedule from the schedules array
     const selectedSchedule = schedules.find(s => s._id === scheduleId);
-    
+
     if (!selectedSchedule) {
       console.error('Schedule not found');
       return;
     }
-  
-    navigate(`/schedules/${scheduleId}/seats`, { 
-      state: { 
+
+    navigate(`/schedules/${scheduleId}/seats`, {
+      state: {
         schedule: selectedSchedule,
         searchParams,
         scheduleId,
-      } 
+      }
     });
   };
 
   const formatTime = (dateTimeString) => {
     if (!dateTimeString) return 'N/A';
-    
+
     try {
       const date = new Date(dateTimeString);
-      return date.toLocaleTimeString([], { 
-        hour: '2-digit', 
+      return date.toLocaleTimeString([], {
+        hour: '2-digit',
         minute: '2-digit',
         hour12: true
       });
@@ -237,13 +237,13 @@ function BusListPage() {
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
-    
+
     try {
-      const options = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
       };
       return new Date(dateString).toLocaleDateString(undefined, options);
     } catch (e) {
@@ -254,7 +254,7 @@ function BusListPage() {
 
   const calculateDuration = (departureTime, arrivalTime) => {
     if (!departureTime || !arrivalTime) return 'N/A';
-    
+
     try {
       const dep = new Date(departureTime);
       const arr = new Date(arrivalTime);
@@ -307,7 +307,7 @@ function BusListPage() {
                 <FaBus />
               </BusIcon>
               <div>
-                <BusName>{schedule.busId?.busNumber || 'Unknown Bus'}</BusName>
+                <BusName>{schedule?.busNumber || 'Unknown Bus'}</BusName>
                 <DetailLabel>
                   <span>Capacity: {schedule.busId?.capacity || 0} seats</span>
                 </DetailLabel>
@@ -321,14 +321,14 @@ function BusListPage() {
               <DetailLabel>
                 <FaMapMarkerAlt /> From
               </DetailLabel>
-              <DetailValue>{schedule.routeId?.startLocation || 'N/A'}</DetailValue>
+              <DetailValue>{searchParams.startLocation || 'N/A'}</DetailValue>
             </DetailItem>
 
             <DetailItem>
               <DetailLabel>
                 <FaMapMarkerAlt /> To
               </DetailLabel>
-              <DetailValue>{schedule.routeId?.endLocation || 'N/A'}</DetailValue>
+              <DetailValue>{searchParams.endLocation || 'N/A'}</DetailValue>
             </DetailItem>
 
             <DetailItem>
@@ -373,7 +373,7 @@ function BusListPage() {
             </div>
           )}
 
-        <BookButton 
+        <BookButton
               onClick={() => handleBookNow(schedule._id)}
               disabled={schedule.availableSeats === 0}
             >
