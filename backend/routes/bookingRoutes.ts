@@ -25,7 +25,7 @@ import { AuthMiddleware } from '../middleware/authMiddleware';
 const router = Router();
 
 // This endpoint would typically be called internally by the payment service
-
+router.get('/allbookings', AuthMiddleware.ensureAdmin, bookingController.getAllBookings);
 router.post('/', bookingController.createBooking);
 
 // Get booking by ID
@@ -37,8 +37,5 @@ router.get('/', bookingController.getBookingsByUserDetails);
 // Cancel booking
 router.patch('/:id/cancel', bookingController.cancelBooking);
 
-router.get('/allbookings',
-    AuthMiddleware.ensureAdmin,
-    bookingController.gerAllbookiings);
 
 export default router;
