@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon --exec ts-node server.ts",
     "dev": "nodemon --exec ts-node server.ts",
+    "init-admin": "ts-node initadmin.ts",
     "build": "tsc"
   },
   "keywords": [],

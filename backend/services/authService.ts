@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import { User } from '../models/userModel';
+import { User, UserRole } from '../models/userModel';
 // import { UserRole } from '../models/userModel';
 import { Token } from '../models/tokenModal';
 import {
@@ -24,6 +24,10 @@ export class AuthService {
 
     if (existingUser) {
       throw new AppError('Email already in use', 400);
+    }
+
+     if (userData.role === UserRole.ADMIN) {
+      userData.role = UserRole.PASSENGER;
     }
 
     const newUser = new User(userData);
@@ -243,30 +247,98 @@ private generateNumericCode(length: number = 6): string {
   }
 
 
-  async getAllUsers(): Promise<User[]>{
-    const users = await User.find();
+  async getAllUsers(): Promise<User[]> {
+    try {
+      const users = await User.find();
 
-    if (!users) {
-      throw new AppError('Users not found', 404);
+      if (!users || users.length === 0) {
+        throw new AppError('No users found', 404);
+      }
+
+      // Remove sensitive fields like password from the response
+      const userObjects = users.map(user => {
+        const userObj = user.toObject();
+        delete (userObj as { password?: string }).password; // Remove password field
+        return userObj;
+      });
+
+      return userObjects as User[];
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      throw new AppError('Failed to fetch users', 500);
     }
-
-    // Remove password from response
-    const userObject = users.map(user => user.toObject());
-
-    return userObject as User[];
   }
 
-  // async logout(refreshToken: string): Promise<void> {
-  //   // Delete refresh token from database
-  //   const tokenDoc = await Token.findOne({ token: refreshToken });
+  // ADDED the admin routes
+  // Add these methods to your AuthService class
 
-  //   if (tokenDoc) {
-  //     await Token.deleteOne({
-  //       _id: tokenDoc._id
-  //     });
-  //     return;
-  //   }
-  // }
+async createAdmin(adminData: RegisterUserDto): Promise<User> {
+  try {
+    const existingUser = await User.findOne({ email: adminData.email });
+
+    if (existingUser) {
+      throw new AppError('Email already in use', 400);
+    }
+
+    // Make sure role is set to admin
+    adminData.role = UserRole.ADMIN;
+
+    const newAdmin = new User(adminData);
+
+    // Hash the password before saving
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    newAdmin.password = await bcrypt.hash(newAdmin.password, salt);
+
+    await newAdmin.save();
+
+    // Send notification email
+    sgMail.setApiKey(config.sendgrid.apiKey);
+    const msg = {
+      to: newAdmin.email,
+      from: config.sendgrid.fromEmail,
+      subject: 'Admin Account Created',
+      text: `Hello ${newAdmin.firstName},\n\nYou have been granted administrator access on Ammaam. Please log in to access your admin dashboard.\n\nBest regards,\nThe Ammam Team`,
+      html: `<p>Hello ${newAdmin.firstName},</p><p>You have been granted administrator access on Ammaam. Please log in to access your admin dashboard.</p><p>Best regards,<br>The Ammam Team</p>`,
+    };
+    await sgMail.send(msg);
+
+    // Remove password from response
+    const userObject = newAdmin.toObject();
+    return userObject as User;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    console.error('Admin creation error:', error);
+    throw new AppError('Admin creation failed', 500);
+  }
+}
+
+async updateUserRole(userId: string, role: UserRole): Promise<User> {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new AppError('User not found', 404);
+  }
+
+  // Update role
+  user.role = role;
+  await user.save();
+
+  // Send notification email
+  sgMail.setApiKey(config.sendgrid.apiKey);
+  const msg = {
+    to: user.email,
+    from: config.sendgrid.fromEmail,
+    subject: 'Account Role Updated',
+    text: `Hello ${user.firstName},\n\nYour account role on Ammaam has been updated to ${role}.\n\nBest regards,\nThe Ammam Team`,
+    html: `<p>Hello ${user.firstName},</p><p>Your account role on Ammaam has been updated to ${role}.</p><p>Best regards,<br>The Ammam Team</p>`,
+  };
+  await sgMail.send(msg);
+
+  // Remove password from response
+  const userObject = user.toObject();
+  return userObject as User;
+}
 
 }
 
