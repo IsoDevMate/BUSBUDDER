@@ -14,6 +14,11 @@ const config = {
     qrCodeSecret: process.env.JWT_QR_CODE_SECRET,
   },
 
+  adminCredentials: {
+    adminEmail: process.env.ADMIN_EMAIL,
+    adminPassword: process.env.ADMIN_PASSWORD,
+  },
+
   mpesa: {
     consumerKey: process.env.MPESA_CONSUMER_KEY,
     consumerSecret: process.env.MPESA_CONSUMER_SECRET,

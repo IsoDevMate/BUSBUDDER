@@ -51,10 +51,28 @@ router.get('/profile',
 
 router.get('/all-users',
   AuthMiddleware.verifyToken,
-  AuthMiddleware.hasRole(['admin']),
+  AuthMiddleware.ensureAdmin,
   (req, res, next) => {
     (AuthController.getAllusers as any)(req, res, next);
   }
+)
+
+  router.post('/create-admin',
+  AuthMiddleware.verifyToken,
+  AuthMiddleware.ensureAdmin,
+  (req, res, next) => {
+    (AuthController.createAdmin as any)(req, res, next);
+  }
+);
+
+// Admin can update user roles
+router.put('/update-user-role/:userId',
+  AuthMiddleware.verifyToken,
+  AuthMiddleware.ensureAdmin,
+  (req, res, next) => {
+    (AuthController.updateUserRole as any)(req, res, next);
+  }
+
 )
 
 export default router;

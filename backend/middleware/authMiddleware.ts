@@ -80,6 +80,25 @@ static async verifyToken(req: Request, res: Response, next: NextFunction) {
     }
   }
 
+  static ensureAdmin(req: Request, res: Response, next: NextFunction) {
+  try {
+    if (!req.user) {
+      return next(new AppError('Not authenticated', 401));
+    }
+
+    // Type assertion to ensure req.user has the role property
+    const user = req.user as { role: string };
+
+    if (user.role !== UserRole.ADMIN) {
+      return next(new AppError('Admin access required', 403));
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
 
  // Check if user has required role
 static hasRole(roles: string[]) {
@@ -91,6 +110,15 @@ static hasRole(roles: string[]) {
 
       // Type assertion to ensure req.user has the role property
       const user = req.user as { role: string };
+
+      //   if (!roles.includes(user.role)) {
+      //   return next(new AppError('Insufficient permissions', 403));
+      // }
+
+    
+      if (user.role === UserRole.ADMIN && !roles.includes(UserRole.ADMIN)) {
+        return next(new AppError('Insufficient permissions', 403));
+      }
 
       if (!roles.includes(user.role)) {
         return next(new AppError('Insufficient permissions', 403));

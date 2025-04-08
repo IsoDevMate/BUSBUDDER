@@ -7,7 +7,7 @@ export const registerSchema = z.object({
   password: z.string().min(8, 'Password must be at least 8 characters'),
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-  role: z.nativeEnum(UserRole).optional()
+   role: z.enum([UserRole.PASSENGER, UserRole.BUS_OPERATOR]).optional().default(UserRole.PASSENGER)
 });
 
 // Login validation schema

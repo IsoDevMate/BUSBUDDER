@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { authService } from '../services/authService';
 import { ResponseUtil } from '../utils/Response.util';
-import { User } from '../models/userModel';
+import { User, UserRole } from '../models/userModel';
 import { AppError } from '../utils/error.utils';
 import {
   loginSchema,
@@ -163,6 +163,54 @@ static async updateProfile(req: Request, res: Response, next: NextFunction) {
       return ResponseUtil.error(res, 500, 'An unexpected error occurred while retrieving users');
     }
   }
+
+
+static async createAdmin(req: Request, res: Response, next: NextFunction) {
+  try {
+    const validatedData = registerSchema.parse(req.body);
+
+    // Override the role to explicitly be admin
+    const adminData = {
+      ...validatedData,
+      role: UserRole.ADMIN
+    };
+
+    const newAdmin = await authService.createAdmin(adminData);
+
+    return ResponseUtil.success(res, 201, newAdmin, 'Admin user created successfully');
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return ResponseUtil.error(res, 400, error.errors[0].message);
+    }
+    if (error instanceof AppError) {
+      return ResponseUtil.error(res, error.statusCode, error.message);
+    }
+    console.error('Unexpected admin creation error:', error);
+    return ResponseUtil.error(res, 500, 'An unexpected error occurred');
+  }
+}
+
+static async updateUserRole(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { userId } = req.params;
+    const { role } = req.body;
+
+    if (!Object.values(UserRole).includes(role)) {
+      return ResponseUtil.error(res, 400, 'Invalid role specified');
+    }
+
+    const updatedUser = await authService.updateUserRole(userId, role);
+
+    return ResponseUtil.success(res, 200, updatedUser, 'User role updated successfully');
+  } catch (error) {
+    if (error instanceof AppError) {
+      return ResponseUtil.error(res, error.statusCode, error.message);
+    }
+    console.error('Unexpected role update error:', error);
+    return ResponseUtil.error(res, 500, 'An unexpected error occurred');
+  }
+  }
+
 }
 
 export default new AuthController();
