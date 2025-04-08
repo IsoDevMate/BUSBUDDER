@@ -183,6 +183,16 @@ async mpesaCallback(req: Request, res: Response) {
     }
   }
 
+  async getAllPayments(req: Request, res: Response) {
+    try {
+      const payments = await paymentService.getAllPayments();
+      return apiResponse(res, 200, 'Payments retrieved successfully', payments);
+    } catch (error) {
+      console.error('Error retrieving all payments:', error);
+      return apiResponse(res, 500, 'Failed to retrieve payments', null, error);
+    }
+  }
+
   // Update payment status (admin only)
    async updatePaymentStatus(req: Request, res: Response) {
     try {

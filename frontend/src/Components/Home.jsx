@@ -559,7 +559,7 @@
 // //   font-size: 2.2rem;
 // //   font-weight: 700;
 // //   letter-spacing: -0.5px;
-  
+
 // //   svg {
 // //     margin-right: 15px;
 // //     color: #4c51bf;
@@ -568,7 +568,7 @@
 
 // //   @media (max-width: 768px) {
 // //     font-size: 1.8rem;
-    
+
 // //     svg {
 // //       font-size: 1.5rem;
 // //     }
@@ -618,7 +618,7 @@
 // //     border-color: #3498db;
 // //     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 // //     background-color: white;
-    
+
 // //     ~ ${InputIcon} {
 // //       color: #3498db;
 // //     }
@@ -693,7 +693,7 @@
 // // const Home = () => {
 // //   const navigate = useNavigate();
   
-// //   const [locations, setLocations] = useState([]);
+// //   const [cities, setCities] = useState([]);
 // //   const [searchParams, setSearchParams] = useState({
 // //     startLocation: '',
 // //     endLocation: '',
@@ -705,8 +705,8 @@
 // //   useEffect(() => {
 // //     const fetchLocations = async () => {
 // //       try {
-// //         const response = await fetch('http://localhost:7000/api/v1/routes?limit=1000');
-// //         if (!response.ok) throw new Error('Failed to fetch locations');
+// //         const response = await fetch('http://localhost:3001/cities');
+// //         if (!response.ok) throw new Error('Failed to fetch cities');
         
 // //         const data = await response.json();
         
@@ -758,13 +758,12 @@
 // //       const response = await fetch(
 // //         `http://localhost:7000/api/v1/schedules/search?startLocation=${encodeURIComponent(searchParams.startLocation)}&endLocation=${encodeURIComponent(searchParams.endLocation)}&date=${formattedDate}`
 // //       );
-      
+
 // //       if (!response.ok) {
 // //         throw new Error('No schedules found for the selected criteria');
 // //       }
       
-// //       const result = await response.json();
-// //       const schedules = result.data || [];
+// //       const filteredBuses = await response.json();
 
 // //       if (schedules.length === 0) {
 // //         setError('No buses available for the selected route and date');
@@ -774,7 +773,7 @@
 
 // //       navigate('/bus-list', { 
 // //         state: { 
-// //           schedules,
+// //           buses: filteredBuses, 
 // //           searchParams 
 // //         } 
 // //       });
@@ -791,7 +790,7 @@
 // //       <HeroSection>
 // //         <HeroTitle>Welcome to Amaam Travels</HeroTitle>
 // //         <HeroSubtitle>
-// //           Experience comfortable, safe, and reliable bus travel across the country. 
+// //           Experience comfortable, safe, and reliable bus travel across the country.
 // //           Book your tickets in just a few clicks!
 // //         </HeroSubtitle>
 // //       </HeroSection>
@@ -808,8 +807,8 @@
 // //             <InputWrapper>
 // //               <InputIcon><FaMapMarkerAlt /></InputIcon>
 // //               <StyledInput 
-// //                 name="startLocation"
-// //                 list="startLocations"
+// //                 name="origin"
+// //                 list="originCities"
 // //                 placeholder="From (City or Station)"
 // //                 value={searchParams.startLocation}
 // //                 onChange={handleInputChange}
@@ -825,8 +824,8 @@
 // //             <InputWrapper>
 // //               <InputIcon><FaMapMarkerAlt /></InputIcon>
 // //               <StyledInput 
-// //                 name="endLocation"
-// //                 list="endLocations"
+// //                 name="destination"
+// //                 list="destinationCities"
 // //                 placeholder="To (City or Station)"
 // //                 value={searchParams.endLocation}
 // //                 onChange={handleInputChange}
@@ -841,7 +840,7 @@
 
 // //             <InputWrapper>
 // //               <InputIcon><FaCalendarAlt /></InputIcon>
-// //               <StyledInput 
+// //               <StyledInput
 // //                 type="date"
 // //                 name="date"
 // //                 value={searchParams.date}
@@ -851,8 +850,8 @@
 // //               />
 // //             </InputWrapper>
 
-// //             <SearchButton 
-// //               type="submit" 
+// //             <SearchButton
+// //               type="submit"
 // //               disabled={isSearchDisabled}
 // //             >
 // //               {isLoading ? (
@@ -1177,7 +1176,7 @@
 //   font-size: 2.2rem;
 //   font-weight: 700;
 //   letter-spacing: -0.5px;
-  
+
 //   svg {
 //     margin-right: 15px;
 //     color: #4c51bf;
@@ -1186,7 +1185,7 @@
 
 //   @media (max-width: 768px) {
 //     font-size: 1.8rem;
-    
+
 //     svg {
 //       font-size: 1.5rem;
 //     }
@@ -1236,7 +1235,7 @@
 //     border-color: #3498db;
 //     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 //     background-color: white;
-    
+
 //     ~ ${InputIcon} {
 //       color: #3498db;
 //     }
@@ -1310,7 +1309,7 @@
 
 // const Home = () => {
 //   const navigate = useNavigate();
-  
+
 //   const [locations, setLocations] = useState([]);
 //   const [searchParams, setSearchParams] = useState({
 //     startLocation: '',
@@ -1323,17 +1322,18 @@
 //   useEffect(() => {
 //     const fetchLocations = async () => {
 //       try {
-//         const response = await fetch('http://localhost:7000/api/v1/routes?skip=0&limit=100&sortBy=startLocation');
-//         if (!response.ok) throw new Error('Failed to fetch routes');
+//         const response = await fetch('http://localhost:7000/api/v1/routes?limit=1000');
+//         if (!response.ok) throw new Error('Failed to fetch locations');
         
 //         const data = await response.json();
-//         const routes = data.data || [];
         
-//         // Extract unique locations from routes
-//         const uniqueLocations = [...new Set(
-//           routes.flatMap(route => [route.startLocation, route.endLocation])
-//         )].filter(Boolean).sort();
+//         // Extract unique locations from all routes
+//         const allLocations = data.data.flatMap(route => [
+//           route.startLocation, 
+//           route.endLocation
+//         ]);
         
+//         const uniqueLocations = [...new Set(allLocations)];
 //         setLocations(uniqueLocations);
 //       } catch (err) {
 //         setError('Unable to load locations. Please check your connection.');
@@ -1372,15 +1372,17 @@
 //     }
 
 //     try {
-//       // Updated to use the correct schedules search endpoint
+//       // Format the date to YYYY-MM-DD
+//       const formattedDate = searchParams.date ? new Date(searchParams.date).toISOString().split('T')[0] : '';
+      
 //       const response = await fetch(
 //         `http://localhost:7000/api/v1/schedules/search?startLocation=${encodeURIComponent(searchParams.startLocation)}&endLocation=${encodeURIComponent(searchParams.endLocation)}}`
 //       );
-      
+
 //       if (!response.ok) {
 //         throw new Error('No schedules found for the selected criteria');
 //       }
-      
+
 //       const result = await response.json();
 //       const schedules = result.data || [];
 
@@ -1392,7 +1394,7 @@
 
 //       navigate('/bus-list', { 
 //         state: { 
-//           schedules: schedules, 
+//           schedules,
 //           searchParams 
 //         } 
 //       });
@@ -1409,7 +1411,7 @@
 //       <HeroSection>
 //         <HeroTitle>Welcome to Amaam Travels</HeroTitle>
 //         <HeroSubtitle>
-//           Experience comfortable, safe, and reliable bus travel across the country. 
+//           Experience comfortable, safe, and reliable bus travel across the country.
 //           Book your tickets in just a few clicks!
 //         </HeroSubtitle>
 //       </HeroSection>
@@ -1425,7 +1427,7 @@
 //           <FormGrid onSubmit={handleSubmit}>
 //             <InputWrapper>
 //               <InputIcon><FaMapMarkerAlt /></InputIcon>
-//               <StyledInput 
+//               <StyledInput
 //                 name="startLocation"
 //                 list="startLocations"
 //                 placeholder="From (City or Station)"
@@ -1442,7 +1444,7 @@
 
 //             <InputWrapper>
 //               <InputIcon><FaMapMarkerAlt /></InputIcon>
-//               <StyledInput 
+//               <StyledInput
 //                 name="endLocation"
 //                 list="endLocations"
 //                 placeholder="To (City or Station)"
@@ -1459,7 +1461,7 @@
 
 //             <InputWrapper>
 //               <InputIcon><FaCalendarAlt /></InputIcon>
-//               <StyledInput 
+//               <StyledInput
 //                 type="date"
 //                 name="date"
 //                 value={searchParams.date}
@@ -1469,8 +1471,8 @@
 //               />
 //             </InputWrapper>
 
-//             <SearchButton 
-//               type="submit" 
+//             <SearchButton
+//               type="submit"
 //               disabled={isSearchDisabled}
 //             >
 //               {isLoading ? (
@@ -1489,6 +1491,182 @@
 // };
 
 // export default Home;
+
+// // const Home = () => {
+// //   const navigate = useNavigate();
+  
+// //   const [routes, setRoutes] = useState([]);
+// //   const [searchParams, setSearchParams] = useState({
+// //     startLocation: '',
+// //     endLocation: '',
+// //     date: ''
+// //   });
+// //   const [error, setError] = useState(null);
+// //   const [isLoading, setIsLoading] = useState(false);
+
+// //   useEffect(() => {
+// //     const fetchRoutes = async () => {
+// //       try {
+// //         const response = await fetch('http://localhost:7000/api/v1/routes?skip=0&limit=10&sortBy=startLocation');
+// //         if (!response.ok) throw new Error('Failed to fetch routes');
+        
+// //         const data = await response.json();
+// //         setRoutes(data.data || []);
+// //       } catch (err) {
+// //         setError('Unable to load routes. Please check your connection.');
+// //       }
+// //     };
+
+// //     fetchRoutes();
+// //   }, []);
+
+// //   const handleInputChange = (e) => {
+// //     const { name, value } = e.target;
+// //     setSearchParams(prev => ({
+// //       ...prev,
+// //       [name]: value
+// //     }));
+// //   };
+
+// //   const handleSubmit = async (e) => {
+// //     e.preventDefault();
+// //     setError(null);
+// //     setIsLoading(true);
+
+// //     if (!searchParams.startLocation || !searchParams.endLocation) {
+// //       setError('Please select both start and end locations');
+// //       setIsLoading(false);
+// //       return;
+// //     }
+
+// //     if (searchParams.startLocation === searchParams.endLocation) {
+// //       setError('Start and end locations cannot be the same');
+// //       setIsLoading(false);
+// //       return;
+// //     }
+
+// //     try {
+// //       const response = await fetch(
+// //         `http://localhost:7000/api/v1/routes/search?startLocation=${encodeURIComponent(searchParams.startLocation)}&endLocation=${encodeURIComponent(searchParams.endLocation)}`
+// //       );
+      
+// //       if (!response.ok) {
+// //         throw new Error('No routes found for the selected locations');
+// //       }
+      
+// //       const result = await response.json();
+// //       const filteredRoutes = result.data || [];
+
+// //       if (filteredRoutes.length === 0) {
+// //         setError('No routes found for the selected locations');
+// //         setIsLoading(false);
+// //         return;
+// //       }
+
+// //       navigate('/bus-list', { 
+// //         state: { 
+// //           routes: filteredRoutes, 
+// //           searchParams 
+// //         } 
+// //       });
+// //     } catch (err) {
+// //       setError(err.message || 'An error occurred while searching for routes');
+// //       setIsLoading(false);
+// //     }
+// //   };
+
+// //   const isSearchDisabled = !searchParams.startLocation || !searchParams.endLocation || isLoading;
+
+// //   // Extract unique locations for datalist
+// //   const uniqueLocations = [...new Set(
+// //     routes.flatMap(route => [route.startLocation, route.endLocation])
+// //   )].filter(Boolean).sort();
+
+// //   return (
+// //     <>
+// //       <HeroSection>
+// //         <HeroTitle>Welcome to Amaam Travels</HeroTitle>
+// //         <HeroSubtitle>
+// //           Experience comfortable, safe, and reliable bus travel across the country. 
+// //           Book your tickets in just a few clicks!
+// //         </HeroSubtitle>
+// //       </HeroSection>
+
+// //       <PageContainer>
+// //         <SearchCard>
+// //           <Title>
+// //             <FaBus /> Bus Ticket Booking
+// //           </Title>
+
+// //           {error && <ErrorMessage>{error}</ErrorMessage>}
+
+// //           <FormGrid onSubmit={handleSubmit}>
+// //             <InputWrapper>
+// //               <InputIcon><FaMapMarkerAlt /></InputIcon>
+// //               <StyledInput 
+// //                 name="startLocation"
+// //                 list="startLocations"
+// //                 placeholder="From (City or Station)"
+// //                 value={searchParams.startLocation}
+// //                 onChange={handleInputChange}
+// //                 required
+// //               />
+// //               <datalist id="startLocations">
+// //                 {uniqueLocations.map((location, index) => (
+// //                   <option key={`start-${index}`} value={location} />
+// //                 ))}
+// //               </datalist>
+// //             </InputWrapper>
+
+// //             <InputWrapper>
+// //               <InputIcon><FaMapMarkerAlt /></InputIcon>
+// //               <StyledInput 
+// //                 name="endLocation"
+// //                 list="endLocations"
+// //                 placeholder="To (City or Station)"
+// //                 value={searchParams.endLocation}
+// //                 onChange={handleInputChange}
+// //                 required
+// //               />
+// //               <datalist id="endLocations">
+// //                 {uniqueLocations.map((location, index) => (
+// //                   <option key={`end-${index}`} value={location} />
+// //                 ))}
+// //               </datalist>
+// //             </InputWrapper>
+
+// //             <InputWrapper>
+// //               <InputIcon><FaCalendarAlt /></InputIcon>
+// //               <StyledInput 
+// //                 type="date"
+// //                 name="date"
+// //                 value={searchParams.date}
+// //                 onChange={handleInputChange}
+// //                 min={new Date().toISOString().split('T')[0]}
+// //                 required
+// //               />
+// //             </InputWrapper>
+
+// //             <SearchButton 
+// //               type="submit" 
+// //               disabled={isSearchDisabled}
+// //             >
+// //               {isLoading ? (
+// //                 'Searching...'
+// //               ) : (
+// //                 <>
+// //                   <FaSearch /> Search Buses
+// //                 </>
+// //               )}
+// //             </SearchButton>
+// //           </FormGrid>
+// //         </SearchCard>
+// //       </PageContainer>
+// //     </>
+// //   );
+// // };
+
+// // export default Home;
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
@@ -1669,6 +1847,11 @@ const StyledInput = styled.input`
     outline: none;
     border-color: #3498db;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    background-color: white;
+    
+    ~ ${InputIcon} {
+      color: #3498db;
+    }
   }
 
   &::placeholder {
@@ -1737,11 +1920,12 @@ const Home = () => {
 
         const data = await response.json();
         const routes = data.data || [];
-
+        
+        // Extract unique locations from routes
         const uniqueLocations = [...new Set(
           routes.flatMap(route => [route.startLocation, route.endLocation])
         )].filter(Boolean).sort();
-
+        
         setLocations(uniqueLocations);
       } catch (err) {
         setError('Unable to load locations. Please check your connection.');
@@ -1757,7 +1941,8 @@ const Home = () => {
       ...prev,
       [name]: value
     }));
-
+    
+    // Clear error when user changes input
     if (error) setError(null);
   };
 
@@ -1875,8 +2060,17 @@ const Home = () => {
               />
             </InputWrapper>
 
-            <SearchButton type="submit" disabled={isSearchDisabled}>
-              {isLoading ? 'Searching...' : <><FaSearch /> Search</>}
+            <SearchButton 
+              type="submit" 
+              disabled={isSearchDisabled}
+            >
+              {isLoading ? (
+                'Searching...'
+              ) : (
+                <>
+                  <FaSearch /> Search Buses
+                </>
+              )}
             </SearchButton>
           </FormGrid>
         </SearchCard>

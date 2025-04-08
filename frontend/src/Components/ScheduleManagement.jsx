@@ -22,7 +22,7 @@ async function getSchedules() {
 
 async function createSchedule(scheduleData) {
   const token = localStorage.getItem('accessToken');
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${API_URL}/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

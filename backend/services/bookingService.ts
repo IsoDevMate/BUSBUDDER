@@ -96,6 +96,25 @@ export const bookingService = {
       .exec();
   },
 
+  async getAllBookings(): Promise<BookingInterface[]> {
+    try {
+      return await Booking.find()
+        .populate({
+          path: 'scheduleId',
+          populate: [
+            { path: 'routeId' },
+            { path: 'busId' }
+          ]
+        })
+        .sort({ bookingDate: -1 })
+        .exec();
+    } catch (error) {
+      console.error('Error fetching all bookings:', error);
+      throw new Error('Failed to fetch all bookings');
+    }
+  },
+
+
   // Get bookings by user details (email/phone)
   async getBookingsByUserDetails(email: string, phone?: string): Promise<BookingInterface[]> {
     const query: any = { userEmail: email };

@@ -134,6 +134,22 @@ export class BookingController {
     }
   }
 
+  async gerAllbookiings(req: Request, res: Response): Promise<void> {
+    try {
+      const bookings = await bookingService.getAllBookings();
+
+      if (!bookings) {
+        errorResponse(res, 'No bookings found', 404);
+        return;
+      }
+
+      successResponse(res, 'Bookings retrieved successfully', bookings);
+    }
+    catch (error: any) {
+      errorResponse(res, error.message || 'Failed to retrieve bookings', 400, error);
+    }
+  }
+
   // Get bookings by user details
   async getBookingsByUserDetails(req: Request, res: Response): Promise<void> {
     try {

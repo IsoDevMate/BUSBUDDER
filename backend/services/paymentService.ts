@@ -509,6 +509,13 @@ async handleMpesaCallback(callbackData: any): Promise<boolean> {
   }
 }
 
+  async getAllPayments(filter = {}):Promise<IPayment[]> {
+    try {
+      return await Payment.find(filter).sort({ createdAt: -1 });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export const paymentService = new PaymentService();
