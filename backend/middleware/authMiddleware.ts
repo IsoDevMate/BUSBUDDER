@@ -115,7 +115,7 @@ static hasRole(roles: string[]) {
       //   return next(new AppError('Insufficient permissions', 403));
       // }
 
-    
+
       if (user.role === UserRole.ADMIN && !roles.includes(UserRole.ADMIN)) {
         return next(new AppError('Insufficient permissions', 403));
       }

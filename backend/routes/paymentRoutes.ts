@@ -5,6 +5,15 @@ const router = Router();
 const paymentController = new PaymentController();
 
 
+router.get('/all-payments', async (req: Request, res: Response) => {
+    try {
+        await paymentController.getAllPayments(req, res);
+    } catch (error: any) {
+        res.status(500).json({ error: error.message || 'Unknown error occurred' });
+    }
+}
+)
+
 // Initiate payment for a reservation
 router.post('/reservation', async (req: Request, res: Response) => {
     try {
@@ -76,14 +85,7 @@ router.patch('/:id/status', async (req: Request, res: Response) => {
 }
 );
 
-router.get('/all-payments', async (req: Request, res: Response) => {
-    try {
-        await paymentController.getAllPayments(req, res);
-    } catch (error: any) {
-        res.status(500).json({ error: error.message || 'Unknown error occurred' });
-    }
-}
-)
+
 
 // //Payment verification callback endpoint
 // router.post('/callback', async (req: Request, res: Response) => {
