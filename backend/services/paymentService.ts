@@ -11,6 +11,7 @@ import axios from 'axios';
 import STKRequest from '../models/stkRequestModel';
 import config from '../config/config'
 import { mpesaMiddleware } from '../middleware/accesToken';
+import { mpesaReconciliationService } from './mpesareconciliationservice';
 
 class PaymentService {
   // Create a new payment
@@ -471,11 +472,11 @@ async handleMpesaCallback(callbackData: any): Promise<boolean> {
         console.log('[M-Pesa Callback] Processing successful payment for reservation:', stkRequest.reservationId);
 
         // Complete the reservation
-        await reservationService.completeReservation(stkRequest.reservationId);
+        await reservationService.completeReservation(stkRequest.reservationId.toString());
         console.log('[M-Pesa Callback] Reservation completed.');
 
         // Create booking from reservation
-        const booking = await bookingService.createBookingFromReservation(stkRequest.reservationId);
+        const booking = await bookingService.createBookingFromReservation(stkRequest.reservationId.toString());
         console.log('[M-Pesa Callback] Booking created from reservation:', booking);
 
         // Create payment record
@@ -493,7 +494,7 @@ async handleMpesaCallback(callbackData: any): Promise<boolean> {
       }
 
       // Send confirmation email to the user
-      const reservation = await reservationService.getReservationById(stkRequest.reservationId);
+      const reservation = await reservationService.getReservationById(stkRequest.reservationId.toString());
 
       if (reservation) {
         try {
@@ -539,6 +540,59 @@ async handleMpesaCallback(callbackData: any): Promise<boolean> {
   } catch (error) {
     console.error('[M-Pesa Callback] Error handling M-Pesa callback:', error);
     return false;
+  }
+}
+
+
+async verifyTransactionStatus(checkoutRequestID: string): Promise<{
+  success: boolean;
+  message: string;
+  resultCode?: number;
+  data?: any;
+}> {
+  try {
+    const stkRequest = await STKRequest.findOne({ checkoutRequestID });
+    if (!stkRequest) {
+      return {
+        success: false,
+        message: 'STK request not found'
+      };
+    }
+
+    // Import the transaction status check from reconciliation service
+    const status = await mpesaReconciliationService.checkTransactionStatus(checkoutRequestID);
+
+    // Process the status response
+    if (status.ResultCode === 0) {
+      // Transaction was successful - let's make sure we've recorded it
+      const result = await mpesaReconciliationService.processPotentiallySuccessfulTransaction(stkRequest);
+
+      return {
+        success: true,
+        message: 'Transaction confirmed successful',
+        resultCode: status.ResultCode,
+        data: status
+      };
+    } else {
+      // Update our record to match the status from M-Pesa
+      stkRequest.status = 'failed';
+      stkRequest.failureReason = status.ResultDesc;
+      stkRequest.resultCode = status.ResultCode;
+      await stkRequest.save();
+
+      return {
+        success: false,
+        message: `Transaction verification failed: ${status.ResultDesc}`,
+        resultCode: status.ResultCode,
+        data: status
+      };
+    }
+  } catch (error: any) {
+    console.error('[Payment] Error verifying transaction status:', error);
+    return {
+      success: false,
+      message: `Error verifying transaction: ${error.message}`
+    };
   }
 }
 

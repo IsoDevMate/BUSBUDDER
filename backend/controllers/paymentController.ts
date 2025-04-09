@@ -38,6 +38,28 @@ export class PaymentController {
     }
   }
 
+  async verifyTransactionStatus(req: Request, res: Response) {
+  try {
+    const { checkoutRequestID } = req.params;
+
+    if (!checkoutRequestID) {
+      return apiResponse(res, 400, 'Checkout request ID is required', null);
+    }
+
+    const result = await paymentService.verifyTransactionStatus(checkoutRequestID);
+
+    if (result.success) {
+      return apiResponse(res, 200, result.message, result.data);
+    } else {
+      return apiResponse(res, 400, result.message, result.data);
+    }
+  } catch (error: any) {
+    console.error('Error verifying transaction status:', error);
+    return apiResponse(res, 500, 'Failed to verify transaction status', null, error);
+  }
+}
+
+
 
 // Update this in paymentController.ts
 async initiateSTKPush(req: Request, res: Response) {

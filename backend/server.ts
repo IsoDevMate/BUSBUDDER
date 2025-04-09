@@ -5,9 +5,21 @@ import cors from "cors";
 import { databaseService } from './config/database';
 import { Request, Response, NextFunction } from 'express';
 import cron from 'node-cron';
+import { mpesaReconciliationService } from './services/mpesareconciliationservice';
+
+// Run reconciliation every hour
+cron.schedule('*/3 * * * *', async () => {
+  console.log('[Cron] Starting scheduled M-Pesa reconciliation...');
+  try {
+    await mpesaReconciliationService.runReconciliation();
+    console.log('[Cron] Scheduled reconciliation completed successfully');
+  } catch (error) {
+    console.error('[Cron] Error during scheduled reconciliation:', error);
+  }
+});
 
 // Schedule a cron job to keep the server alive
-cron.schedule('*/10 * * * * *', () => {
+cron.schedule('*/59 * * * * *', () => {
   console.log('Cron job running every 1 minutes to keep the server alive');
 });
 
