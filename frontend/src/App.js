@@ -72,6 +72,7 @@ import PassengerProfile from './Components/Profile';
 import ResetPassword from './Components/ResetPassword';
 import ForgotPassword from './Components/ForgotPassword';
 import Analytics from './Components/Analytics';
+import UserManagement from './Components/UserManagement';
 
 function App() {
   return (
@@ -101,6 +102,7 @@ function App() {
           <Route path="buses" element={<BusManagement />} />
           <Route path="routes" element={<RouteManagement />} />
           <Route path='analytics' element={<Analytics />} />
+          <Route path='users' element={<UserManagement />} />
           <Route path="schedules" element={<ScheduleManagement />} />
           <Route path="pays" element={<PaymentManagement />} />
         </Route>
