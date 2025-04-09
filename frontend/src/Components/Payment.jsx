@@ -390,7 +390,7 @@ function PaymentPage() {
             <p>Payment initiated successfully!</p>
             <p>Please check your phone to complete the transaction.</p>
             <PaymentButton 
-              onClick={() => navigate('/booking-confirmation', { 
+              onClick={() => navigate('/login', { 
                 state: { 
                   passenger,
                   selectedSeats,
@@ -401,7 +401,7 @@ function PaymentPage() {
               })}
               style={{ marginTop: '20px', backgroundColor: '#28a745' }}
             >
-              View Ticket
+              Login to View Ticket
             </PaymentButton>
           </StatusMessage>
         )}

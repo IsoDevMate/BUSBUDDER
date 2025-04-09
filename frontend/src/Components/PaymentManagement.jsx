@@ -11,7 +11,7 @@ async function handleResponse(response) {
 }
 
 async function getPayments() {
-  const response = await fetch(`http://localhost:7000/api/v1//bookings/allbookings`);
+  const response = await fetch(`http://localhost:7000/api/v1/payments/all-payments`);
   return handleResponse(response);
 }
 
@@ -71,9 +71,9 @@ function PaymentManagement() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2>Payment Management</h2>
         <div>
-          <button onClick={fetchPayments} style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+          {/* <button onClick={fetchPayments} style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
             Refresh
-          </button>
+          </button> */}
         </div>
       </div>
 
