@@ -119,7 +119,7 @@ function PaymentManagement() {
               <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'left' }}>Amount(Ksh)</th>
               <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'left' }}>Payment Method</th>
               <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'left' }}>Status</th>
-              <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'left' }}>Date</th>
+              {/* <th style={{ border: '1px solid #ddd', padding: '12px', textAlign: 'left' }}>Date</th> */}
             </tr>
           </thead>
           <tbody>
@@ -133,7 +133,7 @@ function PaymentManagement() {
                   <td style={{ padding: '12px', color: getPaymentStatusColor(payment.status) }}>
                     {payment.status}
                   </td>
-                  <td style={{ padding: '12px' }}>{new Date(payment.createdAt).toLocaleString()}</td>
+                  {/* <td style={{ padding: '12px' }}>{new Date(payment.createdAt).toLocaleString()}</td> */}
                 </tr>
               ))
             ) : (
