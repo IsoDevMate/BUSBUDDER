@@ -10,9 +10,13 @@ export interface STKRequest extends Document {
   transactionId?: string;
   transactionDate?: string;
   failureReason?: string;
+   resultCode: { type: Number } // Added resultCode property
   createdAt: Date;
   updatedAt: Date;
 }
+
+
+
 
 const STKRequestSchema = new Schema(
   {
@@ -45,7 +49,12 @@ const STKRequestSchema = new Schema(
     },
     transactionId: String,
     transactionDate: String,
-    failureReason: String
+    failureReason: String,
+    resultCode: {
+      type: Number,
+      required: true
+    },
+
   },
   { timestamps: true }
 );

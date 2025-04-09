@@ -492,12 +492,45 @@ async handleMpesaCallback(callbackData: any): Promise<boolean> {
         console.log('[M-Pesa Callback] Payment record created:', paymentData);
       }
 
+      // Send confirmation email to the user
+      const reservation = await reservationService.getReservationById(stkRequest.reservationId);
+
+      if (reservation) {
+        try {
+          await emailService.sendPaymentConfirmation(
+            reservation.userEmail,
+            reservation.userName,
+            reservation._id || '', // Assuming '_id' is a valid property of 'SeatReservation'
+            stkRequest.amount,
+            mpesaReceiptNumber
+          );
+          console.log('[M-Pesa Callback] Confirmation email sent successfully.');
+        } catch (emailError) {
+          console.error('[M-Pesa Callback] Failed to send confirmation email:', emailError);
+        }
+      } else {
+        console.warn('[M-Pesa Callback] Reservation not found for sending confirmation email.');
+      }
+
+      if (ResultCode === 1032) {
+        console.log(`[M-Pesa Callback] User cancelled payment for reservation: ${stkRequest.reservationId}`);
+        stkRequest.status = 'failed';
+        stkRequest.failureReason = 'Payment cancelled by user';
+        stkRequest.resultCode = ResultCode;
+        await stkRequest.save();
+        console.log('[M-Pesa Callback] Updated STK request with cancellation reason.');
+        return false;
+      }
+      console.log('[M-Pesa Callback] Payment successful. Updating STK request status.');
+
       return true;
     } else {
       console.warn('[M-Pesa Callback] Payment failed. Reason:', ResultDesc);
 
       // Failed payment
-      stkRequest.failureReason = ResultDesc;
+       stkRequest.status = 'failed';
+       stkRequest.failureReason = ResultDesc;
+       stkRequest.resultCode = ResultCode
       await stkRequest.save();
       console.log('[M-Pesa Callback] Updated STK request with failure reason.');
 
@@ -516,6 +549,59 @@ async handleMpesaCallback(callbackData: any): Promise<boolean> {
       throw error;
     }
   }
+
+  // Add this to your paymentService.ts
+async checkTransactionStatus(checkoutRequestID: string): Promise<any> {
+  const accessToken = await mpesaMiddleware.getToken();
+  const url = 'https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query';
+
+
+    // M-Pesa API constants
+    const MPESA_PASSKEY = config.mpesa.mpesa_passkey || '';
+    const MPESA_SHORTCODE = config.mpesa.shortcode || '';
+    const CALLBACK_URL = "https://busbudder.onrender.com/api/v1/payments/callback";
+
+    // Validate required configuration
+    if (!MPESA_SHORTCODE || !MPESA_PASSKEY || !CALLBACK_URL) {
+      console.error('[M-Pesa] Missing required configuration:', {
+        shortcodePresent: !!MPESA_SHORTCODE,
+        passkeyPresent: !!MPESA_PASSKEY,
+        callbackUrlPresent: !!CALLBACK_URL
+      });
+      throw new Error('M-Pesa configuration is incomplete. Check environment variables.');
+    }
+
+    // Generate timestamp
+    const date = new Date();
+    const timestamp =
+      date.getFullYear() +
+      ("0" + (date.getMonth() + 1)).slice(-2) +
+      ("0" + date.getDate()).slice(-2) +
+      ("0" + date.getHours()).slice(-2) +
+      ("0" + date.getMinutes()).slice(-2) +
+      ("0" + date.getSeconds()).slice(-2);
+
+    // Generate password
+    const password = Buffer.from(MPESA_SHORTCODE + MPESA_PASSKEY + timestamp).toString("base64");
+
+
+  const data = {
+    BusinessShortCode: config.mpesa.shortcode,
+    Password: password,
+    Timestamp: timestamp,
+    CheckoutRequestID: checkoutRequestID
+  };
+
+  const response = await axios.post(url, data, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  return response.data;
+  }
+
 }
 
 export const paymentService = new PaymentService();
