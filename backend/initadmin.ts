@@ -29,8 +29,8 @@ async function initAdmin() {
     }
 
     // Admin credentials - preferably from environment variables
-    const adminEmail = config.adminCredentials.adminEmail || process.env.ADMIN_EMAIL || 'oumaoduor5827@gmail.com'
-      const adminPassword = config.adminCredentials.adminPassword || process.env.ADMIN_PASSWORD || 'GRPC@2023'
+    const adminEmail = config.adminCredentials.adminEmail || process.env.ADMIN_EMAIL || '2104829@students.kcau.ac.ke'
+      const adminPassword = config.adminCredentials.adminPassword || process.env.ADMIN_PASSWORD || 'okanga2845'
       if (!adminEmail || !adminPassword) {
           console.error('ERROR: Admin email and password must be provided via environment variables');
           process.exit(1);
