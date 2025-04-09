@@ -434,7 +434,6 @@
 //       return '#F5F5F5';
 //   }
 // }
-
 // export default ScheduleManagement;
 import React, { useState, useEffect } from 'react';
 
@@ -461,6 +460,16 @@ async function getSchedules() {
 async function getRoutes() {
   const token = localStorage.getItem('accessToken');
   const response = await fetch(`${API_URL}/routes?skip=0&limit=10&sortBy=startLocation`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  return handleResponse(response);
+}
+
+async function getActiveBuses() {
+  const token = localStorage.getItem('accessToken');
+  const response = await fetch(`${API_URL}/buses?status=active`, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
@@ -508,6 +517,7 @@ async function cancelSchedule(id) {
 function ScheduleManagement() {
   const [schedules, setSchedules] = useState([]);
   const [routes, setRoutes] = useState([]);
+  const [buses, setBuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -526,6 +536,7 @@ function ScheduleManagement() {
   useEffect(() => {
     fetchSchedules();
     fetchRoutes();
+    fetchActiveBuses();
   }, []);
 
   const fetchSchedules = async () => {
@@ -551,6 +562,17 @@ function ScheduleManagement() {
     } catch (err) {
       console.error('Error fetching routes:', err);
       setError('Failed to load routes. Please try again.');
+    }
+  };
+
+  const fetchActiveBuses = async () => {
+    try {
+      const data = await getActiveBuses();
+      const busArray = Array.isArray(data.data) ? data.data : [];
+      setBuses(busArray);
+    } catch (err) {
+      console.error('Error fetching active buses:', err);
+      setError('Failed to load active buses. Please try again.');
     }
   };
 
@@ -799,15 +821,20 @@ function ScheduleManagement() {
               </div>
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Bus Number:</label>
-                <input
-                  type="text"
+                <select
                   name="busNumber"
                   value={formData.busNumber}
                   onChange={handleInputChange}
                   required
                   style={{ width: '100%', padding: '8px', boxSizing: 'border-box', borderRadius: '4px', border: '1px solid #ddd' }}
-                  placeholder="Enter bus number"
-                />
+                >
+                  <option value="" disabled>Select a bus</option>
+                  {buses.map((bus) => (
+                    <option key={bus._id} value={bus.busNumber}>
+                      {bus.busNumber}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Departure Time:</label>

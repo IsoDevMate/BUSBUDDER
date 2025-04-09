@@ -984,9 +984,9 @@ const PassengerDashboard = () => {
               </Ticket>
             </TicketContainer>
 
-            <PrimaryButton onClick={handleDownloadTicket} style={{ marginTop: '20px' }}>
+            {/* <PrimaryButton onClick={handleDownloadTicket} style={{ marginTop: '20px' }}>
               <i className="fas fa-download"></i> Download as PDF
-            </PrimaryButton>
+            </PrimaryButton> */}
           </ModalContent>
         </Modal>
       )}
