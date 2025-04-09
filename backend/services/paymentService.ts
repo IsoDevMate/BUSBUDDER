@@ -500,7 +500,7 @@ async handleMpesaCallback(callbackData: any): Promise<boolean> {
           await emailService.sendPaymentConfirmation(
             reservation.userEmail,
             reservation.userName,
-            reservation._id || '', 
+            reservation._id || '',
             stkRequest.amount,
             mpesaReceiptNumber
           );
@@ -530,7 +530,7 @@ async handleMpesaCallback(callbackData: any): Promise<boolean> {
       // Failed payment
        stkRequest.status = 'failed';
        stkRequest.failureReason = ResultDesc;
-       stkRequest.resultCode = ResultCode
+      //  stkRequest.resultCode = ResultCode
       await stkRequest.save();
       console.log('[M-Pesa Callback] Updated STK request with failure reason.');
 
