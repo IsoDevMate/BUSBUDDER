@@ -500,7 +500,7 @@ async handleMpesaCallback(callbackData: any): Promise<boolean> {
           await emailService.sendPaymentConfirmation(
             reservation.userEmail,
             reservation.userName,
-            reservation._id || '', // Assuming '_id' is a valid property of 'SeatReservation'
+            reservation._id || '', 
             stkRequest.amount,
             mpesaReceiptNumber
           );
