@@ -11,7 +11,7 @@ async function handleResponse(response) {
 }
 
 async function getPayments() {
-  const response = await fetch(`${API_URL}`);
+  const response = await fetch(`http://localhost:7000/api/v1//bookings/allbookings`);
   return handleResponse(response);
 }
 
