@@ -5,6 +5,7 @@ const router = Router();
 const paymentController = new PaymentController();
 
 
+
 router.get('/all-payments', async (req: Request, res: Response) => {
     try {
         await paymentController.getAllPayments(req, res);
@@ -44,6 +45,14 @@ router.post('/callback', async (req: Request, res: Response) => {
 //         return res.status(500).json({ error: 'Failed to retrieve payments' });
 //     }
 // })
+
+router.get('/verify/:checkoutRequestID', async (req: Request, res: Response) => {
+  try {
+    await paymentController.verifyTransactionStatus(req, res);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || 'Unknown error occurred' });
+  }
+});
 
 // Get payment by ID
 router.get('/:id', async (req: Request, res: Response) => {
